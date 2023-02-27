@@ -1,0 +1,105 @@
+{
+    "results": {
+        "api_version": "1.26",
+        "results_available": 31183,
+        "results_returned": "1",
+        "results_start": 1,
+        "shop": [
+            {
+                "access": "JR新宿駅東口徒歩2分。アルタ左側の道路を直進。大通りとの角にあるビル8Ｆです。",
+                "address": "東京都新宿区新宿3-23-12　パンドラビル8F",
+                "band": "可",
+                "barrier_free": "なし",
+                "budget": {
+                    "average": "3000円",
+                    "code": "B002",
+                    "name": "2001～3000円"
+                },
+                "budget_memo": "チャージ330円(税込)/ゆうちょPay使用可",
+                "capacity": 54,
+                "card": "利用可",
+                "catch": "ランチも営業中！ 感染対策強化中",
+                "charter": "貸切不可 ：可：30名～最大80名様までOK★",
+                "child": "お子様連れOK",
+                "close": "不定休",
+                "coupon_urls": {
+                    "pc": "https://www.hotpepper.jp/strJ000727183/map/?vos=nhppalsa000016",
+                    "sp": "https://www.hotpepper.jp/strJ000727183/scoupon/?vos=nhppalsa000016"
+                },
+                "course": "あり",
+                "english": "あり",
+                "free_drink": "あり",
+                "free_food": "なし",
+                "genre": {
+                    "catch": "新宿駅近☆夜景がたっぷり楽しめる寛ぎ空間",
+                    "code": "G001",
+                    "name": "居酒屋"
+                },
+                "horigotatsu": "なし",
+                "id": "J000727183",
+                "karaoke": "なし",
+                "ktai_coupon": 0,
+                "large_area": {
+                    "code": "Z011",
+                    "name": "東京"
+                },
+                "large_service_area": {
+                    "code": "SS10",
+                    "name": "関東"
+                },
+                "lat": 35.6933654897,
+                "lng": 139.7011654408,
+                "logo_image": "https://imgfp.hotp.jp/IMGH/90/56/P023519056/P023519056_69.jpg",
+                "lunch": "あり",
+                "middle_area": {
+                    "code": "Y055",
+                    "name": "新宿"
+                },
+                "midnight": "営業していない",
+                "mobile_access": "JR新宿駅東口徒歩2分｡ﾄﾞﾝｷの斜め向かいのﾋﾞﾙ8F",
+                "name": "瓦 ダイニング kawara CAFE&DINING 新宿東口店",
+                "name_kana": "かわらかふぇあんどだいにんぐしんじゅくひがしぐちでん",
+                "non_smoking": "全面禁煙",
+                "open": "月～木: 11:45～22:30 （料理L.O. 21:30 ドリンクL.O. 21:30）金、土: 11:45～23:00 （料理L.O. 22:00 ドリンクL.O. 22:00）日: 11:45～22:00 （料理L.O. 21:00 ドリンクL.O. 21:00）",
+                "other_memo": "DJブースあり",
+                "parking": "なし ：近隣のコインパーキングをご利用ください。",
+                "party_capacity": 54,
+                "pet": "不可",
+                "photo": {
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/15/64/P033211564/P033211564_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/15/64/P033211564/P033211564_100.jpg"
+                    },
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/15/64/P033211564/P033211564_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/15/64/P033211564/P033211564_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/15/64/P033211564/P033211564_58_s.jpg"
+                    }
+                },
+                "private_room": "なし",
+                "service_area": {
+                    "code": "SA11",
+                    "name": "東京"
+                },
+                "shop_detail_memo": "",
+                "show": "なし",
+                "small_area": {
+                    "code": "XA00",
+                    "name": "新宿東口"
+                },
+                "station_name": "新宿",
+                "sub_genre": {
+                    "code": "G002",
+                    "name": "ダイニングバー・バル"
+                },
+                "tatami": "なし",
+                "tv": "あり",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ000727183/?vos=nhppalsa000016"
+                },
+                "wedding": "各種パーティー承っております。お気軽に問合せください。【期間限定】幹事様1名無料",
+                "wifi": "あり"
+            }
+        ]
+    }
+}
