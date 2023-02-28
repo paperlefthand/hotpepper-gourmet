@@ -20,6 +20,10 @@ results = api.get_restaurants(lat=35.170915, lng=136.8793482, radius=400)
 print(results)
 ```
 
+### シーケンス図
+
+![sequence](out/diagrams/sequence/sequence.png)
+
 ___
 
 Powered by [ホットペッパー Webサービス](http://webservice.recruit.co.jp/)

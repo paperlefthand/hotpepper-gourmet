@@ -1,0 +1,16 @@
+@startuml
+start 
+
+:Apiオブジェクトの生成;
+
+if (keyidが正しい?) then (no)
+  :エラーメッセージ;
+else (yes)
+  :レストラン検索;
+  :結果の表示;
+endif
+
+
+stop 
+
+@enduml

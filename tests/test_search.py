@@ -24,6 +24,13 @@ def test_search_restaurants_minus_count(api):
     assert str(e.value) == "Invalid count value (must be >= 0)", "件数に負の値を入れるとエラー"
 
 
+def test_search_restaurants_minus_radius(api):
+    with raises(PyGourmetError) as e:
+        _ = api.get_restaurants(lat=35.170915, lng=136.8793482, radius=-1)
+
+    assert str(e.value) == "Invalid radius value (must be >= 0)", "範囲に負の値を入れるとエラー"
+
+
 @responses.activate
 def test_search_restaurant(api, helpers):
     restaurant_data = helpers.load_json_data("testdata/restaurant_resp.json")

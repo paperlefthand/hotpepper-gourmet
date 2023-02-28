@@ -49,7 +49,8 @@ class Api:
         :param count: max result counts
         """
 
-        range = 3
+        
+
         if radius <= 300:
             range = 1
         elif radius <= 500:
@@ -63,6 +64,9 @@ class Api:
 
         if (count < 0):
             raise PyGourmetError("Invalid count value (must be >= 0)")
+        
+        if (radius < 0):
+            raise PyGourmetError("Invalid radius value (must be >= 0)")
 
         params = {
             "key": self.keyid,
