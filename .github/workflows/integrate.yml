@@ -1,0 +1,21 @@
+name: integrate
+
+on:
+  push:
+    branches:
+      - "develop/**"
+
+jobs:
+  pytest:
+    uses: paperlefthand/hotpepper-gourmet/.github/workflows/pytest.yml@main
+    secrets: inherit
+
+  create-pr:
+    name: Create Pull Request
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create PR
+        run: gh pr create --base main -t "title" -b "body"
+        env:
+          KEYID: ${{ secrets.GITHUB_TOKEN }}

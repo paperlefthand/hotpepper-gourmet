@@ -1,17 +1,29 @@
 """
     API Impl
 """
-import logging
 import json
-# from typing import List, Optional, Tuple, Union
+import logging
 
 import requests
-
-# from requests.models import Response
 
 from pygourmet.error import PyGourmetError
 
 logger = logging.getLogger(__name__)
+
+
+def _radius_to_range(radius) -> int:
+    if radius <= 300:
+        range = 1
+    elif radius <= 500:
+        range = 2
+    elif radius <= 1000:
+        range = 3
+    elif radius <= 2000:
+        range = 4
+    elif radius > 2000:
+        range = 5
+
+    return range
 
 
 class Api:
@@ -20,6 +32,7 @@ class Api:
     API 呼び出しクラス
 
     """
+
     BASE_URL = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/"
 
     def __init__(self, keyid: str) -> None:
@@ -37,7 +50,7 @@ class Api:
         self,
         lat: float,
         lng: float,
-        radius: int = 1000,
+        radius: int = 500,
         count: int = 10,
     ) -> dict:
         """
@@ -45,30 +58,21 @@ class Api:
 
         :param lat: latitude of POI
         :param lng: longitude of POI
-        :param radius: search range from POI
+        :param radius: radius[m] of search range from POI
         :param count: max result counts
         """
 
-        range = 3
-        if radius <= 300:
-            range = 1
-        elif radius <= 500:
-            range = 2
-        elif radius <= 1000:
-            range = 3
-        elif radius <= 2000:
-            range = 4
-        elif radius > 2000:
-            range = 5
-
-        if (count < 0):
+        if count < 0:
             raise PyGourmetError("Invalid count value (must be >= 0)")
+
+        if radius < 0:
+            raise PyGourmetError("Invalid radius value (must be >= 0)")
 
         params = {
             "key": self.keyid,
             "lat": lat,
             "lng": lng,
-            "range": range,
+            "range": _radius_to_range(radius),
             "count": count,
             "format": "json",
         }

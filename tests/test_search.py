@@ -1,9 +1,9 @@
 """
   tests for search api
 """
+import responses
 from pytest import raises
 
-import responses
 from pygourmet.error import PyGourmetError
 
 
@@ -22,6 +22,13 @@ def test_search_restaurants_minus_count(api):
         _ = api.get_restaurants(lat=35.170915, lng=136.8793482, count=-1)
 
     assert str(e.value) == "Invalid count value (must be >= 0)", "件数に負の値を入れるとエラー"
+
+
+def test_search_restaurants_minus_radius(api):
+    with raises(PyGourmetError) as e:
+        _ = api.get_restaurants(lat=35.170915, lng=136.8793482, radius=-1)
+
+    assert str(e.value) == "Invalid radius value (must be >= 0)", "範囲に負の値を入れるとエラー"
 
 
 @responses.activate

@@ -1,5 +1,7 @@
 # hotpepper-gourmet
 
+![workflow badge](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/pytest.yml/badge.svg)
+
 ## About
 
 [ホットペッパーグルメAPI](https://webservice.recruit.co.jp/doc/hotpepper/reference.html)のシンプルなクライアントライブラリです

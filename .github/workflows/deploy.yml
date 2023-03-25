@@ -1,0 +1,33 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  publish:
+    name: Test, Build and Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+      - name: Add path for Poetry
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Install Dependencies
+        run: poetry install --no-interaction
+      - name: Run Tests
+        env:
+          KEYID: ${{ secrets.KEYID }}
+        run: poetry run pytest -v
+      - name: Build
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        run: poetry build
+      - name: Publish a Python distribution to PyPI
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
