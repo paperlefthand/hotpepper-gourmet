@@ -1,9 +1,9 @@
 """
   tests for search api
 """
+import responses
 from pytest import raises
 
-import responses
 from pygourmet.error import PyGourmetError
 
 

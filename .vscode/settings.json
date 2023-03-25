@@ -1,8 +1,12 @@
 {
-    "python.formatting.provider": "black",
-    "python.linting.flake8Enabled": true,
-    "python.linting.lintOnSave": true,
-    "python.linting.flake8Args": [
-        "--max-line-length=100",
-    ],
+  "python.formatting.provider": "black",
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.showNotification": true,
+      "source.fixAll": true,
+      "source.organizeImports": true
+    }
+  },
+  "esbonio.sphinx.confDir": "docs/source"
 }

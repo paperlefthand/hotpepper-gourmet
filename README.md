@@ -1,5 +1,7 @@
 # hotpepper-gourmet
 
+![workflow badge](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/pytest.yml/badge.svg)
+
 ## About
 
 [ホットペッパーグルメAPI](https://webservice.recruit.co.jp/doc/hotpepper/reference.html)のシンプルなクライアントライブラリです
@@ -19,10 +21,6 @@ api = pygourmet.Api(keyid=YOUR_KEYID)
 results = api.get_restaurants(lat=35.170915, lng=136.8793482, radius=400)
 print(results)
 ```
-
-### シーケンス図
-
-![sequence](out/diagrams/sequence/sequence.png)
 
 ___
 

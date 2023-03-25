@@ -25,8 +25,8 @@ requests = "^2.28"
 [tool.poetry.group.dev.dependencies]
 pytest-testinfra = "^7.0"
 responses = "^0.22"
-black = {version = "^23.1.0", allow-prereleases = true}
-flake8 = "^6.0.0"
+black = "^23.1.0"
+ruff = "^0.0.259"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
