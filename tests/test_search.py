@@ -7,6 +7,13 @@ from pytest import raises
 from pygourmet.error import PyGourmetError
 
 
+def test_search_restaurants_set_keyword(api):
+    result = api.get_restaurants(
+        lat=35.170915, lng=136.8793482, radius=400, keyword="ラーメン"
+    )
+    assert len(result) > 1, "キーワードに合致する店が取得できる"
+
+
 def test_search_restaurants_default_count(api):
     result = api.get_restaurants(lat=35.170915, lng=136.8793482, radius=400)
     assert len(result) == 10, "件数を指定しなければ最大10件出力される"
@@ -38,4 +45,5 @@ def test_search_restaurant(api, helpers):
     responses.add(responses.GET, url=api.BASE_URL, json=restaurant_data)
     resp = api.get_restaurants(lat=35.170915, lng=136.8793482, radius=1000, count=1)
 
+    assert resp[0]["lat"] == 35.6933654897, "座標が正しく取り出せること"
     assert resp[0]["lat"] == 35.6933654897, "座標が正しく取り出せること"
