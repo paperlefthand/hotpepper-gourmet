@@ -18,4 +18,4 @@ jobs:
       - name: Create PR
         run: gh pr create --base main -t "title" -b "body"
         env:
-          KEYID: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
