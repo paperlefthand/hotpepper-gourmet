@@ -50,6 +50,7 @@ class Api:
         self,
         lat: float,
         lng: float,
+        keyword: str = "",
         radius: int = 500,
         count: int = 10,
     ) -> dict:
@@ -74,6 +75,7 @@ class Api:
             "lng": lng,
             "range": _radius_to_range(radius),
             "count": count,
+            "keyword": keyword,
             "format": "json",
         }
 
