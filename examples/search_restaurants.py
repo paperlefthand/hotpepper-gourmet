@@ -6,7 +6,7 @@ import os
 import pygourmet
 
 api = pygourmet.Api(keyid=os.environ.get("KEYID"))
-results = api.get_restaurants(lat=35.170915, lng=136.8793482, radius=400, count=3)
+results = api.search(lat=35.170915, lng=136.8793482, radius=400, count=3)
 for r in results:
     print(r["name"])
     print(r["catch"])
