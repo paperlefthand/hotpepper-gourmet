@@ -1,6 +1,6 @@
 # hotpepper-gourmet
 
-![workflow badge](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/pytest.yml/badge.svg)
+![workflow badge](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/deploy.yml/badge.svg)
 
 ## About
 
@@ -18,7 +18,7 @@
 import pygourmet
 
 api = pygourmet.Api(keyid=YOUR_KEYID)
-results = api.get_restaurants(lat=35.170915, lng=136.8793482, radius=400)
+results = api.search(lat=35.170915, lng=136.8793482, radius=400)
 print(results)
 ```
 

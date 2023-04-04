@@ -1,16 +1,8 @@
-=============================================
-Welcome to hotpepper-gourmet's documentation!
-=============================================
+Welcome to pygourmet's documentation!
+=====================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   pygourmet
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   resources/modules.rst
