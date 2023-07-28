@@ -8,5 +8,6 @@
       "source.organizeImports": true
     }
   },
-  "esbonio.sphinx.confDir": "docs/source"
+  "esbonio.sphinx.confDir": "docs/source",
+  // "python.analysis.typeCheckingMode": "basic"
 }

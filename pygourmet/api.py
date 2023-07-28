@@ -1,13 +1,25 @@
 """pygourmet.api module
 """
 import json
-import logging
 
 import requests
 
 from pygourmet.exceptions import PyGourmetError
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
+
+
+def radius_to_range(radius: int) -> int:
+    if radius <= 300:
+        return 1
+    elif radius <= 500:
+        return 2
+    elif radius <= 1000:
+        return 3
+    elif radius <= 2000:
+        return 4
+    else:
+        return 5
 
 
 class Api:
@@ -32,21 +44,7 @@ class Api:
         if bool(keyid):
             self.keyid = keyid
         else:
-            raise PyGourmetError("Invalid keyid")
-
-    def __radius_to_range(self, radius) -> int:
-        if radius <= 300:
-            range = 1
-        elif radius <= 500:
-            range = 2
-        elif radius <= 1000:
-            range = 3
-        elif radius <= 2000:
-            range = 4
-        elif radius > 2000:
-            range = 5
-
-        return range
+            raise PyGourmetError("keyidを指定してください")
 
     def search(
         self,
@@ -84,7 +82,7 @@ class Api:
             "key": self.keyid,
             "lat": lat,
             "lng": lng,
-            "range": self.__radius_to_range(radius),
+            "range": radius_to_range(radius),
             "count": count,
             "keyword": keyword,
             "format": "json",
