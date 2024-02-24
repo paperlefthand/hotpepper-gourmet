@@ -1,4 +1,4 @@
-__version__ = "0.1.0"
+__version__ = "0.0.1"
 
-from .api import Api  # noqa: F401
-from .exceptions import PyGourmetError  # noqa: F401
+from .api_client import Api  # noqa: F401
+from .errors import PyGourmetError  # noqa: F401
