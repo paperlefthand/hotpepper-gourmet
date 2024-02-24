@@ -1,6 +1,6 @@
 # hotpepper-gourmet
 
-![workflow badge](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/pytest.yml/badge.svg)
+![workflow badge](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/integrate.yml/badge.svg)
 ![workflow badge](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/deploy.yml/badge.svg)
 
 ## About
