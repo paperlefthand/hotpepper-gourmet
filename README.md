@@ -19,7 +19,7 @@
 >>> import pygourmet
 >>> api = pygourmet.Api(keyid=YOUR_KEYID)
 >>> results = api.search(lat=35.170915, lng=136.8793482, radius=400, count=3)
->>> len(reaults)
+>>> len(results)
 3
 >>> results[0]["name"]
 >>> 'shop name'
