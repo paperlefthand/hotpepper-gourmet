@@ -1,0 +1,10 @@
+name: integrate
+
+on:
+  push:
+    branches:
+      - "dev"
+
+jobs:
+  pytest:
+    uses: paperlefthand/hotpepper-gourmet/.github/workflows/pytest.yml@dev

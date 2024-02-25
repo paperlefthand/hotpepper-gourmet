@@ -1,9 +1,7 @@
 name: pytest
 
 on:
-  push:
-    branches:
-      - "develop/**"
+  workflow_call:
 
 jobs:
   pytest:
@@ -11,21 +9,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+      - name: install poetry
+        run: pipx install poetry
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
+        id: cp310
         with:
           python-version: "3.10"
-      - name: nstall poetry
-        uses: abatilo/actions-poetry@v2
-      - name: Define a cache for the virtual environment based on the dependencies lock file
-        uses: actions/cache@v3
-        with:
-          path: ./.venv
-          key: venv-${{ hashFiles('poetry.lock') }}
+          cache: "poetry"
+      - name: Cache Hit
+        run: echo '${{ steps.cp310.outputs.cache-hit }}' # true if cache-hit occurred on the primary key
+        # uses: abatilo/actions-poetry@v2
+      # - name: Define a cache for the virtual environment based on the dependencies lock file
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ./.venv
+      #     key: venv-${{ hashFiles('poetry.lock') }}
       - name: Install Dependencies
         run: poetry install --no-interaction
+      - name: Run Linter
+        run: poetry run ruff check --output-format=github .
       - name: Run Tests
-        env:
-          KEYID: ${{ secrets.KEYID }}
-        run: poetry run pytest -v
+        # env:
+        #   KEYID: ${{ secrets.KEYID }}
+        run: poetry run pytest -v --cov=pygourmet --cov-report=html
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: htmlcov
