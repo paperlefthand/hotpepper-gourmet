@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: install poetry
+        run: pipx install poetry
       - name: Setup Python
         uses: actions/setup-python@v5
         id: cp310
@@ -18,8 +20,6 @@ jobs:
           cache: "poetry"
       - name: Cache Hit
         run: echo '${{ steps.cp310.outputs.cache-hit }}' # true if cache-hit occurred on the primary key
-      - name: install poetry
-        run: pipx install poetry
         # uses: abatilo/actions-poetry@v2
       # - name: Define a cache for the virtual environment based on the dependencies lock file
       #   uses: actions/cache@v3
