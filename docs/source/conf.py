@@ -6,14 +6,14 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import sphinx_fontawesome  # noqa: F401
 import sphinx_rtd_theme
 
 import pygourmet
 
 project = "hotpepper-gourmet"
-copyright = "2023, paperlefthand"
+copyright = "2024, paperlefthand"
 author = "Miura Kosuke"
-
 version = pygourmet.__version__
 release = pygourmet.__version__
 
