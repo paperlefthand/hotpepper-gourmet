@@ -9,7 +9,9 @@ BASE_URL = Api.BASE_URL
 
 
 def test_search_optionなし(client, requests_mock):
-    with open(os.path.join(DATAFILE_PATH, "restaurant_resp_0.json")) as f:
+    with open(
+        os.path.join(DATAFILE_PATH, "restaurant_resp_0.json"), "r", encoding="utf-8"
+    ) as f:
         mock_response = json.load(f)
 
     requests_mock.get(BASE_URL, json=mock_response)
@@ -19,7 +21,9 @@ def test_search_optionなし(client, requests_mock):
 
 
 def test_search_optionあり(client, requests_mock):
-    with open(os.path.join(DATAFILE_PATH, "restaurant_resp_0.json")) as f:
+    with open(
+        os.path.join(DATAFILE_PATH, "restaurant_resp_0.json"), "r", encoding="utf-8"
+    ) as f:
         mock_response = json.load(f)
 
     requests_mock.get(BASE_URL, json=mock_response)
