@@ -1,13 +1,13 @@
-"""pygourmet.api module
-"""
-import json
-import logging
+"""pygourmet.api module"""
 
+import json
+
+# import logging
 import requests
 
 from pygourmet.errors import PyGourmetError
 
-logger = logging.getLogger(__name__)
+# logger = logging.getLogger(__name__)
 
 
 class Api:
@@ -23,9 +23,6 @@ class Api:
 
     def __init__(self, keyid: str) -> None:
         """
-
-        Init the Api instance
-
         Args:
             keyid (str): Key ID assigned to the user
         """

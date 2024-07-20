@@ -1,0 +1,66 @@
+name: build
+
+on:
+  push:
+    branches:
+      - "dev"
+      - "main"
+
+jobs:
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        id: cp312
+        with:
+          python-version: "3.12"
+          cache: "poetry"
+      - name: Check cache Hit
+        run: echo '${{ steps.cp312.outputs.cache-hit }}' # true if cache-hit occurred on the primary key
+      - name: Install Dependencies
+        run: poetry install      
+      - name: Lint
+        run: poetry run ruff check --output-format=github .
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest"]
+        python-version: ["3.11", "3.12"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Setup Python ${{ matrix.python-version }}
+        id: setup-python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "poetry"
+      - name: Cache Hit
+        run: echo '${{ steps.setup-python.outputs.cache-hit }}' # true if cache-hit occurred on the primary key
+
+        # uses: abatilo/actions-poetry@v2
+      # - name: Define a cache for the virtual environment based on the dependencies lock file
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ./.venv
+      #     key: venv-${{ hashFiles('poetry.lock') }}
+
+      - name: Install dependencies
+        run: poetry install
+      - name: Run tests
+        run: poetry run pytest -v --cov=pygourmet --cov-report=html tests
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report-${{ matrix.python-version }}
+          path: htmlcov
+

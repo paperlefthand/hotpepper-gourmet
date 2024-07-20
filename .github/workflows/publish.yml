@@ -1,0 +1,22 @@
+name: Publish PyPI Package
+
+on:
+  release:
+    types: ["created"]
+
+jobs:
+  publish:
+    name: Upload release to PyPI
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: "https://pypi.org/p/hotpepper-gourmet/"
+    permissions:
+      id-token: true
+    steps:
+      # - name: Build
+      #   run: poetry build
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        # with:
+        #   password: ${{ secrets.PYPI_API_TOKEN }}
