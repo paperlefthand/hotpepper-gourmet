@@ -1,8 +1,8 @@
-"""pygourmet.api module
-"""
-import json
-import logging
+"""pygourmet.api module"""
 
+import json
+
+# import logging
 import requests
 
 from pygourmet.errors import PyGourmetError
