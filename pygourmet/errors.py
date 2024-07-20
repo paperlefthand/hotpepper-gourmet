@@ -1,7 +1,3 @@
-"""pygourmet.exceptions module
-"""
-
-
 class PyGourmetError(Exception):
     """PyGourmetError class
 

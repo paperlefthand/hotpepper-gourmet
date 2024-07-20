@@ -1,0 +1,919 @@
+{
+    "results": {
+        "api_version": "1.30",
+        "results_available": 18,
+        "results_returned": "10",
+        "results_start": 1,
+        "shop": [
+            {
+                "id": "J000406366",
+                "name": "カルビ大将 長久手店",
+                "logo_image": "https://imgfp.hotp.jp/IMGH/64/73/P044156473/P044156473_69.jpg",
+                "name_kana": "かるびたいしょう　ながくててん",
+                "address": "愛知県長久手市作田２-913",
+                "station_name": "はなみずき通",
+                "ktai_coupon": 0,
+                "large_service_area": {
+                    "code": "SS30",
+                    "name": "東海"
+                },
+                "service_area": {
+                    "code": "SA33",
+                    "name": "愛知"
+                },
+                "large_area": {
+                    "code": "Z033",
+                    "name": "愛知"
+                },
+                "middle_area": {
+                    "code": "Y995",
+                    "name": "愛知県その他"
+                },
+                "small_area": {
+                    "code": "XHJR",
+                    "name": "長久手"
+                },
+                "lat": 35.1741522344,
+                "lng": 137.0294360312,
+                "genre": {
+                    "name": "焼肉・ホルモン",
+                    "catch": "味・素材に頑固な旨い焼肉屋",
+                    "code": "G008"
+                },
+                "budget": {
+                    "code": "B003",
+                    "name": "3001～4000円",
+                    "average": "3000円"
+                },
+                "catch": "★大人気の焼肉食べ放題★ ★2名様～利用OKのBOX席★",
+                "capacity": 128,
+                "access": "東名名古屋インター車で5分",
+                "mobile_access": "東名名古屋ｲﾝﾀｰ車で5分",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ000406366/?vos=nhppalsa000016"
+                },
+                "photo": {
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/88/59/P042508859/P042508859_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/88/59/P042508859/P042508859_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/88/59/P042508859/P042508859_58_s.jpg"
+                    },
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/88/59/P042508859/P042508859_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/88/59/P042508859/P042508859_100.jpg"
+                    }
+                },
+                "open": "月～金、祝前日: 11:30～14:30 （料理L.O. 14:00）17:00～23:00 （料理L.O. 22:30）土、日、祝日: 10:50～23:00 （料理L.O. 22:30）",
+                "close": "年中無休",
+                "party_capacity": 40,
+                "other_memo": "何かご要望などございましたら、お気軽にお店までお問い合わせ下さいませ。",
+                "shop_detail_memo": "その他、気になる事などございましたら、お気軽にお店までご連絡下さいませ。",
+                "budget_memo": "お通し代：なし",
+                "wedding": "何かご要望などございましたら、お気軽にお店までお問い合わせ下さいませ。",
+                "course": "あり",
+                "free_drink": "あり ：パーティーコースご利用のお客様",
+                "free_food": "あり ：コースページをご参照ください。",
+                "private_room": "なし ：お席の詳細はお店までお問い合わせください。",
+                "horigotatsu": "なし ：お席の詳細はお店までお問い合わせください。",
+                "tatami": "なし ：お席の詳細はお店までお問い合わせください。",
+                "card": "利用可",
+                "non_smoking": "全面禁煙",
+                "charter": "貸切不可 ：応相談",
+                "parking": "あり ：ご用意ございます。",
+                "barrier_free": "なし ：何かご要望などございましたら、お気軽にお店までお問い合わせ下さいませ。",
+                "show": "なし",
+                "karaoke": "なし",
+                "band": "不可",
+                "tv": "なし",
+                "lunch": "あり",
+                "midnight": "営業していない",
+                "english": "なし",
+                "pet": "不可",
+                "child": "お子様連れ歓迎 ：ご家族でもゆっくりご利用頂けます！",
+                "wifi": "あり",
+                "coupon_urls": {
+                    "pc": "https://www.hotpepper.jp/strJ000406366/map/?vos=nhppalsa000016",
+                    "sp": "https://www.hotpepper.jp/strJ000406366/scoupon/?vos=nhppalsa000016"
+                }
+            },
+            {
+                "id": "J003497878",
+                "name": "BAR Flowers&月ひいては花",
+                "logo_image": "https://imgfp.hotp.jp/SYS/cmn/images/common/diary/custom/m30_img_noimage.gif",
+                "name_kana": "ばーふらわーずあんどつきひいてははな",
+                "address": "愛知県長久手市打越1720",
+                "station_name": "はなみずき通",
+                "ktai_coupon": 1,
+                "large_service_area": {
+                    "code": "SS30",
+                    "name": "東海"
+                },
+                "service_area": {
+                    "code": "SA33",
+                    "name": "愛知"
+                },
+                "large_area": {
+                    "code": "Z033",
+                    "name": "愛知"
+                },
+                "middle_area": {
+                    "code": "Y995",
+                    "name": "愛知県その他"
+                },
+                "small_area": {
+                    "code": "XHJR",
+                    "name": "長久手"
+                },
+                "lat": 35.1748724592,
+                "lng": 137.0306020148,
+                "genre": {
+                    "name": "ダイニングバー・バル",
+                    "catch": "隠れ家的な落ち着いたBARで一杯",
+                    "code": "G002"
+                },
+                "budget": {
+                    "code": "B003",
+                    "name": "3001～4000円",
+                    "average": "3000"
+                },
+                "catch": "",
+                "capacity": 14,
+                "access": "リニモ　はなみずき通駅　徒歩8分",
+                "mobile_access": "ﾘﾆﾓ はなみずき通駅 徒歩8分",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ003497878/?vos=nhppalsa000016"
+                },
+                "photo": {
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/51/11/P041315111/P041315111_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/51/11/P041315111/P041315111_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/51/11/P041315111/P041315111_58_s.jpg"
+                    },
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/51/11/P041315111/P041315111_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/51/11/P041315111/P041315111_100.jpg"
+                    }
+                },
+                "open": "火～木: 19:00～翌4:00 （料理L.O. 翌3:00 ドリンクL.O. 翌3:00）金～日: 18:00～翌4:00 （料理L.O. 翌3:00 ドリンクL.O. 翌3:00）",
+                "close": "月",
+                "party_capacity": "",
+                "other_memo": "",
+                "shop_detail_memo": "",
+                "budget_memo": "",
+                "wedding": "",
+                "course": "なし",
+                "free_drink": "なし",
+                "free_food": "なし",
+                "private_room": "なし",
+                "horigotatsu": "なし",
+                "tatami": "なし",
+                "card": "利用不可",
+                "non_smoking": "禁煙席なし",
+                "charter": "貸切不可",
+                "parking": "あり",
+                "barrier_free": "なし",
+                "show": "なし",
+                "karaoke": "なし",
+                "band": "不可",
+                "tv": "なし",
+                "lunch": "なし",
+                "midnight": "営業している",
+                "english": "なし",
+                "pet": "不可",
+                "child": "お子様連れ不可",
+                "wifi": "未確認",
+                "coupon_urls": {
+                    "pc": "https://www.hotpepper.jp/strJ003497878/map/?vos=nhppalsa000016",
+                    "sp": "https://www.hotpepper.jp/strJ003497878/scoupon/?vos=nhppalsa000016"
+                }
+            },
+            {
+                "id": "J000969071",
+                "name": "赤から 長久手店",
+                "logo_image": "https://imgfp.hotp.jp/IMGH/07/24/P021360724/P021360724_69.jpg",
+                "name_kana": "あかからなべとせせりやき　あかからながくててん",
+                "address": "愛知県長久手市井堀202",
+                "station_name": "杁ケ池公園",
+                "ktai_coupon": 0,
+                "large_service_area": {
+                    "code": "SS30",
+                    "name": "東海"
+                },
+                "service_area": {
+                    "code": "SA33",
+                    "name": "愛知"
+                },
+                "large_area": {
+                    "code": "Z033",
+                    "name": "愛知"
+                },
+                "middle_area": {
+                    "code": "Y995",
+                    "name": "愛知県その他"
+                },
+                "small_area": {
+                    "code": "XHJR",
+                    "name": "長久手"
+                },
+                "lat": 35.173041514,
+                "lng": 137.0289055622,
+                "genre": {
+                    "name": "焼肉・ホルモン",
+                    "catch": "名古屋名物赤から鍋　辛さ選べる11種",
+                    "code": "G008"
+                },
+                "budget": {
+                    "code": "B002",
+                    "name": "2001～3000円",
+                    "average": "2500円～5,000円"
+                },
+                "catch": "元祖!看板デザート いも娘 大人気！！食べ放題",
+                "capacity": 80,
+                "access": "東部丘陵線 杁ヶ池公園駅/はなみずき通駅より徒歩11分",
+                "mobile_access": "東部丘陵線 杁ヶ池公園駅/はなみずき通駅より徒歩11分",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ000969071/?vos=nhppalsa000016"
+                },
+                "photo": {
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/36/28/P044913628/P044913628_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/36/28/P044913628/P044913628_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/36/28/P044913628/P044913628_58_s.jpg"
+                    },
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/36/28/P044913628/P044913628_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/36/28/P044913628/P044913628_100.jpg"
+                    }
+                },
+                "open": "月～日、祝日、祝前日: 17:00～翌0:00 （料理L.O. 23:30 ドリンクL.O. 23:30）",
+                "close": "12月31日　1月1日だけお休みをいただきます。",
+                "party_capacity": 40,
+                "other_memo": "ご不明点がございましたらお気軽にお問合せください。",
+                "shop_detail_memo": "ご不明点がございましたらお気軽にお問合せください。",
+                "budget_memo": "クレジットカードご利用いただけます。",
+                "wedding": "★ウエディング二次会後の三次会も大歓迎！ぜひご利用ください！",
+                "course": "あり",
+                "free_drink": "あり ：セット.食べ放題ご注文時のみ",
+                "free_food": "あり ：コースページをご覧ください★",
+                "private_room": "なし ：なし",
+                "horigotatsu": "あり ：あり",
+                "tatami": "なし ：なし",
+                "card": "利用可",
+                "non_smoking": "全面禁煙",
+                "charter": "貸切不可 ：要相談",
+                "parking": "あり ：お車でお越しの方の飲酒はご遠慮ください。",
+                "barrier_free": "なし ：店内段差がある箇所がございますので、お気を付けください。",
+                "show": "なし",
+                "karaoke": "なし",
+                "band": "不可",
+                "tv": "なし",
+                "lunch": "なし",
+                "midnight": "営業している",
+                "english": "なし",
+                "pet": "不可",
+                "child": "お子様連れ歓迎 ：ファミリーにも人気です♪",
+                "wifi": "なし",
+                "coupon_urls": {
+                    "pc": "https://www.hotpepper.jp/strJ000969071/map/?vos=nhppalsa000016",
+                    "sp": "https://www.hotpepper.jp/strJ000969071/scoupon/?vos=nhppalsa000016"
+                }
+            },
+            {
+                "id": "J000673293",
+                "name": "あみやき亭 長久手店",
+                "logo_image": "https://imgfp.hotp.jp/IMGH/57/37/P032105737/P032105737_69.jpg",
+                "name_kana": "あみやきてい　ながくててん",
+                "address": "愛知県長久手市井堀110",
+                "station_name": "杁ケ池公園",
+                "ktai_coupon": 0,
+                "large_service_area": {
+                    "code": "SS30",
+                    "name": "東海"
+                },
+                "service_area": {
+                    "code": "SA33",
+                    "name": "愛知"
+                },
+                "large_area": {
+                    "code": "Z033",
+                    "name": "愛知"
+                },
+                "middle_area": {
+                    "code": "Y995",
+                    "name": "愛知県その他"
+                },
+                "small_area": {
+                    "code": "XHJR",
+                    "name": "長久手"
+                },
+                "lat": 35.1739666831,
+                "lng": 137.0287544304,
+                "genre": {
+                    "name": "焼肉・ホルモン",
+                    "catch": "国産牛 焼肉 食べ放題",
+                    "code": "G008"
+                },
+                "budget": {
+                    "code": "B002",
+                    "name": "2001～3000円",
+                    "average": "ディナー2300円"
+                },
+                "catch": "●食べ放題コース ●あみやき亭アプリがお得",
+                "capacity": 226,
+                "access": "リニモ杁ケ池公園駅１出口より徒歩約14分/リニモはなみずき通駅２出口より徒歩約17分",
+                "mobile_access": "ﾘﾆﾓ杁ｹ池公園駅1出口より徒歩約14分",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ000673293/?vos=nhppalsa000016"
+                },
+                "photo": {
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/40/80/P044864080/P044864080_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/40/80/P044864080/P044864080_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/40/80/P044864080/P044864080_58_s.jpg"
+                    },
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/40/80/P044864080/P044864080_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/40/80/P044864080/P044864080_100.jpg"
+                    }
+                },
+                "open": "月～木: 17:00～23:00 （料理L.O. 22:30 ドリンクL.O. 22:30）金: 17:00～翌0:00 （料理L.O. 23:00 ドリンクL.O. 23:30）土: 11:30～翌0:00 （料理L.O. 23:00 ドリンクL.O. 23:30）日、祝日: 11:30～23:00 （料理L.O. 22:30 ドリンクL.O. 22:30）祝前日: 17:00～翌0:00",
+                "close": "なし",
+                "party_capacity": 226,
+                "other_memo": "その他ご不明な点がございましたら、お気軽にお問い合わせください。",
+                "shop_detail_memo": "ご不明点がございましたらお気軽にお問い合わせください。",
+                "budget_memo": "単品・コースご用意しております。",
+                "wedding": "応相談",
+                "course": "あり",
+                "free_drink": "あり ：飲み放題付コースをご用意しております。",
+                "free_food": "あり ：食べ放題コースあり",
+                "private_room": "なし ：なし",
+                "horigotatsu": "なし ：くつろげるお座敷ございます。",
+                "tatami": "なし ：くつろげるお座敷ございます。",
+                "card": "利用可",
+                "non_smoking": "全面禁煙",
+                "charter": "貸切不可 ：詳細はお問い合わせください。",
+                "parking": "あり ：お車を運転される方へのお酒の提供はできませんのでご了承ください。",
+                "barrier_free": "なし ：ございませんがお手伝いできることがございましたらお申し付け下さい。",
+                "show": "なし",
+                "karaoke": "なし",
+                "band": "不可",
+                "tv": "なし",
+                "lunch": "あり",
+                "midnight": "営業している",
+                "english": "あり",
+                "pet": "不可",
+                "child": "お子様連れ歓迎 ：お子様連れも大歓迎です。",
+                "wifi": "なし",
+                "coupon_urls": {
+                    "pc": "https://www.hotpepper.jp/strJ000673293/map/?vos=nhppalsa000016",
+                    "sp": "https://www.hotpepper.jp/strJ000673293/scoupon/?vos=nhppalsa000016"
+                }
+            },
+            {
+                "id": "J003498017",
+                "name": "沖縄料理 遊来",
+                "logo_image": "https://imgfp.hotp.jp/SYS/cmn/images/common/diary/custom/m30_img_noimage.gif",
+                "name_kana": "おきなわりょうり　ゆうらい",
+                "address": "愛知県長久手市井堀３２７",
+                "station_name": "杁ケ池公園",
+                "ktai_coupon": 1,
+                "large_service_area": {
+                    "code": "SS30",
+                    "name": "東海"
+                },
+                "service_area": {
+                    "code": "SA33",
+                    "name": "愛知"
+                },
+                "large_area": {
+                    "code": "Z033",
+                    "name": "愛知"
+                },
+                "middle_area": {
+                    "code": "Y995",
+                    "name": "愛知県その他"
+                },
+                "small_area": {
+                    "code": "XHJR",
+                    "name": "長久手"
+                },
+                "lat": 35.1721560388,
+                "lng": 137.0280948315,
+                "genre": {
+                    "name": "居酒屋",
+                    "catch": "沖縄料理/居酒屋/長久手/遊来/薬膳/三線",
+                    "code": "G001"
+                },
+                "budget": {
+                    "code": "B003",
+                    "name": "3001～4000円",
+                    "average": ""
+                },
+                "catch": "",
+                "capacity": 27,
+                "access": "地下鉄東山線　藤が丘駅名鉄バス　2番のりば　長久手車庫又は星ヶ丘行きに乗り長久手住宅で下車。徒歩1分",
+                "mobile_access": "藤が丘駅 →長久手車庫→ 長久手住宅→徒歩1分",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ003498017/?vos=nhppalsa000016"
+                },
+                "photo": {
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/81/91/P041328191/P041328191_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/81/91/P041328191/P041328191_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/81/91/P041328191/P041328191_58_s.jpg"
+                    },
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/81/91/P041328191/P041328191_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/81/91/P041328191/P041328191_100.jpg"
+                    }
+                },
+                "open": "火～日、祝日、祝前日: 17:00～23:00 （料理L.O. 22:30 ドリンクL.O. 22:50）",
+                "close": "月",
+                "party_capacity": "",
+                "other_memo": "",
+                "shop_detail_memo": "",
+                "budget_memo": "",
+                "wedding": "",
+                "course": "なし",
+                "free_drink": "なし",
+                "free_food": "なし",
+                "private_room": "なし",
+                "horigotatsu": "なし",
+                "tatami": "なし",
+                "card": "利用不可",
+                "non_smoking": "全面禁煙",
+                "charter": "貸切不可",
+                "parking": "なし",
+                "barrier_free": "なし",
+                "show": "なし",
+                "karaoke": "なし",
+                "band": "不可",
+                "tv": "なし",
+                "lunch": "なし",
+                "midnight": "営業していない",
+                "english": "なし",
+                "pet": "不可",
+                "child": "お子様連れ不可",
+                "wifi": "未確認",
+                "coupon_urls": {
+                    "pc": "https://www.hotpepper.jp/strJ003498017/map/?vos=nhppalsa000016",
+                    "sp": "https://www.hotpepper.jp/strJ003498017/scoupon/?vos=nhppalsa000016"
+                }
+            },
+            {
+                "id": "J001264046",
+                "name": "photovel cafe フォトベルカフェ 長久手",
+                "logo_image": "https://imgfp.hotp.jp/IMGH/27/33/P037482733/P037482733_69.jpg",
+                "name_kana": "ふぉとべるかふぇながくて",
+                "address": "愛知県長久手市戸田谷1405",
+                "station_name": "杁ケ池公園",
+                "ktai_coupon": 1,
+                "large_service_area": {
+                    "code": "SS30",
+                    "name": "東海"
+                },
+                "service_area": {
+                    "code": "SA33",
+                    "name": "愛知"
+                },
+                "large_area": {
+                    "code": "Z033",
+                    "name": "愛知"
+                },
+                "middle_area": {
+                    "code": "Y995",
+                    "name": "愛知県その他"
+                },
+                "small_area": {
+                    "code": "XHJR",
+                    "name": "長久手"
+                },
+                "lat": 35.1735127687,
+                "lng": 137.0369154054,
+                "genre": {
+                    "name": "カフェ・スイーツ",
+                    "catch": "杁ヶ池公園/カフェ/スイーツ/ランチ/洋食",
+                    "code": "G014"
+                },
+                "budget": {
+                    "code": "B001",
+                    "name": "1501～2000円",
+                    "average": "2000円前後"
+                },
+                "catch": "北欧フィンランドなカフェ お寛ぎいただける店内",
+                "capacity": 35,
+                "access": "リニモ杁ケ池公園駅１出口より徒歩4分/駐車場（9台）もご用意ございます。",
+                "mobile_access": "ﾘﾆﾓ杁ｹ池公園駅1出口より徒歩4分",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ001264046/?vos=nhppalsa000016"
+                },
+                "photo": {
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/62/97/P037476297/P037476297_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/62/97/P037476297/P037476297_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/62/97/P037476297/P037476297_58_s.jpg"
+                    },
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/62/97/P037476297/P037476297_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/62/97/P037476297/P037476297_100.jpg"
+                    }
+                },
+                "open": "月～金: 10:30～16:00 （料理L.O. 15:00 ドリンクL.O. 15:30）土、日、祝日: 10:30～18:00 （料理L.O. 17:00 ドリンクL.O. 17:30）",
+                "close": "不定休となっております。",
+                "party_capacity": 35,
+                "other_memo": "",
+                "shop_detail_memo": "お祝いやサプライズ対応についてはお気軽にご相談ください/ペットも店内OK♪（要電話予約）",
+                "budget_memo": "クレジットカードのご利用はできません。ご了承ください",
+                "wedding": "プロジェクターでウェディングムービーを流せます。お気軽にご相談ください。",
+                "course": "あり",
+                "free_drink": "あり",
+                "free_food": "なし",
+                "private_room": "なし ：申し訳ございません。ご用意ございません。",
+                "horigotatsu": "なし ：申し訳ございません。ご用意ございません。",
+                "tatami": "あり ：小上がりマット席のご用意がございます。",
+                "card": "利用不可",
+                "non_smoking": "全面禁煙",
+                "charter": "貸切可 ：15名様以上で貸切対応可能です。お気軽にお問い合わせください。",
+                "parking": "あり ：9台（店前4台（縦列）、近隣駐車場5台）ご用意ございます。ご来店前に駐車場MAPをご確認ください。",
+                "barrier_free": "あり",
+                "show": "なし",
+                "karaoke": "なし",
+                "band": "不可",
+                "tv": "あり",
+                "lunch": "あり",
+                "midnight": "営業していない",
+                "english": "なし",
+                "pet": "可",
+                "child": "お子様連れ歓迎 ：おむつ替えの台あり。おもちゃのご用意もあります。",
+                "wifi": "あり",
+                "coupon_urls": {
+                    "pc": "https://www.hotpepper.jp/strJ001264046/map/?vos=nhppalsa000016",
+                    "sp": "https://www.hotpepper.jp/strJ001264046/scoupon/?vos=nhppalsa000016"
+                }
+            },
+            {
+                "id": "J000397535",
+                "name": "ステーキのあさくま 藤ヶ丘ドイツ館",
+                "logo_image": "https://imgfp.hotp.jp/IMGH/81/12/P012548112/P012548112_69.jpg",
+                "name_kana": "あさくま　ふじがおかどいつかん",
+                "address": "愛知県名古屋市名東区照が丘237",
+                "station_name": "藤が丘",
+                "ktai_coupon": 1,
+                "large_service_area": {
+                    "code": "SS30",
+                    "name": "東海"
+                },
+                "service_area": {
+                    "code": "SA33",
+                    "name": "愛知"
+                },
+                "large_area": {
+                    "code": "Z033",
+                    "name": "愛知"
+                },
+                "middle_area": {
+                    "code": "Y222",
+                    "name": "本山・覚王山・藤が丘"
+                },
+                "small_area": {
+                    "code": "X451",
+                    "name": "藤が丘(名古屋)"
+                },
+                "lat": 35.1755703067,
+                "lng": 137.0253593888,
+                "genre": {
+                    "name": "洋食",
+                    "catch": "極上の肉とドイツビールを堪能しよう",
+                    "code": "G005"
+                },
+                "budget": {
+                    "code": "B002",
+                    "name": "2001～3000円",
+                    "average": "（昼）1000円　（夜）2500円"
+                },
+                "catch": "",
+                "capacity": 165,
+                "access": "市営地下鉄東山線藤が丘駅より徒歩10分",
+                "mobile_access": "市営地下鉄東山線藤が丘駅より徒歩10分",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ000397535/?vos=nhppalsa000016"
+                },
+                "photo": {
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/81/09/P012548109/P012548109_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/81/09/P012548109/P012548109_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/81/09/P012548109/P012548109_58_s.jpg"
+                    },
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/81/09/P012548109/P012548109_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/81/09/P012548109/P012548109_100.jpg"
+                    }
+                },
+                "open": "月～日、祝日、祝前日: 11:00～23:00 （料理L.O. 22:00 ドリンクL.O. 22:30）",
+                "close": "なし",
+                "party_capacity": 70,
+                "other_memo": "",
+                "shop_detail_memo": "",
+                "budget_memo": "",
+                "wedding": "大歓迎",
+                "course": "なし",
+                "free_drink": "あり",
+                "free_food": "あり",
+                "private_room": "なし",
+                "horigotatsu": "なし",
+                "tatami": "なし",
+                "card": "利用可",
+                "non_smoking": "一部禁煙",
+                "charter": "貸切不可 ：ワンフロア貸切可能",
+                "parking": "あり ：60台程度",
+                "barrier_free": "なし",
+                "show": "あり",
+                "karaoke": "なし",
+                "band": "不可",
+                "tv": "なし",
+                "lunch": "あり",
+                "midnight": "営業していない",
+                "english": "あり",
+                "pet": "不可",
+                "child": "お子様連れ歓迎",
+                "wifi": "なし",
+                "coupon_urls": {
+                    "pc": "https://www.hotpepper.jp/strJ000397535/map/?vos=nhppalsa000016",
+                    "sp": "https://www.hotpepper.jp/strJ000397535/scoupon/?vos=nhppalsa000016"
+                }
+            },
+            {
+                "id": "J001246257",
+                "name": "炭火焼肉 七輪 長久手店",
+                "logo_image": "https://imgfp.hotp.jp/IMGH/44/84/P037294484/P037294484_69.jpg",
+                "name_kana": "すみびやきにくしちりんながくててん",
+                "address": "愛知県長久手市蟹原１３０３",
+                "station_name": "杁ケ池公園",
+                "ktai_coupon": 1,
+                "large_service_area": {
+                    "code": "SS30",
+                    "name": "東海"
+                },
+                "service_area": {
+                    "code": "SA33",
+                    "name": "愛知"
+                },
+                "large_area": {
+                    "code": "Z033",
+                    "name": "愛知"
+                },
+                "middle_area": {
+                    "code": "Y995",
+                    "name": "愛知県その他"
+                },
+                "small_area": {
+                    "code": "XHJR",
+                    "name": "長久手"
+                },
+                "lat": 35.167903873,
+                "lng": 137.0333759172,
+                "genre": {
+                    "name": "焼肉・ホルモン",
+                    "catch": "長久手/藤が丘/食べ放題/飲み放題/焼肉",
+                    "code": "G008"
+                },
+                "budget": {
+                    "code": "B002",
+                    "name": "2001～3000円",
+                    "average": "ランチ：1000円　ディナー：3000円"
+                },
+                "catch": "【七輪で豪快に！】 【A4以上の黒毛和牛！】",
+                "capacity": 94,
+                "access": "東部丘陵線（リニモ） 杁ヶ池公園駅 徒歩5分",
+                "mobile_access": "東部丘陵線(ﾘﾆﾓ) 杁ヶ池公園駅 徒歩5分",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ001246257/?vos=nhppalsa000016"
+                },
+                "photo": {
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/86/59/P035558659/P035558659_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/86/59/P035558659/P035558659_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/86/59/P035558659/P035558659_58_s.jpg"
+                    },
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/86/59/P035558659/P035558659_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/86/59/P035558659/P035558659_100.jpg"
+                    }
+                },
+                "open": "月～日、祝日、祝前日: 11:00～翌0:00 （料理L.O. 23:00 ドリンクL.O. 23:00）",
+                "close": "年中無休",
+                "party_capacity": 94,
+                "other_memo": "―",
+                "shop_detail_memo": "―",
+                "budget_memo": "―",
+                "wedding": "応相談",
+                "course": "あり",
+                "free_drink": "あり",
+                "free_food": "あり",
+                "private_room": "なし",
+                "horigotatsu": "なし",
+                "tatami": "あり",
+                "card": "利用可",
+                "non_smoking": "全面禁煙",
+                "charter": "貸切可",
+                "parking": "あり ：店舗前に専用駐車場8台ございます。",
+                "barrier_free": "なし",
+                "show": "なし",
+                "karaoke": "なし",
+                "band": "不可",
+                "tv": "なし",
+                "lunch": "あり",
+                "midnight": "営業していない",
+                "english": "なし",
+                "pet": "不可",
+                "child": "お子様連れ歓迎",
+                "wifi": "なし",
+                "coupon_urls": {
+                    "pc": "https://www.hotpepper.jp/strJ001246257/map/?vos=nhppalsa000016",
+                    "sp": "https://www.hotpepper.jp/strJ001246257/scoupon/?vos=nhppalsa000016"
+                }
+            },
+            {
+                "id": "J000406291",
+                "name": "藤一番 名古屋インター店",
+                "logo_image": "https://imgfp.hotp.jp/IMGH/73/95/P036687395/P036687395_69.jpg",
+                "name_kana": "ふじいちばん　なごやいんたーてん",
+                "address": "愛知県長久手市熊田111",
+                "station_name": "藤が丘",
+                "ktai_coupon": 1,
+                "large_service_area": {
+                    "code": "SS30",
+                    "name": "東海"
+                },
+                "service_area": {
+                    "code": "SA33",
+                    "name": "愛知"
+                },
+                "large_area": {
+                    "code": "Z033",
+                    "name": "愛知"
+                },
+                "middle_area": {
+                    "code": "Y995",
+                    "name": "愛知県その他"
+                },
+                "small_area": {
+                    "code": "XHJR",
+                    "name": "長久手"
+                },
+                "lat": 35.1749439525,
+                "lng": 137.0238817621,
+                "genre": {
+                    "name": "ラーメン",
+                    "catch": "創業から30年以上愛され続ける名古屋名物！",
+                    "code": "G013"
+                },
+                "budget": {
+                    "code": "B010",
+                    "name": "501～1000円",
+                    "average": "800円"
+                },
+                "catch": "定番！しょうゆらーめん らーめんのお供に！焼餃子",
+                "capacity": 52,
+                "access": "藤が丘駅２(リニモ)出口より徒歩約16分",
+                "mobile_access": "藤が丘駅2(ﾘﾆﾓ)出口より徒歩約16分",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ000406291/?vos=nhppalsa000016"
+                },
+                "photo": {
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/10/44/P037621044/P037621044_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/10/44/P037621044/P037621044_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/10/44/P037621044/P037621044_58_s.jpg"
+                    },
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/10/44/P037621044/P037621044_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/10/44/P037621044/P037621044_100.jpg"
+                    }
+                },
+                "open": "月～日、祝日、祝前日: 11:00～20:00 （料理L.O. 19:45）",
+                "close": "※営業時間内であればいつでもお問合せ可能です。お気軽にお問合せ下さい。",
+                "party_capacity": 52,
+                "other_memo": "※営業時間内であればいつでもお問合せ可能です。お気軽にお問合せ下さい。",
+                "shop_detail_memo": "※スタッフ一同お客様を心よりお待ちしております。",
+                "budget_memo": "※ネット予約が便利でお得です。",
+                "wedding": "※ご不明点等ございましたらお気軽にご相談下さい。",
+                "free_drink": "なし ：※ございません。",
+                "free_food": "なし ：※ございません。",
+                "private_room": "なし ：※ございません。",
+                "horigotatsu": "なし ：※ございません。",
+                "tatami": "なし ：※ございません。",
+                "card": "利用可",
+                "non_smoking": "全面禁煙",
+                "charter": "貸切不可 ：※詳細は店舗にお問合せ下さい。",
+                "parking": "あり ：※ございます。",
+                "barrier_free": "なし ：※お手伝い出来る事があれば何なりとお申し付け下さい。",
+                "show": "なし",
+                "karaoke": "なし",
+                "band": "不可",
+                "tv": "なし",
+                "lunch": "あり",
+                "midnight": "営業していない",
+                "english": "なし",
+                "pet": "不可",
+                "child": "お子様連れ歓迎 ：※大歓迎です。お待ちしております。",
+                "wifi": "あり",
+                "coupon_urls": {
+                    "pc": "https://www.hotpepper.jp/strJ000406291/map/?vos=nhppalsa000016",
+                    "sp": "https://www.hotpepper.jp/strJ000406291/scoupon/?vos=nhppalsa000016"
+                }
+            },
+            {
+                "id": "J000961590",
+                "name": "おかげ庵 長久手店 甘味喫茶",
+                "logo_image": "https://imgfp.hotp.jp/SYS/cmn/images/common/diary/custom/m30_img_noimage.gif",
+                "name_kana": "おかげあん　ながくててん",
+                "address": "愛知県愛知郡長久手町蟹原1306",
+                "station_name": "杁ケ池公園",
+                "ktai_coupon": 1,
+                "large_service_area": {
+                    "code": "SS30",
+                    "name": "東海"
+                },
+                "service_area": {
+                    "code": "SA33",
+                    "name": "愛知"
+                },
+                "large_area": {
+                    "code": "Z033",
+                    "name": "愛知"
+                },
+                "middle_area": {
+                    "code": "Y995",
+                    "name": "愛知県その他"
+                },
+                "small_area": {
+                    "code": "X915",
+                    "name": "愛知県内その他"
+                },
+                "lat": 35.1671631363,
+                "lng": 137.0338895108,
+                "genre": {
+                    "name": "カフェ・スイーツ",
+                    "catch": "甘味喫茶",
+                    "code": "G014"
+                },
+                "budget": {
+                    "code": "B001",
+                    "name": "1501～2000円",
+                    "average": "1000円以下"
+                },
+                "catch": "",
+                "capacity": 92,
+                "access": "リニモ杁ケ池公園駅２出口より徒歩約14分",
+                "mobile_access": "ﾘﾆﾓ杁ｹ池公園駅2出口より徒歩約14分",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ000961590/?vos=nhppalsa000016"
+                },
+                "photo": {
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/15/56/P038741556/P038741556_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/15/56/P038741556/P038741556_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/15/56/P038741556/P038741556_58_s.jpg"
+                    },
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/15/56/P038741556/P038741556_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/15/56/P038741556/P038741556_100.jpg"
+                    }
+                },
+                "open": "月～日、祝日、祝前日: 08:00～23:00 （料理L.O. 22:30 ドリンクL.O. 22:30）",
+                "close": "年中無休",
+                "party_capacity": "",
+                "other_memo": "",
+                "shop_detail_memo": "",
+                "budget_memo": "",
+                "wedding": "",
+                "course": "あり",
+                "free_drink": "なし",
+                "free_food": "なし",
+                "private_room": "なし",
+                "horigotatsu": "なし",
+                "tatami": "なし",
+                "card": "利用可",
+                "non_smoking": "全面禁煙",
+                "charter": "貸切不可",
+                "parking": "あり",
+                "barrier_free": "なし",
+                "show": "なし",
+                "karaoke": "なし",
+                "band": "不可",
+                "tv": "なし",
+                "lunch": "あり",
+                "midnight": "営業していない",
+                "english": "なし",
+                "pet": "不可",
+                "child": "お子様連れOK",
+                "wifi": "あり",
+                "coupon_urls": {
+                    "pc": "https://www.hotpepper.jp/strJ000961590/map/?vos=nhppalsa000016",
+                    "sp": "https://www.hotpepper.jp/strJ000961590/scoupon/?vos=nhppalsa000016"
+                }
+            }
+        ]
+    }
+}

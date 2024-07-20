@@ -1,11 +1,9 @@
-"""pygourmet.api module"""
-
 import json
 
 # import logging
 import requests
 
-from pygourmet.errors import PyGourmetError
+from pygourmet.option import Option
 
 # logger = logging.getLogger(__name__)
 
@@ -42,47 +40,20 @@ class Api:
 
         return range
 
-    def search(
-        self,
-        lat: float,
-        lng: float,
-        keyword: str = "",
-        radius: int = 500,
-        count: int = 10,
-    ) -> dict:
-        """
+    def search(self, option: Option) -> list[dict]:
+        """レストランを検索"""
 
-        Search restaurants by params
+        params: dict = {"key": self.keyid, "format": "json"}
 
-        Args:
-            lat (float): latitude of POI
-            lng (float): longitude of POI
-            radius (int): radius[m] of search range from POI
-            count (int): max result counts
-
-        Returns:
-            dict: search result
-
-        Raises:
-            PyGourmetError: if arguments have an invalid value
-
-        """
-
-        if count < 0:
-            raise PyGourmetError("Invalid count value (must be >= 0)")
-
-        if radius < 0:
-            raise PyGourmetError("Invalid radius value (must be >= 0)")
-
-        params = {
-            "key": self.keyid,
-            "lat": lat,
-            "lng": lng,
-            "range": self.__radius_to_range(radius),
-            "count": count,
-            "keyword": keyword,
-            "format": "json",
-        }
+        if option.keyword:
+            params["keyword"] = option.keyword
+        if option.lat and option.lng:
+            params["lat"] = option.lat
+            params["lng"] = option.lng
+        if option.radius:
+            params["range"] = self.__radius_to_range(option.radius)
+        if option.count:
+            params["count"] = option.count
 
         resp = requests.get(
             url=self.BASE_URL,

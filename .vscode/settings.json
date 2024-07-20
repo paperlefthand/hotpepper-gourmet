@@ -13,7 +13,12 @@
     "tests"
   ],
   "python.testing.unittestEnabled": false,
-  "python.testing.pytestEnabled": true
-  // },
-  // "esbonio.sphinx.confDir": "docs/source"
+  "python.testing.pytestEnabled": true,
+  "esbonio.sphinx.confDir": "{workspaceFolder}/docs/source",
+  "esbonio.sphinx.buildDir": "{workspaceFolder}/docs/build",
+  "esbonio.server.enabled": true,
+  "restructuredtext.linter.doc8.extraArgs": [
+    "--max-line-length",
+    200
+  ]
 }
