@@ -1,11 +1,8 @@
 import json
 
-# import logging
-import requests
+import httpx
 
 from pygourmet.option import Option
-
-# logger = logging.getLogger(__name__)
 
 
 class Api:
@@ -55,10 +52,35 @@ class Api:
         if option.count:
             params["count"] = option.count
 
-        resp = requests.get(
+        resp = httpx.get(
             url=self.BASE_URL,
             params=params,
         )
+
+        resp_dict = json.loads(resp.text)
+
+        return resp_dict["results"]["shop"]
+
+    async def async_search(self, option: Option) -> list[dict]:
+        """[非同期]レストランを検索"""
+
+        params: dict = {"key": self.keyid, "format": "json"}
+
+        if option.keyword:
+            params["keyword"] = option.keyword
+        if option.lat and option.lng:
+            params["lat"] = option.lat
+            params["lng"] = option.lng
+        if option.radius:
+            params["range"] = self.__radius_to_range(option.radius)
+        if option.count:
+            params["count"] = option.count
+
+        async with httpx.AsyncClient() as client:
+            resp = await client.get(
+                url=self.BASE_URL,
+                params=params,
+            )
 
         resp_dict = json.loads(resp.text)
 
