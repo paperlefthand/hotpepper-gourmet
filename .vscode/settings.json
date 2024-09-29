@@ -8,6 +8,7 @@
       "source.organizeImports": "explicit"
     },
   },
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
   "python.analysis.typeCheckingMode": "basic",
   "python.testing.pytestArgs": [
     "tests"
@@ -20,5 +21,6 @@
   "restructuredtext.linter.doc8.extraArgs": [
     "--max-line-length",
     200
-  ]
+  ],
+  "autoDocstring.docstringFormat": "google"
 }

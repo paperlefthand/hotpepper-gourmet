@@ -131,4 +131,5 @@ dmypy.json
 .envrc
 .DS_Store
 .ruff_cache
-.sandbox.ipynb
+.sandbox*.py
+pyproject.toml.old

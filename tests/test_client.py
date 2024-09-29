@@ -7,7 +7,6 @@ from pygourmet.client import Api
 from pygourmet.option import Option
 
 DATAFILE_PATH = os.path.join(os.path.dirname(__file__), "data")
-BASE_URL = Api.BASE_URL
 
 
 def test_search_optionなし(client, httpx_mock):
@@ -20,7 +19,8 @@ def test_search_optionなし(client, httpx_mock):
 
     option = Option()  # type: ignore
     shops = client.search(option)
-    assert shops == mock_response["results"]["shop"]
+    for i, shop in enumerate(shops):
+        assert shop.name == mock_response["results"]["shop"][i]["name"]
 
 
 def test_search_optionあり(client, httpx_mock):
@@ -31,9 +31,10 @@ def test_search_optionあり(client, httpx_mock):
 
     httpx_mock.add_response(json=mock_response)
 
-    option = Option(keyword="ラーメン", lat=35.0, lng=135.0, radius=3000)  # type: ignore
+    option = Option(keyword="ラーメン", lat=35.0, lng=135.0, range=3)
     shops = client.search(option)
-    assert shops == mock_response["results"]["shop"]
+    for i, shop in enumerate(shops):
+        assert shop.name == mock_response["results"]["shop"][i]["name"]
 
 
 @pytest.mark.asyncio
@@ -45,6 +46,7 @@ async def test_async_search_optionなし(client, httpx_mock):
 
     httpx_mock.add_response(json=mock_response)
 
-    option = Option()  # type: ignore
+    option = Option()
     shops = await client.async_search(option)
-    assert shops == mock_response["results"]["shop"]
+    for i, shop in enumerate(shops):
+        assert shop.name == mock_response["results"]["shop"][i]["name"]

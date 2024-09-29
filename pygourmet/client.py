@@ -2,16 +2,15 @@ import json
 
 import httpx
 
-from pygourmet.option import Option
+from .option import Option
+from .shop import Shop
 
 
 class Api:
-    """Api class
+    """APIクライアントクラス
 
-    API 呼び出しクラス
-
-    Attributes:
-
+    Args:
+        keyid (str): APIキー
     """
 
     BASE_URL = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/"
@@ -19,69 +18,41 @@ class Api:
     def __init__(self, keyid: str) -> None:
         """
         Args:
-            keyid (str): Key ID assigned to the user
+            keyid: Key ID assigned to the user
         """
         self.keyid = keyid
 
-    def __radius_to_range(self, radius: int) -> int:
-        if radius <= 300:
-            range = 1
-        elif radius <= 500:
-            range = 2
-        elif radius <= 1000:
-            range = 3
-        elif radius <= 2000:
-            range = 4
-        elif radius > 2000:
-            range = 5
+    def __create_query_params(self, option: Option) -> dict:
+        params = {
+            key: value for key, value in option.model_dump().items() if bool(value)
+        }
+        params["key"] = self.keyid
+        params["format"] = "json"
+        return params
 
-        return range
+    def __create_shop_list(self, resp: httpx.Response) -> list[Shop]:
+        resp_dict = json.loads(resp.text)
+        return [Shop(**data) for data in resp_dict["results"]["shop"]]
 
-    def search(self, option: Option) -> list[dict]:
+    def search(self, option: Option) -> list[Shop]:
         """レストランを検索"""
 
-        params: dict = {"key": self.keyid, "format": "json"}
-
-        if option.keyword:
-            params["keyword"] = option.keyword
-        if option.lat and option.lng:
-            params["lat"] = option.lat
-            params["lng"] = option.lng
-        if option.radius:
-            params["range"] = self.__radius_to_range(option.radius)
-        if option.count:
-            params["count"] = option.count
-
+        params = self.__create_query_params(option=option)
         resp = httpx.get(
             url=self.BASE_URL,
             params=params,
         )
 
-        resp_dict = json.loads(resp.text)
+        return self.__create_shop_list(resp=resp)
 
-        return resp_dict["results"]["shop"]
-
-    async def async_search(self, option: Option) -> list[dict]:
+    async def async_search(self, option: Option) -> list[Shop]:
         """[非同期]レストランを検索"""
 
-        params: dict = {"key": self.keyid, "format": "json"}
-
-        if option.keyword:
-            params["keyword"] = option.keyword
-        if option.lat and option.lng:
-            params["lat"] = option.lat
-            params["lng"] = option.lng
-        if option.radius:
-            params["range"] = self.__radius_to_range(option.radius)
-        if option.count:
-            params["count"] = option.count
-
+        params = self.__create_query_params(option=option)
         async with httpx.AsyncClient() as client:
             resp = await client.get(
                 url=self.BASE_URL,
                 params=params,
             )
 
-        resp_dict = json.loads(resp.text)
-
-        return resp_dict["results"]["shop"]
+        return self.__create_shop_list(resp=resp)

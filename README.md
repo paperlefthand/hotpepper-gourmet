@@ -16,15 +16,28 @@
 
 ### サンプルコード
 
-``` python
+同期版
+
+```python
 >>> from pygourmet import Api, Option
 >>> api = Api(keyid=YOUR_KEYID)
->>> option = Option(lat=35.170915, lng=136.8793482, keyword="ラーメン", radius=400, count=3)
->>> results = api.search(option)
->>> len(results)
+>>> option = Option(lat=35.170915, lng=136.8793482, keyword="ラーメン", range=4, count=3)
+>>> shops = api.search(option)
+>>> len(shops)
 3
->>> results[0]["name"]
+>>> shops[0].name
 'shop name'
+```
+
+非同期版
+
+```python
+async def call_async_search():
+    shops = await api.async_search(option=option)
+    print(len(shops))
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(call_async_search())
 ```
 
 ___

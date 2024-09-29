@@ -12,14 +12,6 @@ pygourmet.client module
    :undoc-members:
    :show-inheritance:
 
-pygourmet.coordinates module
-----------------------------
-
-.. automodule:: pygourmet.coordinates
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 pygourmet.errors module
 -----------------------
 
@@ -32,6 +24,14 @@ pygourmet.option module
 -----------------------
 
 .. automodule:: pygourmet.option
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pygourmet.shop module
+---------------------
+
+.. automodule:: pygourmet.shop
    :members:
    :undoc-members:
    :show-inheritance:
