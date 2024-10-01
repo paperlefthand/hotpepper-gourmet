@@ -1,14 +1,11 @@
 from pydantic import BaseModel, Field
 
 
+# NOTE
+# 指定できるオプションは[APIリファレンス](https://webservice.recruit.co.jp/doc/hotpepper/reference.html)を参照
+# keyとformatは指定できないようにしている
 class Option(BaseModel, frozen=True):
-    """検索時に指定するパラメータ
-
-    Note:
-        指定できるオプションは[APIリファレンス](https://webservice.recruit.co.jp/doc/hotpepper/reference.html)を参照
-        keyとformatは指定できないようにしている
-
-    """
+    """検索時に指定するパラメータ"""
 
     id: str | None = Field(default=None)
     name: str | None = Field(default=None)

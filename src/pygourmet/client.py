@@ -7,19 +7,16 @@ from .shop import Shop
 
 
 class Api:
-    """APIクライアントクラス
-
-    Args:
-        keyid (str): APIキー
-    """
-
-    BASE_URL = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/"
+    """APIクライアントクラス"""
 
     def __init__(self, keyid: str) -> None:
+        """_summary_
+
+        :param keyid: Key ID assigned to the user
+        :type keyid: str
         """
-        Args:
-            keyid: Key ID assigned to the user
-        """
+
+        self.__base_url = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/"
         self.keyid = keyid
 
     def __create_query_params(self, option: Option) -> dict:
@@ -35,11 +32,17 @@ class Api:
         return [Shop(**data) for data in resp_dict["results"]["shop"]]
 
     def search(self, option: Option) -> list[Shop]:
-        """レストランを検索"""
+        """レストランを検索
+
+        :param option: 検索オプション
+        :type option: Option
+        :return: 店舗データのリスト
+        :rtype: list[Shop]
+        """
 
         params = self.__create_query_params(option=option)
         resp = httpx.get(
-            url=self.BASE_URL,
+            url=self.__base_url,
             params=params,
         )
 
@@ -51,7 +54,7 @@ class Api:
         params = self.__create_query_params(option=option)
         async with httpx.AsyncClient() as client:
             resp = await client.get(
-                url=self.BASE_URL,
+                url=self.__base_url,
                 params=params,
             )
 

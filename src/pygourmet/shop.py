@@ -68,10 +68,9 @@ class CouponUrls(BaseModel, frozen=True):
     sp: HttpUrl | None = Field(default=None)
 
 
+# NOTE 項目なしor空文字が来たらNoneとなるように前処理する
 class Shop(BaseModel, frozen=True):
-    """お店データを保持するクラス
-    項目なしor空文字->Noneとなるように前処理する
-    """
+    """お店データを保持するクラス"""
 
     id: str | None = Field(default=None)
     name: str | None = Field(default=None)
@@ -131,5 +130,5 @@ class Shop(BaseModel, frozen=True):
     coupon_urls: CouponUrls | None = Field(default=None)
 
     @model_validator(mode="before")
-    def check_empty_values(cls, data):
+    def check_empty_values(cls, data: dict) -> dict:
         return {key: (value if bool(value) else None) for key, value in data.items()}
