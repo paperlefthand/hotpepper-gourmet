@@ -1,14 +1,11 @@
 from pydantic import BaseModel, Field
 
 
+# NOTE
+# 指定できるオプションは[APIリファレンス](https://webservice.recruit.co.jp/doc/hotpepper/reference.html)を参照
+# keyとformatは指定できないようにしている
 class Option(BaseModel, frozen=True):
-    """検索時に指定するパラメータ
-
-    Note:
-        指定できるオプションは[APIリファレンス](https://webservice.recruit.co.jp/doc/hotpepper/reference.html)を参照
-        keyとformatは指定できないようにしている
-
-    """
+    """検索時に指定するパラメータ"""
 
     id: str | None = Field(default=None)
     name: str | None = Field(default=None)
@@ -28,7 +25,7 @@ class Option(BaseModel, frozen=True):
     keyword: str | None = Field(default=None)
     lat: float | None = Field(default=None)
     lng: float | None = Field(default=None)
-    range: int = Field(default=3, ge=1, le=5, description="対象範囲")
+    range: int = Field(default=3, ge=1, le=5, description="対象範囲(初期値1000m)")
     datum: str | None = Field(default=None)
     ktai_coupon: int | None = Field(default=None)
     genre: str | None = Field(default=None)

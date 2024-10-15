@@ -1,4 +1,5 @@
 {
+  "files.autoSave": "afterDelay",
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
@@ -8,19 +9,35 @@
       "source.organizeImports": "explicit"
     },
   },
-  "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
-  "python.analysis.typeCheckingMode": "basic",
+  // "python.analysis.typeCheckingMode": "basic",
   "python.testing.pytestArgs": [
     "tests"
   ],
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
-  "esbonio.sphinx.confDir": "{workspaceFolder}/docs/source",
-  "esbonio.sphinx.buildDir": "{workspaceFolder}/docs/build",
-  "esbonio.server.enabled": true,
-  "restructuredtext.linter.doc8.extraArgs": [
-    "--max-line-length",
-    200
+  "python.experiments.optInto": [
+    "pythonTestAdapter"
   ],
-  "autoDocstring.docstringFormat": "google"
+  // "mypy-type-checker.args": [
+  //   "--disallow-untyped-defs",
+  //   "--strict-optional",
+  //   "--follow-imports=skip",
+  //   "--ignore-missing-imports"
+  // ],
+  "mypy-type-checker.importStrategy": "fromEnvironment", // .venvのmypyを利用
+  // "mypy-type-checker.ignorePatterns": [
+  //   "${workspaceFolder}/tests"
+  // ],
+  // "esbonio.sphinx.confDir": "${workspaceFolder}/docs",
+  // "esbonio.sphinx.buildDir": "${workspaceFolder}/docs/_build",
+  // "restructuredtext.linter.doc8.extraArgs": [
+  //   "--max-line-length",
+  //   200
+  // ],
+  "autoDocstring.docstringFormat": "sphinx",
+  "git.autofetch": "all",
+  // NOTE Ignore during coding, but check when pre-commit is executed
+  "ruff.lint.args": [
+    "--ignore=F401" // Ignore unused-import
+  ]
 }
