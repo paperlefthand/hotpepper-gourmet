@@ -19,7 +19,7 @@ class Api:
         self.__base_url = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/"
         self.keyid = keyid
 
-    def __create_query_params(self, option: Option) -> dict:
+    def __create_query_params(self, option: Option) -> dict[str, str]:
         params = {
             key: value for key, value in option.model_dump().items() if bool(value)
         }

@@ -1,6 +1,5 @@
 [project]
 name = "hotpepper-gourmet"
-# version = "0.0.0"
 dynamic = ["version"]
 description = "A simple Python client of Hotpepper API"
 authors = [{ name = "Miura Kosuke", email = "being.paperlefthand@gmail.com" }]
@@ -15,9 +14,12 @@ classifiers = [
 readme = "README.md"
 license = { file = "LICENSE.txt" }
 
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 
-dependencies = ["httpx>=0.27.2", "pydantic>=2.9.2"]
+dependencies = [
+    "httpx>=0.27.2",
+    "pydantic>=2.9.2",
+]
 
 [project.urls]
 Repository = "https://github.com/paperlefthand/hotpepper-gourmet"
@@ -25,9 +27,14 @@ Documentation = "https://hotpepper-gourmet.readthedocs.io"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "--cov=src/pygourmet --cov-report html"
 
 [tool.ruff.lint]
-ignore = ["E741"]
+ignore = ["E741"] # 1文字変数を許容
+
+# [tool.mypy]
+# strict = true
+# ignore_missing_imports = true
 
 [tool.uv]
 dev-dependencies = [
@@ -38,14 +45,14 @@ dev-dependencies = [
     "pytest-cov>=5.0.0",
     "pytest-html>=4.1.1",
     "pytest-httpx>=0.32.0",
-    "ruff>=0.6.8",
     "sphinx>=8.0.2",
     "sphinx-fontawesome>=0.0.6",
     # "sphinx-rtd-theme>=2.0.0", # Sphinx8未対応
     "sphinx-autobuild>=2024.9.19",
     "setuptools-scm>=8.1.0",
-    "mypy>=1.11.2",
-    "pre-commit>=3.8.0",
+    "pre-commit>=4.0.1",
+    "ruff>=0.6.9",
+    "mypy>=1.12.0",
 ]
 
 [tool.setuptools_scm]

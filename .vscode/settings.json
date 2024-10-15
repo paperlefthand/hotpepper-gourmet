@@ -15,14 +15,25 @@
   ],
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
-  "mypy-type-checker.args": ["--disallow-untyped-defs"],
-  "mypy-type-checker.importStrategy": "fromEnvironment",
-  "esbonio.sphinx.confDir": "${workspaceFolder}/docs",
-  "esbonio.sphinx.buildDir": "${workspaceFolder}/docs/_build",
-  "restructuredtext.linter.doc8.extraArgs": [
-    "--max-line-length",
-    200
+  "mypy-type-checker.args": [
+    "--disallow-untyped-defs",
+    "--strict-optional",
+    "--follow-imports=skip",
+    "--ignore-missing-imports"
   ],
+  "mypy-type-checker.importStrategy": "useBundled",
+  "mypy-type-checker.ignorePatterns": [
+    "${workspaceFolder}/tests"
+  ],
+  // "esbonio.sphinx.confDir": "${workspaceFolder}/docs",
+  // "esbonio.sphinx.buildDir": "${workspaceFolder}/docs/_build",
+  // "restructuredtext.linter.doc8.extraArgs": [
+  //   "--max-line-length",
+  //   200
+  // ],
   "autoDocstring.docstringFormat": "sphinx",
   "git.autofetch": "all",
+  "ruff.lint.args": [
+    "--ignore=F401"
+  ]
 }
