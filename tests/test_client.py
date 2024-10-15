@@ -3,7 +3,6 @@ import os
 
 import pytest
 
-from pygourmet.client import Api
 from pygourmet.option import Option
 
 DATAFILE_PATH = os.path.join(os.path.dirname(__file__), "data")
