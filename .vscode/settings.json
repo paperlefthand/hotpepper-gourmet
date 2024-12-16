@@ -15,16 +15,19 @@
   ],
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
-  "mypy-type-checker.args": [
-    "--disallow-untyped-defs",
-    "--strict-optional",
-    "--follow-imports=skip",
-    "--ignore-missing-imports"
+  "python.experiments.optInto": [
+    "pythonTestAdapter"
   ],
-  "mypy-type-checker.importStrategy": "useBundled",
-  "mypy-type-checker.ignorePatterns": [
-    "${workspaceFolder}/tests"
-  ],
+  // "mypy-type-checker.args": [
+  //   "--disallow-untyped-defs",
+  //   "--strict-optional",
+  //   "--follow-imports=skip",
+  //   "--ignore-missing-imports"
+  // ],
+  "mypy-type-checker.importStrategy": "fromEnvironment", // .venvのmypyを利用
+  // "mypy-type-checker.ignorePatterns": [
+  //   "${workspaceFolder}/tests"
+  // ],
   // "esbonio.sphinx.confDir": "${workspaceFolder}/docs",
   // "esbonio.sphinx.buildDir": "${workspaceFolder}/docs/_build",
   // "restructuredtext.linter.doc8.extraArgs": [
@@ -33,7 +36,8 @@
   // ],
   "autoDocstring.docstringFormat": "sphinx",
   "git.autofetch": "all",
+  // NOTE Ignore during coding, but check when pre-commit is executed
   "ruff.lint.args": [
-    "--ignore=F401"
+    "--ignore=F401" // Ignore unused-import
   ]
 }

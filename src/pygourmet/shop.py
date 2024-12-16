@@ -1,3 +1,7 @@
+import math
+import sys
+from typing import Any
+
 from pydantic import BaseModel, Field, HttpUrl, model_validator
 
 
@@ -130,5 +134,17 @@ class Shop(BaseModel, frozen=True):
     coupon_urls: CouponUrls | None = Field(default=None)
 
     @model_validator(mode="before")
-    def check_empty_values(cls, data: dict) -> dict:
+    def check_empty_values(cls, data: dict[str, Any]) -> dict[str, Any]:
         return {key: (value if bool(value) else None) for key, value in data.items()}
+
+    def meters_to_point(self, lat: float, lng: float) -> int:
+        if (self.lat is None) or (self.lng is None):
+            return sys.maxsize
+        else:
+            km = 6371 * math.acos(
+                math.sin(math.radians(lat)) * math.sin(math.radians(self.lat))
+                + math.cos(math.radians(lat))
+                * math.cos(math.radians(self.lat))
+                * math.cos(math.radians(lng) - math.radians(self.lng))
+            )
+            return int(1000 * km)
