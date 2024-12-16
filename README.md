@@ -32,12 +32,12 @@
 非同期版
 
 ```python
-async def call_async_search():
-    shops = await api.async_search(option=option)
+async def call_search_async():
+    shops = await api.search_async(option=option)
     print(len(shops))
 
 loop = asyncio.get_event_loop()
-loop.run_until_complete(call_async_search())
+loop.run_until_complete(call_search_async())
 ```
 
 ___

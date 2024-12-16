@@ -1,12 +1,6 @@
-class PyGourmetError(Exception):
-    """Base class for PyGourmet errors"""
+class SearchError(Exception):
+    """raise when search errors"""
 
-    @property
-    def message(self) -> str:
-        """エラーメッセージ
-
-        :return: error message
-        :rtype: str
-        """
-
-        return self.args[0]
+    def __init__(self, message: str) -> None:
+        self.message = message
+        super().__init__(self.message)

@@ -25,7 +25,7 @@ class Option(BaseModel, frozen=True):
     keyword: str | None = Field(default=None)
     lat: float | None = Field(default=None)
     lng: float | None = Field(default=None)
-    range: int = Field(default=3, ge=1, le=5, description="対象範囲")
+    range: int = Field(default=3, ge=1, le=5, description="対象範囲(初期値1000m)")
     datum: str | None = Field(default=None)
     ktai_coupon: int | None = Field(default=None)
     genre: str | None = Field(default=None)
