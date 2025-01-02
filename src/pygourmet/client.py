@@ -3,9 +3,9 @@ from typing import Any
 
 import httpx
 
-from .errors import SearchError
-from .option import Option
-from .shop import Shop
+from pygourmet.errors import SearchError
+from pygourmet.option import Option
+from pygourmet.shop import Shop
 
 
 class Api:
@@ -70,7 +70,14 @@ class Api:
         return self.__create_shop_list(resp=resp_dict)
 
     async def search_async(self, option: Option) -> list[Shop]:
-        """[非同期]レストランを検索"""
+        """[非同期]レストランを検索
+
+        :param option: 検索オプション
+        :type option: Option
+        :return: 店舗データのリスト
+        :rtype: list[Shop]
+        :raises: SearchError: if failed
+        """
 
         params = self.__create_query_params(option=option)
         async with httpx.AsyncClient() as client:

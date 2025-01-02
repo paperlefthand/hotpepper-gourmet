@@ -24,6 +24,7 @@ def test_search_dummy_optionなし(client_dummy, httpx_mock):
     with pytest.raises(SearchError) as e:
         _ = client_dummy.search(option)
 
+    assert len(httpx_mock.get_requests()) == 1
     assert (
         str(e.value) == "パラメータ不正エラー: 少なくとも１つの条件を入れてください。"
     )
@@ -43,17 +44,23 @@ def test_search_dummy_optionあり(client_dummy, httpx_mock):
         assert shop.name == mock_response["results"]["shop"][i]["name"]
 
 
-# TODO optionなしはerror
 @pytest.mark.asyncio
 async def test_search_async_dummy_optionなし(client_dummy, httpx_mock):
-    with open(
-        os.path.join(DATAFILE_PATH, "restaurant_resp_0.json"), "r", encoding="utf-8"
-    ) as f:
-        mock_response = json.load(f)
-
-    httpx_mock.add_response(json=mock_response)
-
     option = Option()
-    shops = await client_dummy.search_async(option)
-    for i, shop in enumerate(shops):
-        assert shop.name == mock_response["results"]["shop"][i]["name"]
+    httpx_mock.add_response(
+        json={
+            "results": {
+                "api_version": "1.30",
+                "error": [
+                    {"code": 3000, "message": "少なくとも１つの条件を入れてください。"}
+                ],
+            }
+        }
+    )
+    with pytest.raises(SearchError) as e:
+        _ = await client_dummy.search_async(option)
+
+    assert len(httpx_mock.get_requests()) == 1
+    assert (
+        str(e.value) == "パラメータ不正エラー: 少なくとも１つの条件を入れてください。"
+    )

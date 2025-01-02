@@ -9,11 +9,10 @@ from pygourmet.option import Option
 
 load_dotenv()
 
-client = Api(os.environ["HOTPEPPER_KEYID"])
-
 
 @pytest.mark.skipif(os.getenv("GITHUB_ACTIONS") == "true", reason="CI環境ではスキップ")
 def test_search_optionなし():
+    client = Api(os.environ["HOTPEPPER_KEYID"])
     option = Option()
     with pytest.raises(SearchError) as e:
         _ = client.search(option)
@@ -25,6 +24,7 @@ def test_search_optionなし():
 
 @pytest.mark.skipif(os.getenv("GITHUB_ACTIONS") == "true", reason="CI環境ではスキップ")
 def test_search_位置指定():
+    client = Api(os.environ["HOTPEPPER_KEYID"])
     lat, lng = 34.8586318, 136.8139928
     option = Option(lat=lat, lng=lng)
     shops = client.search(option)
