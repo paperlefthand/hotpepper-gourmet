@@ -1,0 +1,62 @@
+{
+    "results": {
+        "api_version": "1.30",
+        "results_available": 2,
+        "results_returned": "2",
+        "results_start": 1,
+        "shop": [
+            {
+                "id": "J000406366",
+                "name": "カルビ大将 長久手店",
+                "address": "愛知県長久手市作田２-913",
+                "lat": 35.1741522344,
+                "lng": 137.0294360312,
+                "genre": {
+                    "name": "焼肉・ホルモン",
+                    "catch": "味・素材に頑固な旨い焼肉屋"
+                },
+                "catch": "★大人気の焼肉食べ放題★ ★2名様～利用OKのBOX席★",
+                "access": "東名名古屋インター車で5分",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ000406366/?vos=nhppalsa000016"
+                },
+                "photo": {
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/88/59/P042508859/P042508859_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/88/59/P042508859/P042508859_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/88/59/P042508859/P042508859_58_s.jpg"
+                    }
+                },
+                "other_memo": "何かご要望などございましたら、お気軽にお店までお問い合わせ下さいませ。",
+                "shop_detail_memo": "その他、気になる事などございましたら、お気軽にお店までご連絡下さいませ。",
+                "budget_memo": "お通し代：なし"
+            },
+            {
+                "id": "J003497878",
+                "name": "BAR Flowers&月ひいては花",
+                "address": "愛知県長久手市打越1720",
+                "lat": 35.1748724592,
+                "lng": 137.0306020148,
+                "genre": {
+                    "name": "ダイニングバー・バル",
+                    "catch": "隠れ家的な落ち着いたBARで一杯"
+                },
+                "catch": "",
+                "access": "リニモ　はなみずき通駅　徒歩8分",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ003497878/?vos=nhppalsa000016"
+                },
+                "photo": {
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/51/11/P041315111/P041315111_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/51/11/P041315111/P041315111_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/51/11/P041315111/P041315111_58_s.jpg"
+                    }
+                },
+                "other_memo": "",
+                "shop_detail_memo": "",
+                "budget_memo": ""
+            }
+        ]
+    }
+}

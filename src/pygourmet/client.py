@@ -11,6 +11,7 @@ from .shop import Shop
 class Api:
     """APIクライアントクラス"""
 
+    # TODO keyidを指定しないとエラーになるようにする
     def __init__(self, keyid: str) -> None:
         """_summary_
 

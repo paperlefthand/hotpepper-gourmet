@@ -29,13 +29,14 @@ Documentation = "https://hotpepper-gourmet.readthedocs.io"
 # requires = ["tox>=4.2", "tox-uv>=1.11.3"]
 # isolated_build = true
 # env_list = ["py312", "py313", "type", "fix"]
+# env_list = ["py312", "py313"]
 
 # [tool.tox.testenv]
 # description = "run the unit tests with pytest under {base_python}"
 # runner = "uv-venv-lock-runner"
 # package = "editable"
-# deps = "pytest>=8.3.3"
-# commands = "pytest"
+# deps = ["pytest>=8.3.3"]
+# commands = ["pytest", "-v", "tests"]
 
 # [tool.tox.testenv.fix]
 # description = "run code formatter and linter (auto-fix)"
