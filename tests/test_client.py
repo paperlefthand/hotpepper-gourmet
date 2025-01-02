@@ -10,7 +10,7 @@ from pygourmet.option import Option
 load_dotenv()
 
 
-@pytest.mark.skipif(os.getenv("GITHUB_ACTIONS") == "true", reason="CI環境ではスキップ")
+@pytest.mark.skipif(os.getenv("GITHUB_ACTIONS"), reason="CI環境ではスキップ")
 def test_search_optionなし():
     client = Api(os.environ["HOTPEPPER_KEYID"])
     option = Option()
@@ -22,7 +22,7 @@ def test_search_optionなし():
     )
 
 
-@pytest.mark.skipif(os.getenv("GITHUB_ACTIONS") == "true", reason="CI環境ではスキップ")
+@pytest.mark.skipif(os.getenv("GITHUB_ACTIONS"), reason="CI環境ではスキップ")
 def test_search_位置指定():
     client = Api(os.environ["HOTPEPPER_KEYID"])
     lat, lng = 34.8586318, 136.8139928
