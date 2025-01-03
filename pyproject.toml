@@ -35,10 +35,7 @@ files = ["src/pygourmet"]
 plugins = ['pydantic.mypy']
 ignore_missing_imports = true
 strict = true
-exclude = [
-    "^src/.*/__init__\\.py$",
-    "^tests/.*\\.py$",
-]
+exclude = ["^src/.*/__init__\\.py$", "^tests/.*\\.py$"]
 
 [tool.uv]
 dev-dependencies = [
@@ -61,7 +58,10 @@ dev-dependencies = [
 ]
 
 [tool.setuptools_scm]
-
+# NOTE pypiにアップロードする際のtagの命名規則に従うため
+# https://setuptools-scm.readthedocs.io/en/latest/extending/
+version_scheme = "no-guess-dev"
+local_scheme = "no-local-version"
 
 [build-system]
 requires = ["setuptools>=64", "setuptools_scm>=8"]
