@@ -36,12 +36,12 @@ jobs:
     # runs-on: ${{ matrix.os }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Install uv
-        run: wget -qO- https://astral.sh/uv/install.sh | sh
-      - name: Setup Python
-        run: uv install
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
 
     #   - name: Setup Python ${{ matrix.python-version }}
     #     id: setup-python
@@ -59,13 +59,18 @@ jobs:
 #       #     path: ./.venv
 #       #     key: venv-${{ hashFiles('poetry.lock') }}
 
-      # - name: Install tox-uv
-      #   run: uv tool install tox --with tox-uv
-      # - name: Run tox
-      #   run: tox
+      - uses: pre-commit/action@v3.0.1
+        with:
+          extra_args: --all-files
 
-      - name: pytest
-        run: uv run pytest
+      - name: Install tox-uv
+        run: uv tool install tox --with tox-uv
+
+      - name: Run tox
+        run: uv tool run tox
+
+      # - name: pytest
+      #   run: uv run pytest
 
 #       - name: Archive code coverage results
 #         uses: actions/upload-artifact@v4

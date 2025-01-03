@@ -16,45 +16,29 @@ license = { file = "LICENSE.txt" }
 
 requires-python = ">=3.12"
 
-dependencies = [
-    "httpx>=0.27.2",
-    "pydantic>=2.9.2",
-]
+dependencies = ["httpx>=0.27.2", "pydantic>=2.9.2"]
 
 [project.urls]
 Repository = "https://github.com/paperlefthand/hotpepper-gourmet"
 Documentation = "https://hotpepper-gourmet.readthedocs.io"
 
-# [tool.tox]
-# requires = ["tox>=4.2", "tox-uv>=1.11.3"]
-# isolated_build = true
-# env_list = ["py312", "py313", "type", "fix"]
-
-# [tool.tox.testenv]
-# description = "run the unit tests with pytest under {base_python}"
-# runner = "uv-venv-lock-runner"
-# package = "editable"
-# deps = "pytest>=8.3.3"
-# commands = "pytest"
-
-# [tool.tox.testenv.fix]
-# description = "run code formatter and linter (auto-fix)"
-# skip_install = true
-# deps = "pre-commit-uv>=4.1.1"
-# commands = "pre-commit run --all-files --show-diff-on-failure"
-
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--cov=src/pygourmet --cov-report html"
+# addopts = "--cov=src/pygourmet --cov-report html"
+asyncio_default_fixture_loop_scope = "function"
 
 [tool.ruff.lint]
 ignore = ["E741"] # 1文字変数を許容
 
 [tool.mypy]
+files = ["src/pygourmet"]
 plugins = ['pydantic.mypy']
 ignore_missing_imports = true
 strict = true
-exclude = "^tests/"
+exclude = [
+    "^src/.*/__init__\\.py$",
+    "^tests/.*\\.py$",
+]
 
 [tool.uv]
 dev-dependencies = [
