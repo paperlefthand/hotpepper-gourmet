@@ -235,7 +235,7 @@ wheels = [
 
 [[package]]
 name = "hotpepper-gourmet"
-version = "0.0.4.dev3+g7e6e827.d20250102"
+version = "0.0.4.dev9+g1c71765.d20250103"
 source = { editable = "." }
 dependencies = [
     { name = "httpx" },

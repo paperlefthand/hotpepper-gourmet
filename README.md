@@ -1,7 +1,7 @@
 # hotpepper-gourmet
 
 [![PyPI version](https://badge.fury.io/py/hotpepper-gourmet.svg)](https://badge.fury.io/py/hotpepper-gourmet)
-![workflow badge](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/build.yml/badge.svg)
+![workflow badge](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/ci.yml/badge.svg)
 ![workflow badge](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/publish.yml/badge.svg)
 
 ## About
