@@ -1,6 +1,6 @@
-sphinx==8.0.2
-sphinx-fontawesome==0.0.6
-# sphinx-rtd-theme==0.5.1
-sphinx-autobuild==2024.9.19
-esbonio==0.16.5
-myst-parser==4.0.0
+sphinx
+sphinx-fontawesome
+sphinx-rtd-theme
+sphinx-autobuild
+esbonio
+myst-parser

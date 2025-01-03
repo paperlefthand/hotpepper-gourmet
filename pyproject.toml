@@ -24,7 +24,7 @@ Documentation = "https://hotpepper-gourmet.readthedocs.io"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-# addopts = "--cov=src/pygourmet --cov-report html"
+# addopts = "--cov=pygourmet --cov-report html"
 asyncio_default_fixture_loop_scope = "function"
 
 [tool.ruff.lint]
@@ -48,7 +48,7 @@ dev-dependencies = [
     "pytest-httpx>=0.32.0",
     "sphinx>=8.0.2",
     "sphinx-fontawesome>=0.0.6",
-    # "sphinx-rtd-theme>=2.0.0", # Sphinx8未対応
+    "sphinx-rtd-theme>=3.0.2",
     "sphinx-autobuild>=2024.9.19",
     "setuptools-scm>=8.1.0",
     "pre-commit>=4.0.1",
@@ -56,6 +56,11 @@ dev-dependencies = [
     "mypy>=1.12.0",
     "python-dotenv>=1.0.1",
 ]
+
+# TODO カバレッジ計測されない件の解決
+# [tool.setuptools]
+# packages = ["pygourmet"]
+# package-dir = { "" = "src" }
 
 [tool.setuptools_scm]
 # NOTE pypiにアップロードする際のtagの命名規則に従うため
