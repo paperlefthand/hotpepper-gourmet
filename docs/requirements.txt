@@ -1,6 +1,0 @@
-sphinx
-sphinx-fontawesome
-sphinx-rtd-theme
-sphinx-autobuild
-esbonio
-myst-parser

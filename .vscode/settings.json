@@ -36,8 +36,9 @@
   // ],
   "autoDocstring.docstringFormat": "sphinx",
   "git.autofetch": "all",
+  "git.pruneOnFetch": true,
   // NOTE Ignore during coding, but check when pre-commit is executed
   "ruff.lint.args": [
     "--ignore=F401" // Ignore unused-import
-  ]
+  ],
 }
