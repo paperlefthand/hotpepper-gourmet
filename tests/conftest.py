@@ -4,5 +4,5 @@ from pygourmet import Api
 
 
 @pytest.fixture
-def client():
+def client_dummy():
     return Api("dummy")
