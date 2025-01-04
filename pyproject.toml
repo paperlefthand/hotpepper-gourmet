@@ -26,8 +26,9 @@ dev = [
     "pytest-html>=4.1.1",
     "pytest-httpx>=0.32.0",
     "setuptools-scm>=8.1.0",
-    "pre-commit>=4.0.1",
     "python-dotenv>=1.0.1",
+    "mypy>=1.14.1", # NOTE pydanticプラグインとの連携のため
+    "pre-commit>=4.0.1", # NOTE uv環境内でpre-commitを実行するため
 ]
 
 # NOTE readthedocsでビルドする際に必要(pip install .[docs])
@@ -54,11 +55,12 @@ asyncio_default_fixture_loop_scope = "function"
 ignore = ["E741"] # 1文字変数を許容
 
 [tool.mypy]
-files = ["src/pygourmet"]
 plugins = ['pydantic.mypy']
 ignore_missing_imports = true
 strict = true
-exclude = ["^src/.*/__init__\\.py$", "^tests/.*\\.py$"]
+# files = ["src"]
+# exclude = ["^src/.*/__init__\\.py$", "^tests/.*\\.py$"]
+# exclude = ['^tests\.']
 
 [tool.setuptools_scm]
 # NOTE pypiにアップロードする際のtagの命名規則に従うため

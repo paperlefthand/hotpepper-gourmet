@@ -15,9 +15,8 @@ jobs:
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
-      - uses: pre-commit/action@v3.0.1
-        with:
-          extra_args: --all-files
+      - run: uvx ruff check --fix
+      - run: uv run mypy src
       - name: Install tox-uv
         run: uv tool install tox --with tox-uv
       - name: Run tox
