@@ -38,13 +38,13 @@ class Api:
                 for err in errors:
                     code = err["code"]
                     if code == 1000:
-                        messages.append(f"サーバ障害エラー: {err.get("message")}")
+                        messages.append(f"サーバ障害エラー: {err.get('message')}")
                     elif code == 2000:
                         messages.append(
-                            f"APIキーまたはIPアドレスの認証エラー: {err.get("message")}"
+                            f"APIキーまたはIPアドレスの認証エラー: {err.get('message')}"
                         )
                     elif code == 3000:
-                        messages.append(f"パラメータ不正エラー: {err.get("message")}")
+                        messages.append(f"パラメータ不正エラー: {err.get('message')}")
                 raise SearchError(",".join(messages))
             else:
                 return [Shop(**data) for data in resp["results"]["shop"]]

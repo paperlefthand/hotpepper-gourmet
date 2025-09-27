@@ -1,28 +1,52 @@
 name: ci
 
 on:
-  push:
-    branches-ignore:
+  pull_request:
+    branches:
       - main
-  # pull_request:
 
 jobs:
-  ci:
+  checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Setup Python 3.13
+        uses: actions/setup-python@v5
         with:
-          enable-cache: true
-          cache-dependency-glob: "uv.lock"
-      - run: uvx ruff check --fix
-      - run: uv run mypy src
-      - name: Install tox-uv
+          python-version: "3.13"
+          cache: pip
+
+      - name: Install tox and tox-uv
         run: uv tool install tox --with tox-uv
-      - name: Run tox
-        run: uv tool run tox
-      - name: Archive test reports
-        uses: actions/upload-artifact@v4
+
+      # 省step化のためcheckはpython3.13でのみ実行
+      - name: Run lint / format / type
+        run: tox -e lint,format,type
+
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        python-version: [3.11, 3.12, 3.13]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
-          name: test-report
-          path: htmlcov
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install tox and tox-uv
+        run: uv tool install tox --with tox-uv
+
+      # setupされたpythonバージョンそれぞれでpytestを実行
+      - name: Test (pytest via tox-uv)
+        run: tox -e py
