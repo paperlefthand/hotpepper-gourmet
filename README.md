@@ -42,92 +42,75 @@ loop.run_until_complete(call_search_async())
 
 ## 開発者向けガイド
 
-このリポジトリは[uv](https://docs.astral.sh/uv/)によるパッケージ管理, [tox-uv](https://github.com/tox-dev/tox-uv)によるタスク統一,
-[ruff](https://docs.astral.sh/ruff/)によるLint/フォーマット, [ty](https://docs.astral.sh/ty/)による型チェックを利用しています.
+このリポジトリは [uv](https://docs.astral.sh/uv/) によるパッケージ管理を採用しています.
+Python バージョンは 3.12, 3.13, 3.14 をサポート対象としています.
 
 ### セットアップ
 
 ```bash
-# 依存関係をインストール（開発＋テスト＋ドキュメント用）
-uv sync --group dev --group test --group doc
-
-# tox / tox-uv が未インストールなら
-uv tool install tox --with tox-uv
-
-# pre-commit フックを有効化（推奨）
-uv run pre-commit install
+# 依存関係のインストール（開発環境構築）
+uv sync
 ```
-
-vscode利用者は`.vscode/settings.example.json`を参考に`.vscode/settings.json`を作成すると後述のlintやformatを自動化できます.
 
 ### よく使うコマンド
 
-```bash
-# Lint チェック（ruff）
-tox -e lint
-
-# 自動整形（ruff --fix + ruff format）
-tox -e format
-
-# 型チェック（ty）
-tox -e type
-
-# テスト（pytest, Python 3.11/3.12/3.13 対応）
-tox -e py311
-tox -e py312
-tox -e py313
-# まとめて実行
-tox -e py311,py312,py313
-
-# ドキュメントビルド（Sphinx）
-tox -e docs
-```
-
-### コード品質（pre-commit）
-
-コミットメッセージは[Conventional Commits](https://www.conventionalcommits.org/ja/v1.0.0/#%e6%a6%82%e8%a6%81)に準拠してください
-
-コミット前に以下が自動実行されます:
-
-- ruff lint & format
-- ty (型チェック)
-- 簡易的なクリーンチェック（YAML, 改行, 秘密鍵検出など）
-
-初回のみ以下を実行してください:
+原則として `uv run` を介して実行します.
 
 ```bash
-uv run pre-commit install
+# テスト実行
+uv run pytest -v
+
+# 統合テスト実行（要 HOTPEPPER_KEYID 環境変数）
+# ローカル環境でのみ実行し、APIキーを利用して実際にリクエストを送ります
+uv run pytest --run-integration
+
+# 静的型チェック
+uv run ty check
+
+# Lint チェック
+uv run ruff check .
+
+# コードフォーマット適用
+uv run ruff format .
+
+# コミット前チェック（Lint/Format/TypeCheck 等を一括実行）
+uv run prek
+
+# API ドキュメント生成
+uv run pdoc src/pygourmet
+
+# 特定バージョンの動作確認（tox）
+uv run tox -e py314
 ```
 
-全ファイルを対象に走らせる場合:
+### コーディング規約
 
-```bash
-uv run pre-commit run --all-files
-```
+- **Style**: Ruff 準拠 (4スペースインデント, ダブルクォート, スネークケース). クラス名は PascalCase.
+- **Docstring**: Google Style.
+- **Type**: Pydantic v2 を活用し, `Any` を排除した厳格な型注釈を行う.
 
-### CI の動作（GitHub Actions）
+### テストガイドライン
 
-- Python 3.13
-  - Lint / Format / Type / Docs を実行
-- Python 3.11 / 3.12 / 3.13
-  - pytest を実行（マトリクス）
+- **基本**: `pytest` + `pytest-httpx` (モック).
+- **統合テスト**: `@pytest.mark.integration` を付与. `uv run pytest --run-integration` でのみ実行される.
+- **非同期**: `pytest-asyncio` を使用.
 
-CI が green = ローカルで tox が通る状態と一致します。
+### コミット・PRガイドライン
 
-### 開発フロー
+- コミットメッセージは **Conventional Commits** 形式.
+- コミット前に必ず `uv run prek` をパスさせること.
+- PR には変更の目的, テスト結果, ドキュメント更新の有無を記載.
 
-#### 開発者（Contributor）
+### CI/CD
 
-1. `uv sync --group dev --group test --group doc`
-1. コーディング → `tox -e format` で自動整形
-1. PR 前に `tox -e lint,format,type,py311,py312,py313,docs`
-1. PR 作成
+- **CI**: GitHub Actions + `tox-uv` (Python 3.12, 3.13, 3.14).
+- **TestPyPI**: `dev` ブランチへの push で自動デプロイ.
+- **PyPI / Docs**: `v*` タグ (例: `v1.0.0`) の push で本番リリースおよび GitHub Pages 更新.
 
-#### 承認者（Reviewer）
+### セキュリティ
 
-1. CI が全て green であることを確認
-1. 必要に応じてローカルで `tox -e py311,py312,py313` を再現
-1. ドキュメント差分を `tox -e docs` で確認
+- API Key (`HOTPEPPER_KEYID`) は絶対コミットしない.
+- ローカル開発では `.env` を利用する (`python-dotenv` 対応).
 
 ___
 

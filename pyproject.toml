@@ -7,54 +7,42 @@ maintainers = [{ name = "Miura Kosuke" }]
 keywords = ["hotpepper", "api", "client"]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 readme = "README.md"
 license = { file = "LICENSE.txt" }
 
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 
-dependencies = ["httpx>=0.28.1", "pydantic>=2.11.9"]
+dependencies = ["httpx>=0.28.1", "pydantic>=2.12.5"]
 
 [dependency-groups]
 dev = [
-    "setuptools-scm>=8.1.0",
+    "pydantic>=2.12.5",
+    "pytest>=9.0.2",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=5.0.0",
+    "pytest-html>=4.1.1",
+    "pytest-httpx>=0.32.0",
+    "pytest-xdist>=3.8.0",
     "python-dotenv>=1.0.1",
-    "pre-commit>=4.0.1",
-    "pydantic>=2.11.9",
-    "ty>=0.0.1a21",
-    "ruff>=0.13.2",
+    "ty>=0.0.17",
+    "ruff>=0.15.1",
+    "prek>=0.3.2",
+    "hatch-vcs>=0.5.0",
 ]
 test = [
-    "pytest>=8.3.3",
+    "pytest>=9.0.2",
     "pytest-asyncio>=0.24.0",
     "pytest-cov>=5.0.0",
     "pytest-html>=4.1.1",
     "pytest-httpx>=0.32.0",
     "pytest-xdist>=3.8.0",
 ]
-doc = [
-    "sphinx>=8.0.2",
-    "sphinx-fontawesome>=0.0.6",
-    "sphinx-rtd-theme>=3.0.2",
-    "sphinx-autobuild>=2024.9.19",
-    "esbonio>=0.16.5",
-    "myst-parser>=4.0.0",
-]
+doc = ["pdoc>=16.0.0"]
 
-
-# # NOTE readthedocsでビルドする際に必要(pip install .[docs])
-# [project.optional-dependencies]
-# docs = [
-#     "sphinx>=8.0.2",
-#     "sphinx-fontawesome>=0.0.6",
-#     "sphinx-rtd-theme>=3.0.2",
-#     "sphinx-autobuild>=2024.9.19",
-#     "esbonio>=0.16.5",
-#     "myst-parser>=4.0.0",
-# ]
 
 [project.urls]
 Repository = "https://github.com/paperlefthand/hotpepper-gourmet"
@@ -62,22 +50,34 @@ Repository = "https://github.com/paperlefthand/hotpepper-gourmet"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-v --maxfail=1"
-# addopts = "--cov=pygourmet --cov-report html"
+addopts = "-v --maxfail=1 -n auto"
 asyncio_default_fixture_loop_scope = "function"
+markers = [
+    "integration: tests that require a real API key and network connection",
+]
 
 [tool.ruff]
-target-version = "py311"
+target-version = "py312"
 
 [tool.ruff.lint]
 ignore = ["E741"] # 1文字変数を許容
 
-[tool.setuptools_scm]
-# NOTE pypiにアップロードする際のtagの命名規則に従うため
-# https://setuptools-scm.readthedocs.io/en/latest/extending/
-version_scheme = "no-guess-dev"
-local_scheme = "no-local-version"
+[tool.hatch.version]
+source = "vcs"
+# tagは vMAJOR.MINOR.PATCH の形式だけ許す
+tag-pattern = "^v(?P<version>\\d+\\.\\d+\\.\\d+)$"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pygourmet"]
+
+# [tool.setuptools_scm]
+# # NOTE pypiにアップロードする際のtagの命名規則に従うため
+# # https://setuptools-scm.readthedocs.io/en/latest/extending/
+# version_scheme = "no-guess-dev"
+# local_scheme = "no-local-version"
 
 [build-system]
-requires = ["setuptools>=64", "setuptools_scm>=8"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling>=1.26.0", "hatch-vcs>=0.4.0"]
+build-backend = "hatchling.build"
+# requires = ["setuptools>=64", "setuptools_scm>=8"]
+# build-backend = "setuptools.build_meta"

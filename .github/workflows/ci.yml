@@ -2,51 +2,42 @@ name: ci
 
 on:
   pull_request:
-    branches:
-      - main
+    branches: [main]
+  push:
+    branches: [main]
+
+# 連続して push された場合に古いジョブをキャンセルする
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: astral-sh/setup-uv@v6
-
-      - name: Setup Python 3.13
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
         with:
-          python-version: "3.13"
-          cache: pip
-
-      - name: Install tox and tox-uv
+          enable-cache: true
+      - name: Install tools
         run: uv tool install tox --with tox-uv
-
-      # 省step化のためcheckはpython3.13でのみ実行
       - name: Run lint / format / type
         run: tox -e lint,format,type
 
   tests:
+    needs: checks
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: true
+      fail-fast: false # 1つのバージョンが落ちても他を確認できるようにする
       matrix:
-        python-version: [3.11, 3.12, 3.13]
-
+        python-version: ["3.12", "3.13", "3.14"]
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: astral-sh/setup-uv@v6
-
-      - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
         with:
+          enable-cache: true
           python-version: ${{ matrix.python-version }}
-          cache: pip
-
-      - name: Install tox and tox-uv
+      - name: Install tox
         run: uv tool install tox --with tox-uv
-
-      # setupされたpythonバージョンそれぞれでpytestを実行
-      - name: Test (pytest via tox-uv)
-        run: tox -e py
+      - name: Run tests
+        run: tox -e py${{ matrix.python-version }}
