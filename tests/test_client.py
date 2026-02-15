@@ -8,12 +8,15 @@ from pygourmet.client import SearchError
 from pygourmet.option import Option
 
 load_dotenv()
-is_github_actions = os.getenv("GITHUB_ACTIONS") == "true"
+HOTPEPPER_KEYID = os.getenv("HOTPEPPER_KEYID", None)
 
 
-@pytest.mark.skipif(is_github_actions, reason="CI環境ではスキップ")
+@pytest.mark.integration
+@pytest.mark.skipif(HOTPEPPER_KEYID is None, reason="HOTPEPPER_KEYID is not set")
 def test_search_optionなし():
-    client = Api(os.environ["HOTPEPPER_KEYID"])
+    """本番APIを使用したテスト（通常はスキップされる）"""
+    assert HOTPEPPER_KEYID is not None
+    client = Api(HOTPEPPER_KEYID)
     option = Option()
     with pytest.raises(SearchError) as e:
         _ = client.search(option)
@@ -23,9 +26,12 @@ def test_search_optionなし():
     )
 
 
-@pytest.mark.skipif(is_github_actions, reason="CI環境ではスキップ")
+@pytest.mark.integration
+@pytest.mark.skipif(HOTPEPPER_KEYID is None, reason="HOTPEPPER_KEYID is not set")
 def test_search_位置指定():
-    client = Api(os.environ["HOTPEPPER_KEYID"])
+    """本番APIを使用したテスト（通常はスキップされる）"""
+    assert HOTPEPPER_KEYID is not None
+    client = Api(HOTPEPPER_KEYID)
     lat, lng = 34.8586318, 136.8139928
     option = Option(lat=lat, lng=lng)
     shops = client.search(option)

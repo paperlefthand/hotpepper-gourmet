@@ -1,100 +1,61 @@
-# titile
+## 変更の目的
 
-## Description
-
-<!--
-Provide a clear and concise description of the changes introduced by this PR.
-Explain the purpose and context of the changes, and reference any related issues or PRs.
+<!-- 
+このPRで導入される変更の概要を明確かつ簡潔に記述してください.
+変更の目的と背景を説明し, 関連するIssueやPRがあればリンクしてください.
 -->
 
-- **What does this PR do?**
-- **Why is this change necessary?**
-- **Which issue(s) does this PR fix?** (e.g., Fixes #123)
+- **何をするのか?**
+- **なぜこの変更が必要なのか?**
+- **関連するIssue** (例: Fixes #123)
 
-## Type of Change
+## 変更の種類
 
-<!--
-Please delete options that are not relevant.
+<!-- 該当するものを選択してください -->
+
+- [ ] バグ修正 (既存の不具合を修正する互換性のある変更)
+- [ ] 新機能 (新しい機能を追加する互換性のある変更)
+- [ ] 破壊的変更 (既存の機能が期待通りに動作しなくなる変更)
+- [ ] ドキュメント更新
+- [ ] コードスタイル修整 (フォーマット, 変数名の変更など)
+- [ ] リファクタリング
+- [ ] その他 (具体的に記述してください):
+
+## テストの実行結果
+
+<!-- 
+変更を確認するために実行したテストについて記述してください.
+手動テストの結果, スクリーンショット, または `uv run pytest` の出力などを添付してください.
 -->
 
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to change)
-- [ ] Documentation update
-- [ ] Code style (formatting, linting, etc.)
-- [ ] Refactoring
-- [ ] Other (please specify):
+- **テスト環境**: (例: Python 3.12, Ubuntu 22.04)
+- **実施したテスト**:
+  - [ ] `uv run pytest` がパスすることを確認した
+  - [ ] (必要に応じて) 統合テスト `uv run pytest --run-integration` を実行した
+  - [ ] (UI変更がある場合) スクリーンショットを添付した
 
-## Checklist
+## ドキュメント更新の有無
 
-<!--
-Ensure that all the following tasks are completed before requesting a review.
--->
+- [ ] `src/pygourmet` 以下のdocstringを更新した
+- [ ] `README.md` を更新した
+- [ ] ドキュメントの更新は不要
 
-- [ ] **Code Quality**
-  - Code follows the [PEP 8](https://pep8.org/) style guidelines.
-  - Static analysis checks passed (`ruff`).
-  - No new linting errors.
+## チェックリスト
 
-- [ ] **Functionality**
-  - Code compiles without errors.
-  - Implemented features work as intended.
-  - Fixed issues are resolved.
+<!-- レビューを依頼する前に, 以下の項目をすべて確認してください -->
 
-- [ ] **Testing**
-  - Added or updated unit tests (`pytest`).
-  - All existing tests pass.
-  - No test coverage gaps for the new changes.
+- [ ] **コード品質**
+  - [ ] `uv run prek` を実行し, エラーがないことを確認した
+  - [ ] コードは [Ruff](https://docs.astral.sh/ruff/) のルールに準拠している
+  - [ ] 型チェック (`uv run ty check`) をパスしている
 
-- [ ] **Documentation**
-  - Updated relevant documentation (if applicable).
-  - Added or updated docstrings.
+- [ ] **コミットメッセージ**
+  - [ ] [Conventional Commits](https://www.conventionalcommits.org/ja/v1.0.0/) に従っている
 
-- [ ] **Dependencies**
-  - Updated `pyproject.toml` (if applicable).
-  - No unnecessary dependencies added.
-
-- [ ] **Other**
-  - Relevant screenshots or logs (if applicable).
-  - External API changes are documented.
-
-## How Has This Been Tested?
-
-<!--
-Describe the tests that you ran to verify your changes. Provide instructions so others can reproduce.
--->
-
-- **Test Environment:** (e.g., Python 3.10, OS)
-- **Test Cases:**
-  - Test case 1
-  - Test case 2
-  - ...
-
-## Screenshots (if applicable)
-
-<!--
-Add any relevant screenshots to help explain your changes.
--->
-
-## Related Issues
-
-<!--
-List and link any related issues or PRs.
--->
-
-- Related Issue #1
-- Related PR #2
-
-## Additional Notes
-
-<!--
-Any other information that is important to this PR.
--->
-
-- Potential impacts
-- Future considerations
-- Known limitations
+- [ ] **セキュリティ**
+  - [ ] APIキー (`HOTPEPPER_KEYID`) などの機密情報が含まれていないことを確認した
+  - [ ] `.env` ファイルが含まれていないことを確認した
 
 ---
 
-Thank you for your contribution! 🙌
+Thanks for the contribution! 🙌
