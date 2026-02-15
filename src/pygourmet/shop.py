@@ -290,7 +290,7 @@ class Shop(BaseModel, frozen=True):
     tv: str | None = Field(default=None)
     english: str | None = Field(default=None)
     pet: str | None = Field(default=None)
-    child: Any | None = Field(default=None)
+    child: int | str | None = Field(default=None)
     lunch: str | None = Field(default=None)
     midnight: str | None = Field(default=None)
     midnight_meal: str | None = Field(default=None)
