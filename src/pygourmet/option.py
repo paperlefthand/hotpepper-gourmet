@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_serializer
 
 
 # NOTE
@@ -29,7 +29,7 @@ class Option(BaseModel, frozen=True):
     datum: str | None = Field(default=None)
     ktai_coupon: int | None = Field(default=None)
     genre: str | None = Field(default=None)
-    budget: str | None = Field(default=None)  # TODO 2つ指定可能に
+    budget: str | list[str] | None = Field(default=None, description="2つまで指定可能")
     party_capacity: bool | None = Field(default=None)
     wifi: bool | None = Field(default=None)
     wedding: bool | None = Field(default=None)
@@ -63,8 +63,56 @@ class Option(BaseModel, frozen=True):
     english: bool | None = Field(default=None)
     pet: bool | None = Field(default=None)
     child: bool | None = Field(default=None)
-    credit_card: str | None = Field(default=None)  # TODO 2つ指定可能に
+    credit_card: str | list[str] | None = Field(
+        default=None, description="2つまで指定可能"
+    )
     type: str | None = Field(default=None)
     order: int = Field(default=4)
     start: int | None = Field(default=None)
     count: int | None = Field(default=None)
+
+    @field_serializer(
+        "party_capacity",
+        "wifi",
+        "wedding",
+        "course",
+        "free_drink",
+        "free_food",
+        "private_room",
+        "horigotatsu",
+        "tatami",
+        "cocktail",
+        "shochu",
+        "sake",
+        "wine",
+        "card",
+        "non_smoking",
+        "charter",
+        "ktai",
+        "parking",
+        "barrier_free",
+        "sommelier",
+        "night_view",
+        "open_air",
+        "show",
+        "equipment",
+        "karaoke",
+        "band",
+        "tv",
+        "lunch",
+        "midnight",
+        "midnight_meal",
+        "english",
+        "pet",
+        "child",
+    )
+    def serialize_bool(self, v: bool | None) -> int | None:
+        if v is None:
+            return None
+        return 1 if v else 0
+
+    @field_serializer("budget", "credit_card")
+    def serialize_list(self, v: str | list[str] | None) -> str | None:
+        if isinstance(v, list):
+            return ",".join(v)
+        return v

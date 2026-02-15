@@ -24,7 +24,9 @@ class Api:
 
     def __create_query_params(self, option: Option) -> dict[str, str]:
         params = {
-            key: value for key, value in option.model_dump().items() if bool(value)
+            key: value
+            for key, value in option.model_dump().items()
+            if value is not None
         }
         params["key"] = self.keyid
         params["format"] = "json"

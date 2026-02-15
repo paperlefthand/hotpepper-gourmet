@@ -15,6 +15,7 @@ HOTPEPPER_KEYID = os.getenv("HOTPEPPER_KEYID", None)
 @pytest.mark.skipif(HOTPEPPER_KEYID is None, reason="HOTPEPPER_KEYID is not set")
 def test_search_optionなし():
     """本番APIを使用したテスト（通常はスキップされる）"""
+    assert HOTPEPPER_KEYID is not None
     client = Api(HOTPEPPER_KEYID)
     option = Option()
     with pytest.raises(SearchError) as e:
@@ -29,6 +30,7 @@ def test_search_optionなし():
 @pytest.mark.skipif(HOTPEPPER_KEYID is None, reason="HOTPEPPER_KEYID is not set")
 def test_search_位置指定():
     """本番APIを使用したテスト（通常はスキップされる）"""
+    assert HOTPEPPER_KEYID is not None
     client = Api(HOTPEPPER_KEYID)
     lat, lng = 34.8586318, 136.8139928
     option = Option(lat=lat, lng=lng)

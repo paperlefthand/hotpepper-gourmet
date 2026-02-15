@@ -39,6 +39,7 @@ class Genre(BaseModel, frozen=True):
 class SubGenre(BaseModel, frozen=True):
     code: str | None = Field(default=None)
     name: str | None = Field(default=None)
+    catch: str | None = Field(default=None)
 
 
 class Budget(BaseModel, frozen=True):
@@ -49,6 +50,8 @@ class Budget(BaseModel, frozen=True):
 
 class Urls(BaseModel, frozen=True):
     pc: HttpUrl | None = Field(default=None)
+    qr: HttpUrl | None = Field(default=None)
+    mobile: HttpUrl | None = Field(default=None)
 
 
 class PhotoPc(BaseModel, frozen=True):
@@ -130,6 +133,7 @@ class Shop(BaseModel, frozen=True):
     child: str | None = Field(default=None)
     lunch: str | None = Field(default=None)
     midnight: str | None = Field(default=None)
+    midnight_meal: str | None = Field(default=None)
     shop_detail_memo: str | None = Field(default=None)
     coupon_urls: CouponUrls | None = Field(default=None)
 
