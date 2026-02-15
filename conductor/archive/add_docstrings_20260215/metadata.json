@@ -1,0 +1,8 @@
+{
+  "track_id": "add_docstrings_20260215",
+  "type": "chore",
+  "status": "new",
+  "created_at": "2026-02-15T12:00:00Z",
+  "updated_at": "2026-02-15T12:00:00Z",
+  "description": "Add Japanese docstrings to each public class and method so that they are properly rendered in pdoc."
+}
