@@ -9,5 +9,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [ ] **Track: Add Japanese docstrings to each public class and method so that they are properly rendered in pdoc.**
+- [x] **Track: Add Japanese docstrings to each public class and method so that they are properly rendered in pdoc.**
 *Link: [./tracks/add_docstrings_20260215/](./tracks/add_docstrings_20260215/)*
