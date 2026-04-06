@@ -5,7 +5,6 @@
 
 import math
 import sys
-from typing import Any
 
 from pydantic import BaseModel, Field, HttpUrl, model_validator
 
@@ -299,16 +298,18 @@ class Shop(BaseModel, frozen=True):
 
     @model_validator(mode="before")
     @classmethod
-    def check_empty_values(cls, data: dict[str, Any]) -> dict[str, Any]:
-        """空の値をNoneに変換します。
+    def check_empty_values(cls, data: object) -> object:
+        """空文字列をNoneに変換します。
 
         Args:
-            data (dict[str, Any]): 変換前のデータ。
+            data (object): 変換前のデータ。
 
         Returns:
-            dict[str, Any]: 変換後のデータ。
+            object: 変換後のデータ。空文字列のみNoneに変換し、0などのゼロ値は保持します。
         """
-        return {key: (value if bool(value) else None) for key, value in data.items()}
+        if not isinstance(data, dict):
+            return data
+        return {key: (None if value == "" else value) for key, value in data.items()}
 
     def meters_to_point(self, lat: float, lng: float) -> int:
         """指定された座標からお店までの距離（メートル）を計算します。
