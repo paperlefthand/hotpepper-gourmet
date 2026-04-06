@@ -54,7 +54,7 @@ exclude-newer = "1 week"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q --maxfail=1 -n auto"
+addopts = "--maxfail=1 -n auto -q --tb=short --no-header"
 asyncio_default_fixture_loop_scope = "function"
 markers = [
     "integration: tests that require a real API key and network connection",
