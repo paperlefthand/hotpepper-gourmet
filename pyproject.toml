@@ -71,17 +71,14 @@ source = "vcs"
 # tagは vMAJOR.MINOR.PATCH の形式だけ許す
 tag-pattern = "^v(?P<version>\\d+\\.\\d+\\.\\d+)$"
 
+[tool.hatch.version.raw-options]
+# NOTE pypiにアップロードする際のtagの命名規則に従うため, 
+# ローカルバージョンを付与しない設定にする
+local_scheme = "no-local-version"
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/pygourmet"]
-
-# [tool.setuptools_scm]
-# # NOTE pypiにアップロードする際のtagの命名規則に従うため
-# # https://setuptools-scm.readthedocs.io/en/latest/extending/
-# version_scheme = "no-guess-dev"
-# local_scheme = "no-local-version"
 
 [build-system]
 requires = ["hatchling>=1.26.0", "hatch-vcs>=0.4.0"]
 build-backend = "hatchling.build"
-# requires = ["setuptools>=64", "setuptools_scm>=8"]
-# build-backend = "setuptools.build_meta"
