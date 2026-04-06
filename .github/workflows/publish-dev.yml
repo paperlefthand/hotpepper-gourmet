@@ -4,30 +4,30 @@ name: publish-dev
 on:
   push:
     branches:
-      - main
+      - dev
 
 jobs:
   build:
     name: Build distribution 📦
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        persist-credentials: false
-        clean: true
-        fetch-depth: 0
-    - uses: astral-sh/setup-uv@v5
-    - name: pytest
-      run: uv run pytest -v
-    - name: clean up working directory
-      run: git reset --hard HEAD && git clean -xdf
-    - name: Build a binary wheel and a source tarball
-      run: uv build
-    - name: Store the distribution packages
-      uses: actions/upload-artifact@v4
-      with:
-        name: python-package-distributions
-        path: dist/
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          clean: true
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v7
+      - name: pytest
+        run: uv run pytest -v
+      - name: clean up working directory
+        run: git reset --hard HEAD && git clean -xdf
+      - name: Build a binary wheel and a source tarball
+        run: uv build
+      - name: Store the distribution packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
 
   publish-to-testpypi:
     name: Publish Python 🐍 distribution 📦 to TestPyPI
@@ -37,16 +37,16 @@ jobs:
       name: testpypi
       url: https://test.pypi.org/p/hotpepper-gourmet
     permissions:
-      id-token: write  # IMPORTANT: mandatory for trusted publishing
+      id-token: write # IMPORTANT: mandatory for trusted publishing
 
     steps:
-    - name: Download all the dists
-      uses: actions/download-artifact@v4
-      with:
-        name: python-package-distributions
-        path: dist/
-    - name: Publish distribution 📦 to TestPyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        repository-url: https://test.pypi.org/legacy/
-        verbose: true
+      - name: Download all the dists
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+      - name: Publish distribution 📦 to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          verbose: true

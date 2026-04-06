@@ -49,9 +49,12 @@ doc = ["pdoc>=16.0.0"]
 Repository = "https://github.com/paperlefthand/hotpepper-gourmet"
 # Documentation = "https://hotpepper-gourmet.readthedocs.io"
 
+[tool.uv]
+exclude-newer = "1 week"
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-v --maxfail=1 -n auto"
+addopts = "-q --maxfail=1 -n auto"
 asyncio_default_fixture_loop_scope = "function"
 markers = [
     "integration: tests that require a real API key and network connection",

@@ -2,8 +2,8 @@ name: website
 
 on:
   push:
-    branches: [main]
-    tags: ["v*"]
+    tags:
+      - "v*"
 
 jobs:
   # Build the documentation and upload the static HTML files as an artifact.
