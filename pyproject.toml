@@ -6,10 +6,18 @@ authors = [{ name = "Miura Kosuke" }]
 maintainers = [{ name = "Miura Kosuke" }]
 keywords = ["hotpepper", "api", "client"]
 classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Pydantic :: 2",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: Japanese",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP",
+    "Typing :: Typed",
 ]
 readme = "README.md"
 license = { file = "LICENSE.txt" }
@@ -29,7 +37,8 @@ dev = [
     "pytest-xdist>=3.8.0",
     "python-dotenv>=1.0.1",
     "ty>=0.0.17",
-    "ruff>=0.15.1",
+    # NOTE tox はロックファイルを使わないため, ローカルと CI で結果を一致させるよう完全固定する
+    "ruff==0.16.10",
     "prek>=0.3.2",
     "hatch-vcs>=0.5.0",
     "pdoc>=16.0.0",
@@ -47,11 +56,16 @@ doc = ["pdoc>=16.0.0"]
 
 [project.urls]
 Repository = "https://github.com/paperlefthand/hotpepper-gourmet"
-# Documentation = "https://hotpepper-gourmet.readthedocs.io"
+Documentation = "https://paperlefthand.github.io/hotpepper-gourmet/"
+Issues = "https://github.com/paperlefthand/hotpepper-gourmet/issues"
+Changelog = "https://github.com/paperlefthand/hotpepper-gourmet/releases"
+
+[tool.uv]
+exclude-newer = "1 week"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-v --maxfail=1 -n auto"
+addopts = "--maxfail=1 -n auto -q --tb=short --no-header"
 asyncio_default_fixture_loop_scope = "function"
 markers = [
     "integration: tests that require a real API key and network connection",
@@ -68,17 +82,14 @@ source = "vcs"
 # tagは vMAJOR.MINOR.PATCH の形式だけ許す
 tag-pattern = "^v(?P<version>\\d+\\.\\d+\\.\\d+)$"
 
+[tool.hatch.version.raw-options]
+# NOTE pypiにアップロードする際のtagの命名規則に従うため, 
+# ローカルバージョンを付与しない設定にする
+local_scheme = "no-local-version"
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/pygourmet"]
-
-# [tool.setuptools_scm]
-# # NOTE pypiにアップロードする際のtagの命名規則に従うため
-# # https://setuptools-scm.readthedocs.io/en/latest/extending/
-# version_scheme = "no-guess-dev"
-# local_scheme = "no-local-version"
 
 [build-system]
 requires = ["hatchling>=1.26.0", "hatch-vcs>=0.4.0"]
 build-backend = "hatchling.build"
-# requires = ["setuptools>=64", "setuptools_scm>=8"]
-# build-backend = "setuptools.build_meta"

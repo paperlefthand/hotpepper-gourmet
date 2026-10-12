@@ -1,0 +1,40 @@
+name: API 仕様との差分の報告
+description: 公式 API のパラメータ・レスポンスと pygourmet のモデルが食い違っている場合に報告する
+labels: [api-change]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        `Option` (リクエストパラメータ) や `Shop` (レスポンス) が[公式 API リファレンス](https://webservice.recruit.co.jp/doc/hotpepper/reference.html)や実際のレスポンスと一致しない場合に使ってください.
+        **レスポンスを貼り付ける際は API キー (`keyid`) を必ず伏せてください.**
+  - type: dropdown
+    id: target
+    attributes:
+      label: 対象
+      options:
+        - リクエストパラメータ (Option)
+        - レスポンス (Shop など)
+        - エラーレスポンス (SearchError)
+    validations:
+      required: true
+  - type: textarea
+    id: difference
+    attributes:
+      label: 差分の内容
+      description: 項目名, 公式リファレンス上の定義, pygourmet での現在の定義を記述してください.
+      placeholder: |
+        例) レスポンスの `shop.xxx` が追加された / `shop.yyy` が数値ではなく文字列で返る
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 根拠
+      description: 公式リファレンスの該当箇所の URL や, 実際のレスポンス (抜粋) を貼り付けてください.
+      render: json
+  - type: textarea
+    id: error
+    attributes:
+      label: 発生したエラー
+      description: Pydantic の ValidationError などが発生した場合は全文を貼り付けてください.
+      render: text

@@ -5,13 +5,28 @@
 """
 
 import json
-from typing import Any
+from typing import TypedDict, cast
 
 import httpx
+from pydantic import ValidationError
 
 from pygourmet.errors import SearchError
 from pygourmet.option import Option
 from pygourmet.shop import Shop
+
+
+class _ErrorItem(TypedDict):
+    code: int
+    message: str
+
+
+class _Results(TypedDict, total=False):
+    error: list[_ErrorItem]
+    shop: list[dict[str, object]]
+
+
+class _SearchResponse(TypedDict):
+    results: _Results
 
 
 class Api:
@@ -56,19 +71,19 @@ class Api:
             keyid (str): ホットペッパーWebサービスから発行されたAPIキー。
         """
 
-        self.__base_url = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/"
+        self.__base_url = "https://webservice.recruit.co.jp/hotpepper/gourmet/v1/"
         self.keyid = keyid
 
-    def __create_query_params(self, option: Option) -> dict[str, str]:
+    def __create_query_params(self, option: Option) -> dict[str, str | int | float]:
         """Optionオブジェクトからクエリパラメータを作成します。
 
         Args:
             option (Option): 検索オプション。
 
         Returns:
-            dict[str, str]: APIリクエストに使用するクエリパラメータの辞書。
+            dict[str, str | int | float]: APIリクエストに使用するクエリパラメータの辞書。
         """
-        params = {
+        params: dict[str, str | int | float] = {
             key: value
             for key, value in option.model_dump().items()
             if value is not None
@@ -77,11 +92,11 @@ class Api:
         params["format"] = "json"
         return params
 
-    def __create_shop_list(self, resp: dict[str, Any]) -> list[Shop]:
+    def __create_shop_list(self, resp: _SearchResponse) -> list[Shop]:
         """APIレスポンスからShopオブジェクトのリストを作成します。
 
         Args:
-            resp (dict[str, Any]): APIからのJSONレスポンス。
+            resp (_SearchResponse): APIからのJSONレスポンス。
 
         Returns:
             list[Shop]: 店舗データのリスト。
@@ -89,9 +104,12 @@ class Api:
         Raises:
             SearchError: APIがエラーを返した場合、またはパースに失敗した場合。
         """
+        # NOTE 想定外のレスポンス構造 (KeyError, TypeError) と
+        # Shop モデルへの変換失敗 (ValidationError) のみを SearchError に変換する
         try:
-            if "error" in resp["results"].keys():
-                errors = resp["results"]["error"]
+            results = resp["results"]
+            if "error" in results:
+                errors = results["error"]
                 messages = []
                 for err in errors:
                     code = err["code"]
@@ -104,12 +122,9 @@ class Api:
                     elif code == 3000:
                         messages.append(f"パラメータ不正エラー: {err.get('message')}")
                 raise SearchError(",".join(messages))
-            else:
-                return [Shop(**data) for data in resp["results"]["shop"]]
-        except SearchError:
-            raise
-        except Exception as e:
-            raise SearchError(str(e))
+            return [Shop.model_validate(data) for data in results.get("shop", [])]
+        except (KeyError, TypeError, ValidationError) as e:
+            raise SearchError(str(e)) from e
 
     def search(self, option: Option) -> list[Shop]:
         """レストランを同期的に検索します。
@@ -129,7 +144,7 @@ class Api:
             url=self.__base_url,
             params=params,
         )
-        resp_dict = json.loads(resp.text)
+        resp_dict = cast(_SearchResponse, json.loads(resp.text))
         return self.__create_shop_list(resp=resp_dict)
 
     async def search_async(self, option: Option) -> list[Shop]:
@@ -151,5 +166,5 @@ class Api:
                 url=self.__base_url,
                 params=params,
             )
-        resp_dict = json.loads(resp.text)
+        resp_dict = cast(_SearchResponse, json.loads(resp.text))
         return self.__create_shop_list(resp=resp_dict)

@@ -1,0 +1,57 @@
+name: integration
+
+# 本番 API に対する統合テストを定期実行し, API 仕様の変更を早期に検知する.
+# 失敗した場合は api-change ラベルの Issue を起票する (既に open ならコメントを追記する).
+on:
+  schedule:
+    - cron: "0 0 * * 1" # 毎週月曜 09:00 JST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    environment: integration
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - name: Run integration tests
+        env:
+          HOTPEPPER_KEYID: ${{ secrets.HOTPEPPER_KEYID }}
+        run: |
+          # キー未設定だとテストがスキップされ成功扱いになるため, 明示的に失敗させる
+          if [ -z "$HOTPEPPER_KEYID" ]; then
+            echo "::error::secret HOTPEPPER_KEYID is not set in the 'integration' environment"
+            exit 1
+          fi
+          uv run pytest --run-integration -m integration
+
+  report-failure:
+    needs: integration
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Open or update an issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          title="週次統合テストが失敗しました"
+          body="本番 API に対する統合テストが失敗しました. API 仕様の変更か一時的な障害かを切り分けてください (MAINTAINING.md 参照).
+
+          実行ログ: ${RUN_URL}"
+          number=$(gh issue list --label api-change --state open --search "in:title ${title}" --json number --jq '.[0].number')
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body "再び失敗しました: ${RUN_URL}"
+          else
+            gh issue create --title "$title" --label api-change --body "$body"
+          fi

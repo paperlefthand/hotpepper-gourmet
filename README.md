@@ -1,18 +1,33 @@
 # hotpepper-gourmet
 
-[![PyPI version](https://badge.fury.io/py/hotpepper-gourmet.svg)](https://badge.fury.io/py/hotpepper-gourmet)
-![workflow badge](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/ci.yml/badge.svg)
-![workflow badge](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/publish.yml/badge.svg)
+[![PyPI version](https://img.shields.io/pypi/v/hotpepper-gourmet)](https://pypi.org/p/hotpepper-gourmet)
+[![Python versions](https://img.shields.io/pypi/pyversions/hotpepper-gourmet)](https://pypi.org/p/hotpepper-gourmet)
+[![CI](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](https://github.com/paperlefthand/hotpepper-gourmet/blob/main/LICENSE.txt)
 
 ## About
 
-[ホットペッパーグルメAPI](https://webservice.recruit.co.jp/doc/hotpepper/reference.html)のシンプルなクライアントライブラリです
+[ホットペッパーグルメAPI](https://webservice.recruit.co.jp/doc/hotpepper/reference.html)のシンプルで型安全なクライアントライブラリです.
+
+- 同期・非同期の両方の検索 API を提供
+- リクエストパラメータ・レスポンスを Pydantic v2 のモデルとして扱える
+- API ドキュメント: <https://paperlefthand.github.io/hotpepper-gourmet/>
+
+## Install
+
+```bash
+pip install hotpepper-gourmet
+# または
+uv add hotpepper-gourmet
+```
+
+Python 3.12, 3.13, 3.14 をサポートしています.
 
 ## How To Use
 
 ### keyidの取得
 
-ホットペッパーグルメAPIに登録し, token(keyid)を取得
+[ホットペッパーWebサービス](https://webservice.recruit.co.jp/)に登録し, APIキー(keyid)を取得してください.
 
 ### サンプルコード
 
@@ -32,85 +47,34 @@
 非同期版
 
 ```python
-async def call_search_async():
-    shops = await api.search_async(option=option)
+import asyncio
+
+from pygourmet import Api, Option
+
+
+async def main() -> None:
+    api = Api(keyid=YOUR_KEYID)
+    option = Option(keyword="寿司", count=3)
+    shops = await api.search_async(option)
     print(len(shops))
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(call_search_async())
+
+asyncio.run(main())
 ```
 
-## 開発者向けガイド
+エラー時は `pygourmet.SearchError` が送出されます.
 
-このリポジトリは [uv](https://docs.astral.sh/uv/) によるパッケージ管理を採用しています.
-Python バージョンは 3.12, 3.13, 3.14 をサポート対象としています.
+## コントリビューション
 
-### セットアップ
+バグ報告・機能要望・Pull Request を歓迎します. 開発環境の構築方法や PR の出し方は [CONTRIBUTING.md](https://github.com/paperlefthand/hotpepper-gourmet/blob/main/CONTRIBUTING.md) を参照してください.
 
-```bash
-# 依存関係のインストール（開発環境構築）
-uv sync
-```
+- 変更履歴: [GitHub Releases](https://github.com/paperlefthand/hotpepper-gourmet/releases)
+- 行動規範: [CODE_OF_CONDUCT.md](https://github.com/paperlefthand/hotpepper-gourmet/blob/main/CODE_OF_CONDUCT.md)
+- 脆弱性の報告: [SECURITY.md](https://github.com/paperlefthand/hotpepper-gourmet/blob/main/SECURITY.md)
 
-### よく使うコマンド
+## License
 
-原則として `uv run` を介して実行します.
-
-```bash
-# テスト実行
-uv run pytest -v
-
-# 統合テスト実行（要 HOTPEPPER_KEYID 環境変数）
-# ローカル環境でのみ実行し、APIキーを利用して実際にリクエストを送ります
-uv run pytest --run-integration
-
-# 静的型チェック
-uv run ty check
-
-# Lint チェック
-uv run ruff check .
-
-# コードフォーマット適用
-uv run ruff format .
-
-# コミット前チェック（Lint/Format/TypeCheck 等を一括実行）
-uv run prek
-
-# API ドキュメント生成
-uv run pdoc src/pygourmet
-
-# 特定バージョンの動作確認（tox）
-uv run tox -e py314
-```
-
-### コーディング規約
-
-- **Style**: Ruff 準拠 (4スペースインデント, ダブルクォート, スネークケース). クラス名は PascalCase.
-- **Docstring**: Google Style.
-- **Type**: Pydantic v2 を活用し, `Any` を排除した厳格な型注釈を行う.
-
-### テストガイドライン
-
-- **基本**: `pytest` + `pytest-httpx` (モック).
-- **統合テスト**: `@pytest.mark.integration` を付与. `uv run pytest --run-integration` でのみ実行される.
-- **非同期**: `pytest-asyncio` を使用.
-
-### コミット・PRガイドライン
-
-- コミットメッセージは **Conventional Commits** 形式.
-- コミット前に必ず `uv run prek` をパスさせること.
-- PR には変更の目的, テスト結果, ドキュメント更新の有無を記載.
-
-### CI/CD
-
-- **CI**: GitHub Actions + `tox-uv` (Python 3.12, 3.13, 3.14).
-- **TestPyPI**: `dev` ブランチへの push で自動デプロイ.
-- **PyPI / Docs**: `v*` タグ (例: `v1.0.0`) の push で本番リリースおよび GitHub Pages 更新.
-
-### セキュリティ
-
-- API Key (`HOTPEPPER_KEYID`) は絶対コミットしない.
-- ローカル開発では `.env` を利用する (`python-dotenv` 対応).
+[MIT License](https://github.com/paperlefthand/hotpepper-gourmet/blob/main/LICENSE.txt)
 
 ___
 

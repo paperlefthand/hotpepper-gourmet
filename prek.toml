@@ -1,9 +1,10 @@
+# NOTE ruff のバージョンは pyproject.toml の dev グループで一元管理するため,
+# リモートの ruff-pre-commit ではなく uv 環境の ruff を使う
 [[repos]]
-repo = "https://github.com/astral-sh/ruff-pre-commit"
-rev = "v0.15.0" # Ruff version.
+repo = "local"
 hooks = [
     # Run the linter.
-    { id = "ruff-check", args = ["--fix"], types_or = ["python", "pyi"] },
-    # Run the formatter.
-    { id = "ruff-format", types_or = ["python", "pyi"] },
+    { id = "ruff-check", name = "ruff check", language = "system", entry = "uv run ruff check --fix", types_or = ["python", "pyi"] },
+    # Run the formatter (ruff 0.16 以降は Markdown 内のコードブロックも対象).
+    { id = "ruff-format", name = "ruff format", language = "system", entry = "uv run ruff format", types_or = ["python", "pyi", "markdown"] },
 ]

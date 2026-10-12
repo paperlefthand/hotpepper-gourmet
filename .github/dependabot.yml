@@ -1,0 +1,32 @@
+# 依存関係と GitHub Actions の更新 PR を週次でまとめて作成する.
+# NOTE cooldown は pyproject.toml の [tool.uv] exclude-newer = "1 week" と揃え,
+# 公開直後のバージョン (サプライチェーン攻撃のリスクが高い) を避ける.
+version: 2
+updates:
+  - package-ecosystem: uv
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      python-dependencies:
+        patterns: ["*"]
+    labels: [dependencies]
+    commit-message:
+      prefix: chore
+      include: scope
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      github-actions:
+        patterns: ["*"]
+    labels: [dependencies]
+    commit-message:
+      prefix: ci
+      include: scope

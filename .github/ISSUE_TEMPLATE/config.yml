@@ -1,0 +1,9 @@
+# テンプレートに当てはまらない質問などは空の Issue で受け付ける
+blank_issues_enabled: true
+contact_links:
+  - name: 脆弱性の報告
+    url: https://github.com/paperlefthand/hotpepper-gourmet/security/advisories/new
+    about: 脆弱性は公開 Issue ではなく, こちらから非公開で報告してください.
+  - name: ホットペッパーグルメ API リファレンス
+    url: https://webservice.recruit.co.jp/doc/hotpepper/reference.html
+    about: API 自体の仕様や利用規約については公式ドキュメントを参照してください.

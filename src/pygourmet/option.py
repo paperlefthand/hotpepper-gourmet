@@ -37,7 +37,7 @@ class Option(BaseModel, frozen=True):
         ktai_coupon (int | None): 携帯クーポン有無（1: あり, 0: なし）。
         genre (str | None): ジャンルコード。
         budget (str | list[str] | None): 予算コード。2つまで指定可能。
-        party_capacity (bool | None): 最大宴会収容人数。
+        party_capacity (int | None): 最大宴会収容人数以上で絞り込む整数値。
         wifi (bool | None): Wi-Fi有無。
         wedding (bool | None): ウェディング・二次会。
         course (bool | None): コースあり。
@@ -100,7 +100,7 @@ class Option(BaseModel, frozen=True):
     ktai_coupon: int | None = Field(default=None)
     genre: str | None = Field(default=None)
     budget: str | list[str] | None = Field(default=None, description="2つまで指定可能")
-    party_capacity: bool | None = Field(default=None)
+    party_capacity: int | None = Field(default=None, description="最大宴会収容人数以上")
     wifi: bool | None = Field(default=None)
     wedding: bool | None = Field(default=None)
     course: bool | None = Field(default=None)
@@ -142,7 +142,6 @@ class Option(BaseModel, frozen=True):
     count: int | None = Field(default=None)
 
     @field_serializer(
-        "party_capacity",
         "wifi",
         "wedding",
         "course",
