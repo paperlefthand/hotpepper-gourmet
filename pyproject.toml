@@ -6,10 +6,18 @@ authors = [{ name = "Miura Kosuke" }]
 maintainers = [{ name = "Miura Kosuke" }]
 keywords = ["hotpepper", "api", "client"]
 classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Pydantic :: 2",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: Japanese",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP",
+    "Typing :: Typed",
 ]
 readme = "README.md"
 license = { file = "LICENSE.txt" }
@@ -49,6 +57,8 @@ doc = ["pdoc>=16.0.0"]
 [project.urls]
 Repository = "https://github.com/paperlefthand/hotpepper-gourmet"
 Documentation = "https://paperlefthand.github.io/hotpepper-gourmet/"
+Issues = "https://github.com/paperlefthand/hotpepper-gourmet/issues"
+Changelog = "https://github.com/paperlefthand/hotpepper-gourmet/releases"
 
 [tool.uv]
 exclude-newer = "1 week"
