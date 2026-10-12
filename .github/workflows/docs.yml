@@ -1,9 +1,10 @@
 name: website
 
 on:
-  push:
-    tags:
-      - "v*"
+  # publish.yml からリリース時に呼び出す
+  workflow_call:
+  # ドキュメントだけを再デプロイしたい場合に手動実行する
+  workflow_dispatch:
 
 jobs:
   # Build the documentation and upload the static HTML files as an artifact.

@@ -6,21 +6,35 @@ on:
     tags:
       - "v*"
 
+permissions:
+  contents: read
+
 jobs:
-  build:
-    name: Build distribution 📦
+  # main に取り込まれていないコミットのタグからは公開しない
+  verify-tag:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-          clean: true
           fetch-depth: 0
+      - name: Check that the tag is on main
+        run: git merge-base --is-ancestor "$GITHUB_SHA" origin/main
+
+  ci:
+    needs: verify-tag
+    uses: ./.github/workflows/ci.yml
+
+  build:
+    name: Build distribution 📦
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          fetch-depth: 0 # hatch-vcs のために全履歴を取得
       - uses: astral-sh/setup-uv@v7
-      - name: pytest
-        run: uv run pytest -v
-      - name: clean up working directory
-        run: git reset --hard HEAD && git clean -xdf
       - name: Build a binary wheel and a source tarball
         run: uv build
       - name: Store the distribution packages
@@ -72,6 +86,7 @@ jobs:
           inputs: >-
             ./dist/*.tar.gz
             ./dist/*.whl
+      # リリースノートは PR タイトルから自動生成し, ラベルで分類する (.github/release.yml)
       - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -79,7 +94,8 @@ jobs:
           gh release create
           "$GITHUB_REF_NAME"
           --repo "$GITHUB_REPOSITORY"
-          --notes ""
+          --generate-notes
+          --verify-tag
       - name: Upload artifact signatures to GitHub Release
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -90,3 +106,11 @@ jobs:
           gh release upload
           "$GITHUB_REF_NAME" dist/**
           --repo "$GITHUB_REPOSITORY"
+
+  docs:
+    needs: github-release
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/docs.yml

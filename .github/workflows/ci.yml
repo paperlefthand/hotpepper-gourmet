@@ -2,13 +2,18 @@ name: ci
 
 on:
   pull_request:
-    branches: [dev]
+    branches: [main]
   push:
-    branches: [dev]
+    branches: [main]
+  # publish.yml からリリース前のゲートとして呼び出す
+  workflow_call:
+
+permissions:
+  contents: read
 
 # 連続して push された場合に古いジョブをキャンセルする
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -16,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
@@ -33,6 +40,8 @@ jobs:
         python-version: ["3.12", "3.13", "3.14"]
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
       - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
@@ -41,3 +50,14 @@ jobs:
         run: uv tool install tox --with tox-uv
       - name: Run tests
         run: tox -e py${{ matrix.python-version }}
+
+  # ブランチ保護の必須チェックに指定する集約ジョブ.
+  # マトリクスの各ジョブ名を個別に必須指定しなくて済むようにする.
+  ci-success:
+    if: always()
+    needs: [checks, tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check results
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1
