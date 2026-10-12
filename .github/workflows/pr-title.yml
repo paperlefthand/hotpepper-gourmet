@@ -1,0 +1,56 @@
+name: pr-title
+
+# Squash マージでは PR タイトルがそのまま main のコミットメッセージになるため,
+# Conventional Commits 形式かを検査し, 種類に応じたラベルを付与する.
+# リリースノートはこのラベルで分類される (.github/release.yml).
+#
+# NOTE fork からの PR にもラベルを付けるため pull_request_target を使う.
+# PR のコードは checkout も実行もしないこと.
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR title
+        uses: amannn/action-semantic-pull-request@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+          requireScope: false
+
+      - name: Label by type
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const title = context.payload.pull_request.title;
+            const match = title.match(/^(\w+)(\([^)]*\))?(!)?:/);
+            if (!match) return;
+            const [, type, , bang] = match;
+            const labels = [];
+            const byType = { feat: "enhancement", fix: "bug", docs: "documentation" };
+            if (byType[type]) labels.push(byType[type]);
+            const body = context.payload.pull_request.body ?? "";
+            if (bang || /^BREAKING[ -]CHANGE:/m.test(body)) labels.push("breaking-change");
+            if (labels.length === 0) return;
+            await github.rest.issues.addLabels({
+              ...context.repo,
+              issue_number: context.payload.pull_request.number,
+              labels,
+            });

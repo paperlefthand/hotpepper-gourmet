@@ -1,0 +1,19 @@
+# gh release create --generate-notes で生成するリリースノートの分類.
+# ラベルは pr-title ワークフローが PR タイトルの種類から自動で付与する.
+changelog:
+  exclude:
+    authors:
+      - github-actions[bot]
+  categories:
+    - title: 💥 破壊的変更
+      labels: [breaking-change]
+    - title: ✨ 新機能
+      labels: [enhancement]
+    - title: 🐛 バグ修正
+      labels: [bug]
+    - title: 📝 ドキュメント
+      labels: [documentation]
+    - title: ⬆️ 依存関係
+      labels: [dependencies]
+    - title: 🔧 その他
+      labels: ["*"]
