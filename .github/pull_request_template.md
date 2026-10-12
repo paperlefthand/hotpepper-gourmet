@@ -1,6 +1,6 @@
 ## 変更の目的
 
-<!-- 
+<!--
 このPRで導入される変更の概要を明確かつ簡潔に記述してください.
 変更の目的と背景を説明し, 関連するIssueやPRがあればリンクしてください.
 -->
@@ -15,29 +15,30 @@
 
 - [ ] バグ修正 (既存の不具合を修正する互換性のある変更)
 - [ ] 新機能 (新しい機能を追加する互換性のある変更)
-- [ ] 破壊的変更 (既存の機能が期待通りに動作しなくなる変更)
+- [ ] 破壊的変更 (`Api` / `Option` / `Shop` / `SearchError` の公開インターフェースが変わる変更)
 - [ ] ドキュメント更新
-- [ ] コードスタイル修整 (フォーマット, 変数名の変更など)
 - [ ] リファクタリング
+- [ ] CI / 開発環境 / AI エージェント設定の変更
 - [ ] その他 (具体的に記述してください):
 
 ## テストの実行結果
 
-<!-- 
+<!--
 変更を確認するために実行したテストについて記述してください.
-手動テストの結果, スクリーンショット, または `uv run pytest` の出力などを添付してください.
+`uv run pytest` の出力の要約などを添付してください.
 -->
 
-- **テスト環境**: (例: Python 3.12, Ubuntu 22.04)
+- **テスト環境**: (例: Python 3.14, Ubuntu 24.04)
 - **実施したテスト**:
   - [ ] `uv run pytest` がパスすることを確認した
-  - [ ] (必要に応じて) 統合テスト `uv run pytest --run-integration` を実行した
-  - [ ] (UI変更がある場合) スクリーンショットを添付した
+  - [ ] (API との通信に関わる変更の場合) 統合テスト `uv run pytest --run-integration` を実行した
+  - [ ] (`Option` / `Shop` を変更した場合) [API リファレンス](https://webservice.recruit.co.jp/doc/hotpepper/reference.html) と照合した
 
 ## ドキュメント更新の有無
 
-- [ ] `src/pygourmet` 以下のdocstringを更新した
+- [ ] `src/pygourmet` 以下の docstring を更新した
 - [ ] `README.md` を更新した
+- [ ] `AGENTS.md` / `CLAUDE.md` / `.claude/` を更新した
 - [ ] ドキュメントの更新は不要
 
 ## チェックリスト
@@ -45,17 +46,11 @@
 <!-- レビューを依頼する前に, 以下の項目をすべて確認してください -->
 
 - [ ] **コード品質**
-  - [ ] `uv run prek` を実行し, エラーがないことを確認した
-  - [ ] コードは [Ruff](https://docs.astral.sh/ruff/) のルールに準拠している
+  - [ ] `uv run prek run --all-files` を実行し, エラーがないことを確認した
   - [ ] 型チェック (`uv run ty check`) をパスしている
 
 - [ ] **コミットメッセージ**
   - [ ] [Conventional Commits](https://www.conventionalcommits.org/ja/v1.0.0/) に従っている
 
 - [ ] **セキュリティ**
-  - [ ] APIキー (`HOTPEPPER_KEYID`) などの機密情報が含まれていないことを確認した
-  - [ ] `.env` ファイルが含まれていないことを確認した
-
----
-
-Thanks for the contribution! 🙌
+  - [ ] APIキー (`HOTPEPPER_KEYID`) などの機密情報や `.env` ファイルが含まれていないことを確認した

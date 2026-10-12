@@ -47,7 +47,7 @@ doc = ["pdoc>=16.0.0"]
 
 [project.urls]
 Repository = "https://github.com/paperlefthand/hotpepper-gourmet"
-# Documentation = "https://hotpepper-gourmet.readthedocs.io"
+Documentation = "https://paperlefthand.github.io/hotpepper-gourmet/"
 
 [tool.uv]
 exclude-newer = "1 week"

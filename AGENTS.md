@@ -1,65 +1,73 @@
 # プロジェクト: pygourmet
 
-あなたは Python 開発者として, `pygourmet` ライブラリ ([Hotpepper Gourmet API](https://webservice.recruit.co.jp/doc/hotpepper/reference.html) のラッパー) の開発を支援しています. あなたの目標は, 高品質で型安全かつ最新の Python コードを維持することです.
+あなたは Python 開発者として, `pygourmet` ライブラリ ([ホットペッパーグルメ API](https://webservice.recruit.co.jp/doc/hotpepper/reference.html) のクライアント) の開発を支援しています. 目標は, 高品質で型安全かつ最新の Python コードを維持することです.
 
-**API 仕様参照先**: 実装・修正時は必ず [ホットペッパーグルメ API リファレンス](https://webservice.recruit.co.jp/doc/hotpepper/reference.html) を確認してください.
+このファイルは AI エージェント共通の唯一の指示書です. ツール固有の設定 (Claude Code の Hook / Skill など) は各ツールの設定ディレクトリに置き, ここには全エージェントに共通する事実と規約のみを記載します.
 
-## プロジェクト構造とモジュール構成
+## プロダクト方針
 
-- ライブラリコードは `src/pygourmet/` 配下に配置されています. `client.py` (API ラッパー), `option.py` (リクエストパラメータ), `shop.py` (レスポンスモデル) などのモジュールで構成されます. 外部への公開インポートは `src/pygourmet/__init__.py` で再エクスポートされます.
-- テストは `tests/` 配下に配置し, 再利用可能なフィクスチャは `tests/conftest.py` に, サンプルデータは `tests/data/` に集約してください.
-- 型情報を提供するための `py.typed` を同梱しています. 既存のパッケージレイアウトを維持するため, 新規モジュールは必ず `src/pygourmet/` 以下に配置してください.
-- プロジェクト全体の設定は `pyproject.toml` で管理しています. ビルドシステム (`hatchling-vcs`), 依存関係, pytest 設定 (`[tool.pytest.ini_options]`), ruff 設定 (`[tool.ruff]`) がここに集約されています.
+- **対象ユーザー**: ホットペッパーグルメ API をアプリケーションに組み込みたい Python 開発者, および店舗データを手軽に取得したいデータ分析者.
+- **開発者体験 (DX)**: Pydantic v2 による厳格な型付けと, `pdoc` で読める日本語ドキュメントを提供する.
+- **同期/非同期の両対応**: `httpx` を用いた同期 (`search`) と非同期 (`search_async`) の両 API を常に同等の機能で提供する.
+- **API への忠実さ**: モデル名・パラメータ名は公式 API に揃え, API 利用経験者の認知負荷を下げる. 実装・修正時は必ず [API リファレンス](https://webservice.recruit.co.jp/doc/hotpepper/reference.html) を確認すること.
 
-## ビルド, テスト, 開発コマンド
+## プロジェクト構造
 
-原則として `uv` を介して実行します. 推奨開発 Python バージョンは **3.14** です.
+- ライブラリコードは `src/pygourmet/` 配下に配置します. 新規モジュールも必ずここに置いてください.
+  - `client.py`: API クライアント (`Api`)
+  - `option.py`: リクエストパラメータ (`Option`)
+  - `shop.py`: レスポンスモデル (`Shop` と入れ子モデル)
+  - `errors.py`: 例外 (`SearchError`)
+  - `__init__.py`: 公開 API の再エクスポート
+  - `py.typed`: 型情報の同梱マーカー
+- テストは `tests/` 配下に配置し, 共通フィクスチャは `tests/conftest.py`, API レスポンスのサンプルは `tests/data/` に置きます.
+- プロジェクト設定は `pyproject.toml` に集約しています (ビルド: `hatchling` + `hatch-vcs`, 依存関係, pytest, ruff).
 
-- `uv sync`: ローカル開発環境の構築と依存関係の同期.
-- `uv run pytest -v`: テストスイートの実行.
-- `uv run pytest tests/test_client.py::test_search_位置指定 --run-integration`: 特定テストの単体実行（統合テストは `--run-integration` が必要）.
-- `uv run pytest --run-integration`: 統合テスト(integration マーカー)を含めることで本番APIと連携するテストスイートを実行します. 通常の pytest 実行時には統合テストはスキップされます.
-- `uv run ty check`: 静的型チェックの実行.
-- `uv run ruff check .`: Lint の実行.
-- `uv run ruff format .`: コードフォーマットの適用.
-- `uv run prek`: コミット前の整合性チェック (Lint/Format 含む).
-- `uv run pdoc src/pygourmet`: API ドキュメントの生成.
-- `uv run tox -e py314`: 特定の Python バージョンでの CI 動作のシミュレーション.
+## 開発コマンド
 
-## コーディングスタイルと命名規則
+原則として `uv` を介して実行します. 推奨開発 Python バージョンは **3.14** (`.python-version`) です.
 
-- **Ruff の準拠**: 4 スペースインデント, ダブルクォート, スネークケースを採用します. クラス名は PascalCase を維持してください.
-- **Docstring**: Google Style に準拠し, `pdoc` で適切にレンダリングされるように記述してください.
-- **型定義**: Pydantic v2 を活用し, `Any` を排除した厳格な型注釈を行ってください. 戻り値の型も明示してください. パラメータの型は必ず [API リファレンス](https://webservice.recruit.co.jp/doc/hotpepper/reference.html) と照合して決定してください.
+| 操作 | コマンド |
+| --- | --- |
+| 環境構築・依存同期 | `uv sync` |
+| テスト | `uv run pytest` |
+| 統合テスト込み | `uv run pytest --run-integration` |
+| 特定テストのみ | `uv run pytest tests/test_client.py::test_search_位置指定 --run-integration` |
+| 型チェック | `uv run ty check` |
+| Lint | `uv run ruff check .` |
+| フォーマット | `uv run ruff format .` |
+| コミット前チェック (ruff check/format) | `uv run prek run --all-files` |
+| API ドキュメント生成 | `uv run pdoc src/pygourmet` |
+| CI 相当の検証 | `uv run tox -e lint,type,py3.14` |
 
-## テストガイドライン
+## コーディング規約
 
-- **基本方針**: テストは `pytest` で記述します. 通常の単体テストでは `pytest-httpx` を用いて API レスポンスをモック化し, ダミーの API キーを使用してください.
-- **本番接続テスト**: 本番 API との接続を確認する必要があるテストケースには `@pytest.mark.integration` マーカーを付与してください.
-- **テストの実行制御**: 統合テスト(integration)を実行するには, 明示的に `--run-integration` オプションを付与する必要があります. このテストはローカル環境でのみ実行し, `.env` に記載された `HOTPEPPER_KEYID` を利用します. オプションが指定されていない場合や, 環境変数が設定されていない場合は, 自動的にスキップされるように設計してください.
-- **非同期処理**: HTTP クライアントには `httpx` を採用しています. httpxの非同期クライアントを使用するテストでは `pytest-asyncio` を利用し, 非同期クライアントを `await` する形式を推奨します.
+- **スタイル**: Ruff の設定が唯一の基準です (4 スペースインデント, ダブルクォート). 関数・変数はスネークケース, クラスは PascalCase.
+- **型**: Pydantic v2 を活用し, `Any` を使わない厳格な型注釈を行います. 戻り値の型も必ず明示します. パラメータやフィールドの型は API リファレンスと照合して決定します.
+- **Docstring**: 公開クラス・メソッドには日本語の Google Style docstring を書き, `pdoc` で正しくレンダリングされるようにします.
+- **後方互換性**: 公開 API (`Api`, `Option`, `Shop`, `SearchError`) のシグネチャ変更は破壊的変更として扱い, 意図的な場合のみ行います.
 
-## ブランチ運用とリリースフロー
+## テスト
 
-- **機能開発**: `feature/*` ブランチを切って実装し, `dev` ブランチへ PR を出してください.
-- **CI**: `dev` への PR および `dev` への push 時に GitHub Actions が自動実行されます. Python 3.12, 3.13, 3.14 の 3 バージョンでテストされます.
-- **TestPyPI デプロイ**: `dev` ブランチへの push で TestPyPI へ自動デプロイされます.
-- **本番リリース**: 管理者が `vMAJOR.MINOR.PATCH` 形式のタグを push した場合のみ, 本番 PyPI へのリリースと GitHub Pages へのドキュメント更新が実行されます.
+- テストは `pytest` で記述します. 単体テストでは `pytest-httpx` で API レスポンスをモックし, ダミーの API キー (`client_dummy` フィクスチャ) を使います.
+- 本番 API に接続するテストには `@pytest.mark.integration` を付与します. `--run-integration` 指定時のみ実行され, `.env` の `HOTPEPPER_KEYID` が未設定ならスキップされるようにします. 統合テストはローカル環境でのみ実行します.
+- 非同期 API のテストは `pytest-asyncio` を使い, `await` で呼び出します.
+- 新しいコードのカバレッジは 80% 以上を目安とします (`uv run pytest --cov=pygourmet`).
 
-## コミットおよびプルリクエストのガイドライン
+## ブランチ運用と CI/CD
 
-- コミットメッセージは Conventional Commits 形式に従ってください.
-- コミット前に必ず `uv run prek` を実行し, チェックをパスさせること.
-- PR には, 変更の目的, テストの実行結果, およびドキュメント更新の有無を記載してください.
+- **機能開発**: `feature/*` ブランチを `dev` から切り, `dev` へ PR を出します.
+- **CI**: `dev` への PR / push で GitHub Actions が実行されます. `tox-uv` で lint・format・型チェックと, Python 3.12 / 3.13 / 3.14 のテストを行います.
+- **TestPyPI**: `dev` への push で自動デプロイされます.
+- **本番リリース**: 管理者が `vMAJOR.MINOR.PATCH` 形式のタグを push した場合のみ, PyPI へのリリースと GitHub Pages へのドキュメント更新が実行されます. バージョンは `hatch-vcs` によりタグから決定されます.
 
-## セキュリティと構成
+## コミットと PR
+
+- コミットメッセージは [Conventional Commits](https://www.conventionalcommits.org/ja/v1.0.0/) 形式に従います.
+- コミット前に `uv run prek run --all-files`, `uv run ty check`, `uv run pytest` をパスさせます.
+- PR は `.github/pull_request_template.md` に沿って, 変更の目的, テスト結果, ドキュメント更新の有無を記載します.
+
+## セキュリティ
 
 - API キー (`HOTPEPPER_KEYID`) をコードに直接記述したり, コミットしたりしないでください.
-- ローカル開発では `.env` ファイルを使用し, `python-dotenv` を介して読み込んでください.
-
-## CI/CD ワークフロー
-
-- CI は GitHub Actions で実行され, `tox-uv` を用いて Python 3.12, 3.13, 3.14 でテストされます.
-- `dev` ブランチへの push で TestPyPI へ自動デプロイされます.
-- バージョン管理は `hatchling-vcs` を使用し, Git タグ (`vMAJOR.MINOR.PATCH`) から取得します.
-- 管理者が `v*` 形式のタグを push した場合のみ, 本番 PyPI へのリリースと GitHub Pages へのドキュメント更新が実行されます.
+- ローカル開発では `.env` に記載し, `python-dotenv` で読み込みます.

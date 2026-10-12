@@ -15,7 +15,7 @@
   "python.experiments.optInto": [
     "pythonTestAdapter"
   ],
-  "autoDocstring.docstringFormat": "sphinx",
+  "autoDocstring.docstringFormat": "google",
   "git.autofetch": "all",
   "git.pruneOnFetch": true
 }
