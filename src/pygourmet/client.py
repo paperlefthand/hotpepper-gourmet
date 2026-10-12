@@ -8,6 +8,7 @@ import json
 from typing import TypedDict, cast
 
 import httpx
+from pydantic import ValidationError
 
 from pygourmet.errors import SearchError
 from pygourmet.option import Option
@@ -103,6 +104,8 @@ class Api:
         Raises:
             SearchError: APIがエラーを返した場合、またはパースに失敗した場合。
         """
+        # NOTE 想定外のレスポンス構造 (KeyError, TypeError) と
+        # Shop モデルへの変換失敗 (ValidationError) のみを SearchError に変換する
         try:
             results = resp["results"]
             if "error" in results:
@@ -119,12 +122,9 @@ class Api:
                     elif code == 3000:
                         messages.append(f"パラメータ不正エラー: {err.get('message')}")
                 raise SearchError(",".join(messages))
-            else:
-                return [Shop.model_validate(data) for data in results.get("shop", [])]
-        except SearchError:
-            raise
-        except Exception as e:
-            raise SearchError(str(e))
+            return [Shop.model_validate(data) for data in results.get("shop", [])]
+        except (KeyError, TypeError, ValidationError) as e:
+            raise SearchError(str(e)) from e
 
     def search(self, option: Option) -> list[Shop]:
         """レストランを同期的に検索します。

@@ -2,6 +2,7 @@ import json
 import os
 
 import pytest
+from pydantic import ValidationError
 
 from pygourmet.client import SearchError
 from pygourmet.option import Option
@@ -64,3 +65,31 @@ async def test_search_async_dummy_optionなし(client_dummy, httpx_mock):
     assert (
         str(e.value) == "パラメータ不正エラー: 少なくとも１つの条件を入れてください。"
     )
+
+
+def test_search_dummy_results欠落(client_dummy, httpx_mock):
+    httpx_mock.add_response(json={"unexpected": {}})
+
+    with pytest.raises(SearchError) as e:
+        _ = client_dummy.search(Option(keyword="ラーメン"))
+
+    assert isinstance(e.value.__cause__, KeyError)
+
+
+def test_search_dummy_shopパース失敗(client_dummy, httpx_mock):
+    httpx_mock.add_response(json={"results": {"shop": [{"lat": "not-a-number"}]}})
+
+    with pytest.raises(SearchError) as e:
+        _ = client_dummy.search(Option(keyword="ラーメン"))
+
+    assert isinstance(e.value.__cause__, ValidationError)
+
+
+@pytest.mark.asyncio
+async def test_search_async_dummy_shopパース失敗(client_dummy, httpx_mock):
+    httpx_mock.add_response(json={"results": {"shop": [{"lat": "not-a-number"}]}})
+
+    with pytest.raises(SearchError) as e:
+        _ = await client_dummy.search_async(Option(keyword="ラーメン"))
+
+    assert isinstance(e.value.__cause__, ValidationError)
