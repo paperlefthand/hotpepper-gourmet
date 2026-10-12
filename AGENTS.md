@@ -50,20 +50,25 @@
 ## テスト
 
 - テストは `pytest` で記述します. 単体テストでは `pytest-httpx` で API レスポンスをモックし, ダミーの API キー (`client_dummy` フィクスチャ) を使います.
-- 本番 API に接続するテストには `@pytest.mark.integration` を付与します. `--run-integration` 指定時のみ実行され, `.env` の `HOTPEPPER_KEYID` が未設定ならスキップされるようにします. 統合テストはローカル環境でのみ実行します.
+- 本番 API に接続するテストには `@pytest.mark.integration` を付与します. `--run-integration` 指定時のみ実行され, `.env` の `HOTPEPPER_KEYID` が未設定ならスキップされるようにします. CI では `integration.yml` が毎週本番 API に対して実行し, 失敗すると `api-change` Issue を起票します. PR の CI では実行されません.
 - 非同期 API のテストは `pytest-asyncio` を使い, `await` で呼び出します.
 - 新しいコードのカバレッジは 80% 以上を目安とします (`uv run pytest --cov=pygourmet`).
 
 ## ブランチ運用と CI/CD
 
-- **機能開発**: `feature/*` ブランチを `dev` から切り, `dev` へ PR を出します.
-- **CI**: `dev` への PR / push で GitHub Actions が実行されます. `tox-uv` で lint・format・型チェックと, Python 3.12 / 3.13 / 3.14 のテストを行います.
-- **TestPyPI**: `dev` への push で自動デプロイされます.
-- **本番リリース**: 管理者が `vMAJOR.MINOR.PATCH` 形式のタグを push した場合のみ, PyPI へのリリースと GitHub Pages へのドキュメント更新が実行されます. バージョンは `hatch-vcs` によりタグから決定されます.
+GitHub Flow を採用しています. 人間向けの詳細は `CONTRIBUTING.md` (コントリビューター) と `MAINTAINING.md` (メンテナー) にあります.
+
+- **機能開発**: `main` から作業ブランチを切り, `main` へ PR を出します. 長期の開発ブランチはありません.
+- **CI**: `main` への PR / push で `ci.yml` が実行されます. `tox-uv` で lint・format・型チェックと, Python 3.12 / 3.13 / 3.14 のテストを行います. ブランチ保護の必須チェックは `ci-success` と `pr-title` です.
+- **TestPyPI**: `main` への push で CI が成功すると, 開発版が自動デプロイされます.
+- **本番リリース**: 管理者が `main` 上のコミットに `vMAJOR.MINOR.PATCH` 形式のタグを push した場合のみ実行されます. CI を通した後, PyPI へのリリース, GitHub Release (ノート自動生成), GitHub Pages へのドキュメント更新が行われます. バージョンは `hatch-vcs` によりタグから決定されます. エージェントはタグを作成・push しないでください.
+- **依存関係の更新**: Dependabot が毎週 PR を作成します.
 
 ## コミットと PR
 
-- コミットメッセージは [Conventional Commits](https://www.conventionalcommits.org/ja/v1.0.0/) 形式に従います.
+- PR は Squash マージされ, **PR タイトルがそのまま `main` のコミットメッセージとリリースノートの項目になります.** PR タイトルは [Conventional Commits](https://www.conventionalcommits.org/ja/v1.0.0/) 形式 (`<type>(<scope>): <要約>`) で書きます. CI (`pr-title.yml`) で検査され, 種類に応じたラベルが付きます.
+- 公開 API の互換性を壊す変更は, PR タイトルに `!` を付けます (例: `feat(option)!: ...`).
+- 個々のコミットメッセージも Conventional Commits 形式に揃えます.
 - コミット前に `uv run prek run --all-files`, `uv run ty check`, `uv run pytest` をパスさせます.
 - PR は `.github/pull_request_template.md` に沿って, 変更の目的, テスト結果, ドキュメント更新の有無を記載します.
 

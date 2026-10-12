@@ -1,0 +1,45 @@
+name: バグ報告
+description: pygourmet の不具合を報告する
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        報告ありがとうございます.
+        **API キー (`keyid`) やその他の機密情報は必ず伏せてから貼り付けてください.**
+        脆弱性の報告は公開 Issue ではなく [SECURITY.md](https://github.com/paperlefthand/hotpepper-gourmet/blob/main/SECURITY.md) の手順に従ってください.
+  - type: textarea
+    id: description
+    attributes:
+      label: 不具合の内容
+      description: 何が起きたか, 本来どうなるべきかを記述してください.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 再現コード
+      description: 問題を再現できる最小限のコード (`Option` の内容を含む).
+      render: python
+    validations:
+      required: true
+  - type: textarea
+    id: traceback
+    attributes:
+      label: エラーメッセージ / トレースバック
+      description: 例外が発生した場合は全文を貼り付けてください.
+      render: text
+  - type: input
+    id: version
+    attributes:
+      label: pygourmet のバージョン
+      description: "`python -c \"import importlib.metadata as m; print(m.version('hotpepper-gourmet'))\"` の出力"
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python のバージョンと OS
+      placeholder: 例) Python 3.14.0, Ubuntu 24.04
+    validations:
+      required: true

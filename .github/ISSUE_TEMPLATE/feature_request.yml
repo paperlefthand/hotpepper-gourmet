@@ -1,0 +1,33 @@
+name: 機能要望
+description: 新しい機能や改善を提案する
+labels: [enhancement]
+body:
+  - type: textarea
+    id: motivation
+    attributes:
+      label: 解決したい課題
+      description: どのような場面で何に困っているかを記述してください.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 提案する解決方法
+      description: 想定する API (メソッド名, 引数, 戻り値など) があれば記述してください.
+      render: python
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 検討した代替案
+  - type: input
+    id: reference
+    attributes:
+      label: 関連する公式 API リファレンス
+      description: ホットペッパーグルメ API の機能に関する要望であれば, 該当箇所の URL を記載してください.
+      placeholder: https://webservice.recruit.co.jp/doc/hotpepper/reference.html
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: 実装への協力
+      options:
+        - label: この機能の PR を作成してもよい

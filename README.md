@@ -1,8 +1,9 @@
 # hotpepper-gourmet
 
-[![PyPI version](https://badge.fury.io/py/hotpepper-gourmet.svg)](https://badge.fury.io/py/hotpepper-gourmet)
-![workflow badge](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/ci.yml/badge.svg)
-![workflow badge](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/publish.yml/badge.svg)
+[![PyPI version](https://img.shields.io/pypi/v/hotpepper-gourmet)](https://pypi.org/p/hotpepper-gourmet)
+[![Python versions](https://img.shields.io/pypi/pyversions/hotpepper-gourmet)](https://pypi.org/p/hotpepper-gourmet)
+[![CI](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/paperlefthand/hotpepper-gourmet/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](https://github.com/paperlefthand/hotpepper-gourmet/blob/main/LICENSE.txt)
 
 ## About
 
@@ -63,21 +64,17 @@ asyncio.run(main())
 
 エラー時は `pygourmet.SearchError` が送出されます.
 
-## 開発者向けガイド
+## コントリビューション
 
-このリポジトリは [uv](https://docs.astral.sh/uv/) でパッケージを管理しています.
+バグ報告・機能要望・Pull Request を歓迎します. 開発環境の構築方法や PR の出し方は [CONTRIBUTING.md](https://github.com/paperlefthand/hotpepper-gourmet/blob/main/CONTRIBUTING.md) を参照してください.
 
-```bash
-uv sync                          # 開発環境の構築
-uv run pytest                    # テスト
-uv run pytest --run-integration  # 統合テスト (.env に HOTPEPPER_KEYID が必要)
-uv run ty check                  # 型チェック
-uv run prek run --all-files      # Lint / Format (ruff)
-uv run pdoc src/pygourmet        # API ドキュメントのプレビュー
-```
+- 変更履歴: [GitHub Releases](https://github.com/paperlefthand/hotpepper-gourmet/releases)
+- 行動規範: [CODE_OF_CONDUCT.md](https://github.com/paperlefthand/hotpepper-gourmet/blob/main/CODE_OF_CONDUCT.md)
+- 脆弱性の報告: [SECURITY.md](https://github.com/paperlefthand/hotpepper-gourmet/blob/main/SECURITY.md)
 
-コーディング規約, テスト方針, ブランチ運用, リリース手順は [AGENTS.md](AGENTS.md) にまとめています (AI エージェントと人間の共通ガイドです).
-機能開発は `dev` から `feature/*` ブランチを切り, `dev` へ PR を出してください.
+## License
+
+[MIT License](https://github.com/paperlefthand/hotpepper-gourmet/blob/main/LICENSE.txt)
 
 ___
 
