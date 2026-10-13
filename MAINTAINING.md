@@ -69,6 +69,15 @@ gh api "repos/$R/releases/generate-notes" -f tag_name=vX.Y.Z -f target_commitish
 
 分類がおかしい場合は, 該当する PR のラベルを付け替えます.
 
+あわせて, PR タイトルからは読み取れない **利用者への影響** がないかを確認します. 代表的なのは, 実行時の依存ライブラリや Python バージョンの下限の変更です. 依存関係の更新 PR は「⬆️ 依存関係」にまとめられるため, 利用者の環境に影響することがノートから分かりません.
+
+```bash
+git diff "$(git describe --tags --abbrev=0 origin/main)" origin/main -- pyproject.toml \
+  | grep -E '^[-+](dependencies|requires-python)'
+```
+
+出力があれば, 手順 5 でリリースノートに補足を追記します.
+
 ### 3. タグを push する
 
 ```bash
@@ -90,11 +99,37 @@ gh run watch "$(gh run list --workflow publish.yml --limit 1 --json databaseId -
 完了したら次を確認します.
 
 - [PyPI](https://pypi.org/p/hotpepper-gourmet) に新バージョンが出ていること
-- `uvx --from hotpepper-gourmet==X.Y.Z python -c "import pygourmet"` が成功すること
+- `uvx --refresh --from hotpepper-gourmet==X.Y.Z python -c "import pygourmet"` が成功すること
 - [GitHub Releases](https://github.com/paperlefthand/hotpepper-gourmet/releases) にリリースノートと署名ファイルが添付されていること
 - [ドキュメント](https://paperlefthand.github.io/hotpepper-gourmet/) が更新されていること
 
-### 5. 失敗したとき
+### 5. リリースノートに補足を追記する
+
+自動生成のノートには PR の一覧しか載りません. 手順 2 で利用者への影響が見つかった場合は, 公開後にノートの先頭へ補足を追記します. 署名ファイルなどの添付はそのまま残ります.
+
+```bash
+gh release view vX.Y.Z --json body --jq .body > notes.md
+# notes.md の先頭に補足を書き足す (下の例を参照)
+gh release edit vX.Y.Z --notes-file notes.md
+rm notes.md
+```
+
+補足の例 (v0.0.6 で追記したもの):
+
+```markdown
+## ⚠️ 依存ライブラリの下限の引き上げ
+
+このバージョンから, 実行時に必要な依存ライブラリの下限が上がりました. 古いバージョンを使っている環境では, 更新時にあわせてアップグレードされます.
+
+| パッケージ | v0.0.5 | v0.0.6 |
+| --- | --- | --- |
+| httpx | `>=0.27.2` | `>=0.28.1` |
+| pydantic | `>=2.9.2` | `>=2.12.5` |
+```
+
+ラベルの付け忘れで分類がずれていた場合も, 同じ手順でノートを直せます. あわせて PR にもラベルを付けておきます.
+
+### 6. 失敗したとき
 
 - **PyPI への公開前に失敗した場合** (verify-tag, ci, build): main で修正し, タグを付け直します.
 
