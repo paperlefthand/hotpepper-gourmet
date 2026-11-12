@@ -175,13 +175,39 @@ rm "$notes"
 
 ## Dependabot の PR
 
-毎週, Python の依存関係 (`uv.lock` / `pyproject.toml`) と GitHub Actions の更新が, それぞれ 1 つの PR にまとめて届きます.
+毎週月曜 09:00 (JST) に, Python の依存関係 (`uv.lock` / `pyproject.toml`) と GitHub Actions の更新が, それぞれ 1 つの PR にまとめて届きます.
 
 - PR タイトルは `chore(deps): ...` / `ci(deps): ...` 形式なので, そのまま `pr-title` を通過します.
-- 公開から 7 日未満のバージョンは提案されません (`cooldown`). `pyproject.toml` の `exclude-newer = "1 week"` と揃えています.
+- 公開から 3 日未満のバージョンは提案されません (`cooldown`). 公開直後のバージョンはサプライチェーン攻撃のリスクが高いためです. 次の 3 か所を同じ日数に揃えています. 揃っていないと, Dependabot が提案したバージョンを uv がロックできません.
+  - `.github/dependabot.yml` の `cooldown.default-days`
+  - `pyproject.toml` の `[tool.uv] exclude-newer`
+  - `.github/workflows/ci.yml` の `UV_EXCLUDE_NEWER` (`uv tool install` には `pyproject.toml` の設定が適用されないため, 環境変数でも指定しています)
 - CI が通れば Squash マージします. メジャーバージョンの更新を含む場合は, 変更履歴を確認してから判断します.
 - `ruff` は `pyproject.toml` でバージョンを完全に固定しています. Dependabot がこの固定値を更新した PR では, フォーマット差分で CI が落ちることがあります. その場合はその PR のブランチで `uv run ruff format .` を実行し, コミットします.
-- ビルドバックエンドの `uv_build` は, `pyproject.toml` の `[build-system]` で `>=0.X.Y,<0.(X+1)` のように上限を付けています. Dependabot がこの指定を更新するとは限らないため, uv_build の新しいマイナー版が出たら (公開から 7 日以上経ってから) 手動で上限を引き上げる PR (`build(deps): ...`) を出し, `uv build` の成果物に差がないことを確認します.
+- ビルドバックエンドの `uv_build` は, `pyproject.toml` の `[build-system]` で `>=0.X.Y,<0.(X+1)` のように上限を付けています. Dependabot がこの指定を更新するとは限らないため, uv_build の新しいマイナー版が出たら (公開から 3 日以上経ってから) 手動で上限を引き上げる PR (`build(deps): ...`) を出し, `uv build` の成果物に差がないことを確認します.
+
+### セキュリティ更新
+
+依存関係に既知の脆弱性が見つかると, Security タブの Dependabot alerts に通知が届き, 修正版へ更新する PR が週次の PR とは別に作成されます. 推移的依存 (httpx が使う certifi など) も対象です.
+
+- セキュリティ更新には `cooldown` が適用されません. 修正版が出た時点で PR が作成されます.
+- ただし `pyproject.toml` の `exclude-newer` は効くため, 修正版が公開から 3 日未満だと uv がロックできず, PR の作成に失敗することがあります. その場合は 3 日待つか, 急ぐときは次の手順で手動で取り込みます.
+  1. `pyproject.toml` の `[tool.uv]` に `exclude-newer-package = { <パッケージ名> = false }` を追加します.
+  2. `uv lock --upgrade-package <パッケージ名>` を実行し, `chore(deps): ...` の PR を出します.
+  3. 修正版の公開から 3 日が過ぎたら, 追加した指定を削除して `uv lock` を実行する PR を出します. 3 日経つ前に削除すると, 元のバージョンに戻ります.
+
+### ロックファイル全体の更新 (月次)
+
+週次の PR が更新するのは, 主に `pyproject.toml` に書いた直接依存です. 推移的依存は, セキュリティ更新を除いて古いまま残ります. 月に 1 回を目安に, ロックファイル全体を手動で更新します.
+
+```bash
+uv lock --upgrade
+uv sync
+uv audit --frozen   # 既知の脆弱性がないことを確認する (experimental な機能のため警告が出ます)
+uv run pytest
+```
+
+PR タイトルは `chore(deps): ロックファイル全体を更新する` とし, `dependencies` ラベルを付けます.
 
 ## ラベル
 
@@ -326,7 +352,31 @@ PyPI と TestPyPI の管理画面 (Your projects → Manage → Publishing) で,
 | PyPI | `publish.yml` | `pypi` |
 | TestPyPI | `publish-dev.yml` | `testpypi` |
 
-### 8. その他 (任意)
+### 8. セキュリティ機能と Actions の既定権限
+
+Dependabot alerts とセキュリティ更新, Secret scanning と push protection を有効にします.
+
+```bash
+gh api -X PUT "repos/$R/vulnerability-alerts"
+gh api -X PUT "repos/$R/automated-security-fixes"
+gh api -X PATCH "repos/$R" --input - <<'EOF'
+{
+  "security_and_analysis": {
+    "secret_scanning": { "status": "enabled" },
+    "secret_scanning_push_protection": { "status": "enabled" }
+  }
+}
+EOF
+```
+
+`GITHUB_TOKEN` の既定権限を読み取りのみにし, Actions による PR の承認を禁止します. 書き込みが必要なジョブは, 各ワークフローの `permissions` で個別に指定しています.
+
+```bash
+gh api -X PUT "repos/$R/actions/permissions/workflow" \
+  -f default_workflow_permissions=read -F can_approve_pull_request_reviews=false
+```
+
+### 9. その他 (任意)
 
 ```bash
 gh repo edit "$R" --add-topic hotpepper,api-client,python,pydantic,httpx

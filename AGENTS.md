@@ -62,7 +62,7 @@ GitHub Flow を採用しています. 人間向けの詳細は `CONTRIBUTING.md`
 - **CI**: `main` への PR / push で `ci.yml` が実行されます. `tox-uv` で lint・format・型チェックと, Python 3.12 / 3.13 / 3.14 のテストを行います. ブランチ保護の必須チェックは `ci-success` と `pr-title` です.
 - **TestPyPI**: `main` への push で CI が成功すると, 開発版が自動デプロイされます.
 - **本番リリース**: 管理者が `main` 上のコミットに `vMAJOR.MINOR.PATCH` 形式のタグを push した場合のみ実行されます. CI を通した後, PyPI へのリリース, GitHub Release (ノート自動生成), GitHub Pages へのドキュメント更新が行われます. バージョンはビルド時に CI がタグから書き込みます (`pyproject.toml` の `version` はダミー値の `0.0.0` で固定し, 変更しません). エージェントはタグを作成・push しないでください.
-- **依存関係の更新**: Dependabot が毎週 PR を作成します.
+- **依存関係の更新**: Dependabot が毎週 PR を作成します. 公開から 3 日未満のバージョンは取り込みません. `pyproject.toml` の `exclude-newer`, `.github/dependabot.yml` の `cooldown`, `ci.yml` の `UV_EXCLUDE_NEWER` を同じ日数に揃えます.
 
 ## コミットと PR
 

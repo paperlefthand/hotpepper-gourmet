@@ -61,7 +61,9 @@ Issues = "https://github.com/paperlefthand/hotpepper-gourmet/issues"
 Changelog = "https://github.com/paperlefthand/hotpepper-gourmet/releases"
 
 [tool.uv]
-exclude-newer = "1 week"
+# NOTE 公開から 3 日未満のバージョンを取り込まない (サプライチェーン攻撃への備え).
+# .github/dependabot.yml の cooldown, .github/workflows/ci.yml の UV_EXCLUDE_NEWER と揃えること
+exclude-newer = "3 days"
 # NOTE uv 0.10 以前は uv_build 0.13 が生成する sdist を展開できず uv build が失敗する
 required-version = ">=0.11"
 
