@@ -1,16 +1,25 @@
 # 依存関係と GitHub Actions の更新 PR を週次でまとめて作成する.
-# NOTE cooldown は pyproject.toml の [tool.uv] exclude-newer = "1 week" と揃え,
+# NOTE cooldown は pyproject.toml の [tool.uv] exclude-newer = "3 days" と揃え,
 # 公開直後のバージョン (サプライチェーン攻撃のリスクが高い) を避ける.
+# 揃っていないと, Dependabot が提案したバージョンを uv がロックできない.
+# NOTE cooldown はバージョン更新にのみ適用され, セキュリティ更新には適用されない.
 version: 2
 updates:
   - package-ecosystem: uv
     directory: /
     schedule:
       interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Tokyo
     cooldown:
-      default-days: 7
+      default-days: 3
     groups:
       python-dependencies:
+        applies-to: version-updates
+        patterns: ["*"]
+      python-security:
+        applies-to: security-updates
         patterns: ["*"]
     labels: [dependencies]
     commit-message:
@@ -21,10 +30,17 @@ updates:
     directory: /
     schedule:
       interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Tokyo
     cooldown:
-      default-days: 7
+      default-days: 3
     groups:
       github-actions:
+        applies-to: version-updates
+        patterns: ["*"]
+      github-actions-security:
+        applies-to: security-updates
         patterns: ["*"]
     labels: [dependencies]
     commit-message:

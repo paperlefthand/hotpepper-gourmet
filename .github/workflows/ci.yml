@@ -11,6 +11,11 @@ on:
 permissions:
   contents: read
 
+# NOTE uv tool install には pyproject.toml の [tool.uv] が適用されないため, 環境変数でも指定する.
+# 値は pyproject.toml の exclude-newer と揃えること
+env:
+  UV_EXCLUDE_NEWER: "3 days"
+
 # 連続して push された場合に古いジョブをキャンセルする
 concurrency:
   group: ${{ github.workflow }}-ci-${{ github.ref }}
@@ -26,6 +31,8 @@ jobs:
       - uses: astral-sh/setup-uv@v7
         with:
           enable-cache: true
+      - name: Check that uv.lock is up to date
+        run: uv lock --check
       - name: Install tools
         run: uv tool install tox --with tox-uv
       - name: Run lint / format / type
