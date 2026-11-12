@@ -23,10 +23,26 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
           persist-credentials: false
-          fetch-depth: 0 # hatch-vcs のために全履歴を取得
+          fetch-depth: 0 # 最新のリリースタグを取得するため
       - uses: astral-sh/setup-uv@v7
+      # 最新のリリースタグの PATCH を 1 つ上げ, 実行番号を開発版の番号にする (例: v0.0.6 → 0.0.7.dev152)
+      - name: Set the development version
+        run: |
+          tag=$(git tag --list 'v*' --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1)
+          if [ -z "$tag" ]; then
+            echo "::error::no release tag (vMAJOR.MINOR.PATCH) found"
+            exit 1
+          fi
+          IFS=. read -r major minor patch <<< "${tag#v}"
+          version="${major}.${minor}.$((patch + 1)).dev${GITHUB_RUN_NUMBER}"
+          uv version --frozen "$version"
+          echo "VERSION=$version" >> "$GITHUB_ENV"
       - name: Build a binary wheel and a source tarball
         run: uv build
+      - name: Check the version of the distributions
+        run: |
+          test -f "dist/hotpepper_gourmet-${VERSION}-py3-none-any.whl"
+          test -f "dist/hotpepper_gourmet-${VERSION}.tar.gz"
       - name: Store the distribution packages
         uses: actions/upload-artifact@v6
         with:

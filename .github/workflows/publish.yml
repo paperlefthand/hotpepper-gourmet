@@ -10,10 +10,16 @@ permissions:
   contents: read
 
 jobs:
-  # main に取り込まれていないコミットのタグからは公開しない
+  # vMAJOR.MINOR.PATCH 形式でないタグや, main に取り込まれていないコミットのタグからは公開しない
   verify-tag:
     runs-on: ubuntu-latest
     steps:
+      - name: Check the tag format
+        run: |
+          if [[ ! "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::tag must be vMAJOR.MINOR.PATCH: $GITHUB_REF_NAME"
+            exit 1
+          fi
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
@@ -33,10 +39,19 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-          fetch-depth: 0 # hatch-vcs のために全履歴を取得
       - uses: astral-sh/setup-uv@v7
+      # pyproject.toml の version はダミー値 (0.0.0) なので, タグから書き込む
+      - name: Set the version from the tag
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          uv version --frozen "$version"
+          echo "VERSION=$version" >> "$GITHUB_ENV"
       - name: Build a binary wheel and a source tarball
         run: uv build
+      - name: Check the version of the distributions
+        run: |
+          test -f "dist/hotpepper_gourmet-${VERSION}-py3-none-any.whl"
+          test -f "dist/hotpepper_gourmet-${VERSION}.tar.gz"
       - name: Store the distribution packages
         uses: actions/upload-artifact@v6
         with:

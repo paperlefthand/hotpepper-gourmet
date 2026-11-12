@@ -21,7 +21,7 @@
   - `__init__.py`: 公開 API の再エクスポート
   - `py.typed`: 型情報の同梱マーカー
 - テストは `tests/` 配下に配置し, 共通フィクスチャは `tests/conftest.py`, API レスポンスのサンプルは `tests/data/` に置きます.
-- プロジェクト設定は `pyproject.toml` に集約しています (ビルド: `hatchling` + `hatch-vcs`, 依存関係, pytest, ruff).
+- プロジェクト設定は `pyproject.toml` に集約しています (ビルド: `uv_build`, 依存関係, pytest, ruff).
 
 ## 開発コマンド
 
@@ -61,7 +61,7 @@ GitHub Flow を採用しています. 人間向けの詳細は `CONTRIBUTING.md`
 - **機能開発**: `main` から作業ブランチを切り, `main` へ PR を出します. 長期の開発ブランチはありません.
 - **CI**: `main` への PR / push で `ci.yml` が実行されます. `tox-uv` で lint・format・型チェックと, Python 3.12 / 3.13 / 3.14 のテストを行います. ブランチ保護の必須チェックは `ci-success` と `pr-title` です.
 - **TestPyPI**: `main` への push で CI が成功すると, 開発版が自動デプロイされます.
-- **本番リリース**: 管理者が `main` 上のコミットに `vMAJOR.MINOR.PATCH` 形式のタグを push した場合のみ実行されます. CI を通した後, PyPI へのリリース, GitHub Release (ノート自動生成), GitHub Pages へのドキュメント更新が行われます. バージョンは `hatch-vcs` によりタグから決定されます. エージェントはタグを作成・push しないでください.
+- **本番リリース**: 管理者が `main` 上のコミットに `vMAJOR.MINOR.PATCH` 形式のタグを push した場合のみ実行されます. CI を通した後, PyPI へのリリース, GitHub Release (ノート自動生成), GitHub Pages へのドキュメント更新が行われます. バージョンはビルド時に CI がタグから書き込みます (`pyproject.toml` の `version` はダミー値の `0.0.0` で固定し, 変更しません). エージェントはタグを作成・push しないでください.
 - **依存関係の更新**: Dependabot が毎週 PR を作成します.
 
 ## コミットと PR
