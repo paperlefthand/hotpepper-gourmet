@@ -1,6 +1,7 @@
 [project]
 name = "hotpepper-gourmet"
-dynamic = ["version"]
+# NOTE ダミー値. リリース時は CI がタグからバージョンを書き込んでからビルドする (publish.yml / publish-dev.yml)
+version = "0.0.0"
 description = "A simple Python client of Hotpepper API"
 authors = [{ name = "Miura Kosuke" }]
 maintainers = [{ name = "Miura Kosuke" }]
@@ -9,7 +10,6 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "Framework :: Pydantic :: 2",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Natural Language :: Japanese",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
@@ -20,7 +20,8 @@ classifiers = [
     "Typing :: Typed",
 ]
 readme = "README.md"
-license = { file = "LICENSE.txt" }
+license = "MIT"
+license-files = ["LICENSE.txt"]
 
 requires-python = ">=3.12"
 
@@ -40,7 +41,6 @@ dev = [
     # NOTE tox はロックファイルを使わないため, ローカルと CI で結果を一致させるよう完全固定する
     "ruff==0.16.10",
     "prek>=0.3.2",
-    "hatch-vcs>=0.5.0",
     "pdoc>=16.0.0",
 ]
 test = [
@@ -62,6 +62,12 @@ Changelog = "https://github.com/paperlefthand/hotpepper-gourmet/releases"
 
 [tool.uv]
 exclude-newer = "1 week"
+# NOTE uv 0.10 以前は uv_build 0.13 が生成する sdist を展開できず uv build が失敗する
+required-version = ">=0.11"
+
+[tool.uv.build-backend]
+# 配布名 (hotpepper-gourmet) とモジュール名が異なるため明示する
+module-name = "pygourmet"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -77,19 +83,7 @@ target-version = "py312"
 [tool.ruff.lint]
 ignore = ["E741"] # 1文字変数を許容
 
-[tool.hatch.version]
-source = "vcs"
-# tagは vMAJOR.MINOR.PATCH の形式だけ許す
-tag-pattern = "^v(?P<version>\\d+\\.\\d+\\.\\d+)$"
-
-[tool.hatch.version.raw-options]
-# NOTE pypiにアップロードする際のtagの命名規則に従うため, 
-# ローカルバージョンを付与しない設定にする
-local_scheme = "no-local-version"
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/pygourmet"]
-
 [build-system]
-requires = ["hatchling>=1.26.0", "hatch-vcs>=0.4.0"]
-build-backend = "hatchling.build"
+# NOTE uv 公式の推奨に従い上限を付ける. 新しいマイナー版が出たら上限を引き上げる (MAINTAINING.md)
+requires = ["uv_build>=0.13.6,<0.14"]
+build-backend = "uv_build"

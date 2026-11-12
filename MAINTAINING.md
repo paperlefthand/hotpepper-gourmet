@@ -27,7 +27,7 @@ Issue → ブランチ → PR (タイトル = Conventional Commits)
 | --- | --- | --- |
 | `ci.yml` | main 宛ての PR / main への push / publish.yml からの呼び出し | lint・format・型チェック・3.12〜3.14 のテスト |
 | `pr-title.yml` | PR の作成・編集 | PR タイトルの検査と種類ラベルの付与 |
-| `publish-dev.yml` | main への push で ci が成功した後 | TestPyPI へ開発版 (`X.Y.Z.devN`) を公開 |
+| `publish-dev.yml` | main への push で ci が成功した後 | TestPyPI へ開発版 (`X.Y.Z.devN`) を公開. `X.Y.Z` は最新タグの PATCH を 1 つ上げたもの, `N` はこのワークフローの実行番号 |
 | `publish.yml` | `v*` タグの push | PyPI 公開, 署名, GitHub Release, ドキュメント更新 |
 | `docs.yml` | publish.yml からの呼び出し / 手動 | pdoc で生成したドキュメントを GitHub Pages へデプロイ |
 | `integration.yml` | 毎週月曜 / 手動 | 本番 API に対する統合テスト |
@@ -78,7 +78,8 @@ git tag -a vX.Y.Z -m "vX.Y.Z"
 git push origin vX.Y.Z
 ```
 
-- タグは `vMAJOR.MINOR.PATCH` 形式のみ有効です (`pyproject.toml` の `tag-pattern`). パッケージのバージョンは `hatch-vcs` がタグから決めます.
+- タグは `vMAJOR.MINOR.PATCH` 形式のみ有効です. それ以外の形式は `publish.yml` の `verify-tag` ジョブで止まります.
+- パッケージのバージョンは, `publish.yml` がビルド前にタグから `uv version --frozen` で書き込みます. `pyproject.toml` の `version` はダミー値の `0.0.0` で固定しているため, リリース前にバージョンを上げる PR は不要です (ローカルの開発環境では常に `0.0.0` と表示されます).
 - main に含まれないコミットにタグを付けると, `publish.yml` の `verify-tag` ジョブで止まります.
 
 ### 4. 公開を確認する
@@ -97,6 +98,7 @@ gh run watch "$(gh run list --workflow publish.yml --limit 1 --json databaseId -
 ### 5. 失敗したとき
 
 - **PyPI への公開前に失敗した場合** (verify-tag, ci, build): main で修正し, タグを付け直します.
+  - build の `Check the version of the distributions` で失敗した場合は, タグから書き込んだバージョンが成果物に反映されていません. `pyproject.toml` の `version` が `dynamic` になっていないかなどを確認します.
 
   ```bash
   git push --delete origin vX.Y.Z
@@ -132,6 +134,7 @@ gh run watch "$(gh run list --workflow publish.yml --limit 1 --json databaseId -
 - 公開から 7 日未満のバージョンは提案されません (`cooldown`). `pyproject.toml` の `exclude-newer = "1 week"` と揃えています.
 - CI が通れば Squash マージします. メジャーバージョンの更新を含む場合は, 変更履歴を確認してから判断します.
 - `ruff` は `pyproject.toml` でバージョンを完全に固定しています. Dependabot がこの固定値を更新した PR では, フォーマット差分で CI が落ちることがあります. その場合はその PR のブランチで `uv run ruff format .` を実行し, コミットします.
+- ビルドバックエンドの `uv_build` は, `pyproject.toml` の `[build-system]` で `>=0.X.Y,<0.(X+1)` のように上限を付けています. Dependabot がこの指定を更新するとは限らないため, uv_build の新しいマイナー版が出たら (公開から 7 日以上経ってから) 手動で上限を引き上げる PR (`build(deps): ...`) を出し, `uv build` の成果物に差がないことを確認します.
 
 ## ラベル
 

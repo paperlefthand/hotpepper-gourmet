@@ -21,7 +21,7 @@ typo の修正などの小さな変更は, いきなり PR を出してもらっ
 
 ## 開発環境の構築
 
-[uv](https://docs.astral.sh/uv/) を使います. 推奨する開発用の Python バージョンは `.python-version` に記載しています (現在は 3.14).
+[uv](https://docs.astral.sh/uv/) 0.11 以降を使います (古い場合は `uv self update` で更新してください). 推奨する開発用の Python バージョンは `.python-version` に記載しています (現在は 3.14).
 
 ```bash
 # 1. リポジトリを fork して clone する

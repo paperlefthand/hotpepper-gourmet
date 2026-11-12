@@ -15,7 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          fetch-depth: 0 # hatch-vcs のために全履歴を取得
           persist-credentials: false
       - uses: astral-sh/setup-uv@v7
         with:
