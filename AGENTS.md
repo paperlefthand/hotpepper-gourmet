@@ -38,7 +38,7 @@
 | フォーマット | `uv run ruff format .` |
 | コミット前チェック (ruff check/format) | `uv run prek run --all-files` |
 | API ドキュメント生成 | `uv run pdoc src/pygourmet` |
-| CI 相当の検証 | `uv run tox -e lint,type,py3.14` |
+| CI 相当の検証 | `uvx --with tox-uv tox -e lint,format,type,py3.14` |
 
 ## コーディング規約
 
