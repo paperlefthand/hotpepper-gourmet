@@ -72,11 +72,20 @@ gh api "repos/$R/releases/generate-notes" -f tag_name=vX.Y.Z -f target_commitish
 あわせて, PR タイトルからは読み取れない **利用者への影響** がないかを確認します. 代表的なのは, 実行時の依存ライブラリや Python バージョンの下限の変更です. 依存関係の更新 PR は「⬆️ 依存関係」にまとめられるため, 利用者の環境に影響することがノートから分かりません.
 
 ```bash
-git diff "$(git describe --tags --abbrev=0 origin/main)" origin/main -- pyproject.toml \
-  | grep -E '^[-+](dependencies|requires-python)'
+runtime_deps() {
+  git show "$1:pyproject.toml" | uv run --no-project python -c '
+import sys, tomllib
+p = tomllib.load(sys.stdin.buffer)["project"]
+print("requires-python", p.get("requires-python"))
+print(*sorted(p.get("dependencies", [])), sep="\n")
+for extra, deps in sorted(p.get("optional-dependencies", {}).items()):
+    print(*(f"[{extra}] {d}" for d in sorted(deps)), sep="\n")
+'
+}
+diff <(runtime_deps "$(git describe --tags --abbrev=0 origin/main)") <(runtime_deps origin/main)
 ```
 
-出力があれば, 手順 5 でリリースノートに補足を追記します.
+`pyproject.toml` を TOML として読むため, 書式 (1 行か複数行か) に関係なく `[project]` の `requires-python`, `dependencies`, `optional-dependencies` だけを比べます. 開発用の `[dependency-groups]` は利用者に影響しないので対象外です. `<` が前回のリリース, `>` が main の値です. 出力があれば, 手順 5 でリリースノートに補足を追記します.
 
 ### 3. タグを push する
 
@@ -108,11 +117,14 @@ gh run watch "$(gh run list --workflow publish.yml --limit 1 --json databaseId -
 自動生成のノートには PR の一覧しか載りません. 手順 2 で利用者への影響が見つかった場合は, 公開後にノートの先頭へ補足を追記します. 署名ファイルなどの添付はそのまま残ります.
 
 ```bash
-gh release view vX.Y.Z --json body --jq .body > notes.md
-# notes.md の先頭に補足を書き足す (下の例を参照)
-gh release edit vX.Y.Z --notes-file notes.md
-rm notes.md
+notes="$(mktemp)"
+gh release view vX.Y.Z --json body --jq .body > "$notes"
+"${EDITOR:-vi}" "$notes"  # 先頭に補足を書き足す (下の例を参照)
+gh release edit vX.Y.Z --notes-file "$notes"
+rm "$notes"
 ```
+
+ノートは一時ファイルに書き出すため, 途中で中断してもリポジトリに残りません.
 
 補足の例 (v0.0.6 で追記したもの):
 
