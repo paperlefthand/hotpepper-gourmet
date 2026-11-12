@@ -12,7 +12,7 @@ R=paperlefthand/hotpepper-gourmet
 
 ```text
 Issue → ブランチ → PR (タイトル = Conventional Commits)
-  → 必須チェック: ci-success (ci.yml) / pr-title (pr-title.yml)
+  → 必須チェック: ci-success (ci.yml) / pr-title (pr-title.yml) / verify-lockfile (verify-lockfile.yml)
   → Squash マージ (PR タイトルがコミットになり, 種類ラベルが自動で付く)
   → main への push: ci 成功後に TestPyPI へ開発版を公開 (publish-dev.yml)
   → vX.Y.Z タグの push: main 上か検証 → ci → PyPI 公開 → Sigstore 署名
@@ -27,6 +27,7 @@ Issue → ブランチ → PR (タイトル = Conventional Commits)
 | --- | --- | --- |
 | `ci.yml` | main 宛ての PR / main への push / publish.yml からの呼び出し | lint・format・型チェック・3.12〜3.14 のテスト |
 | `pr-title.yml` | PR の作成・編集 | PR タイトルの検査と種類ラベルの付与 |
+| `verify-lockfile.yml` | main 宛ての PR / main への push | `actions.lock` がワークフローと一致しているかの検証 |
 | `publish-dev.yml` | main への push で ci が成功した後 | TestPyPI へ開発版 (`X.Y.Z.devN`) を公開. `X.Y.Z` は最新タグの PATCH を 1 つ上げたもの, `N` はこのワークフローの実行番号 |
 | `publish.yml` | `v*` タグの push | PyPI 公開, 署名, GitHub Release, ドキュメント更新 |
 | `docs.yml` | publish.yml からの呼び出し / 手動 | pdoc で生成したドキュメントを GitHub Pages へデプロイ |
@@ -34,7 +35,7 @@ Issue → ブランチ → PR (タイトル = Conventional Commits)
 
 ## PR のレビューとマージ
 
-1. 必須チェックの `ci-success` と `pr-title` が通っていることを確認します.
+1. 必須チェックの `ci-success`, `pr-title`, `verify-lockfile` が通っていることを確認します.
 2. PR タイトルが変更内容を正しく表しているかを確認します. 必要なら, マージ前にメンテナーがタイトルを直接編集します (編集すると `pr-title` が再実行されます).
    - 公開 API (`Api` / `Option` / `Shop` / `SearchError`) の互換性を壊す変更なら, タイトルに `!` が付いているか (`breaking-change` ラベルが付いたか) を確認します.
 3. ラベルを確認します. `feat` / `fix` / `docs` / `!` には自動でラベルが付きます. リリースノートでの分類を変えたい場合は手動で付け替えます.
@@ -183,6 +184,7 @@ rm "$notes"
   - `pyproject.toml` の `[tool.uv] exclude-newer`
   - `.github/workflows/ci.yml` の `UV_EXCLUDE_NEWER` (`uv tool install` には `pyproject.toml` の設定が適用されないため, 環境変数でも指定しています)
 - CI が通れば Squash マージします. メジャーバージョンの更新を含む場合は, 変更履歴を確認してから判断します.
+- GitHub Actions の更新 PR には, ワークフローの `uses:` に加えて `actions.lock` の差分が含まれます. 更新したアクションのコミットが変わっていること, 無関係なアクションのコミットが変わっていないことを確認します (下記「GitHub Actions のロックファイル」).
 - `ruff` は `pyproject.toml` でバージョンを完全に固定しています. Dependabot がこの固定値を更新した PR では, フォーマット差分で CI が落ちることがあります. その場合はその PR のブランチで `uv run ruff format .` を実行し, コミットします.
 - ビルドバックエンドの `uv_build` は, `pyproject.toml` の `[build-system]` で `>=0.X.Y,<0.(X+1)` のように上限を付けています. Dependabot がこの指定を更新するとは限らないため, uv_build の新しいマイナー版が出たら (公開から 3 日以上経ってから) 手動で上限を引き上げる PR (`build(deps): ...`) を出し, `uv build` の成果物に差がないことを確認します.
 
@@ -208,6 +210,31 @@ uv run pytest
 ```
 
 PR タイトルは `chore(deps): ロックファイル全体を更新する` とし, `dependencies` ラベルを付けます.
+
+## GitHub Actions のロックファイル
+
+ワークフローが使うアクションは, `.github/workflows/actions.lock` でコミットに固定しています. タグが別のコミットに付け替えられても, ロックしたコミットが実行されます. アクションが内部で呼び出すアクション (推移的依存) も対象です.
+
+- ワークフローの `uses:` には `actions/checkout@v7.0.1` のような完全なバージョンタグを書きます. `@v7` のような指定は `gh actions-lock` が完全なタグに書き換えます. ブランチ名 (`@release/v1` など) は Dependabot が更新できないため使いません.
+- `actions.lock` は手で編集しません. [gh-actions-lock](https://github.com/github/gh-actions-lock) で生成します.
+- `verify-lockfile` (必須チェック) が, ロックファイルとワークフローのずれを検出します. ロックファイルが古いままマージすると, そのワークフローは起動時に失敗 (`startup_failure`) します.
+
+### ワークフローの `uses:` を追加・変更したとき
+
+```bash
+gh extension install github/gh-actions-lock --pin v0.4.1   # 初回のみ
+gh actions-lock            # actions.lock を更新する (@v7 のような指定は完全なタグに書き換わる)
+gh actions-lock --verify   # CI と同じ検証
+git add .github/workflows/
+```
+
+ワークフローと `actions.lock` は同じコミットに含めます. Dependabot の PR では, Dependabot が `actions.lock` も更新します. ただし新しく追加したワークフローは Dependabot がロックしないため, 追加時に上記を実行します.
+
+### 注意点
+
+- `pypa/gh-action-pypi-publish` は実行時に Docker イメージを使います. コンテナイメージはロックの対象外です. `gh actions-lock` の `Cannot follow 2 workspace-local actions` という警告はこのためで, 対応は不要です.
+- 拡張のバージョンを上げるときは, `verify-lockfile.yml` の `--pin` とこの手順の `--pin` を揃えます. 上げたあとに検証が失敗する場合は, `gh actions-lock --relock` でロックファイルを作り直し, 差分を確認します.
+- `gh actions-lock --accept-moved` は, ロックしたコミットが参照先から消えた場合にそれを受け入れるオプションです. 理由 (タグの付け替えなど) を確認するまで使いません.
 
 ## ラベル
 
@@ -241,7 +268,7 @@ gh api -X PATCH "repos/$R" \
 クラシックなブランチ保護を削除し, ルールセットに置き換えます. 内容は次のとおりです.
 
 - PR を必須にする (承認数 0, Squash のみ)
-- 必須チェックは `ci-success` と `pr-title`
+- 必須チェックは `ci-success`, `pr-title`, `verify-lockfile`
 - force push と削除を禁止する
 - 管理者は PR 経由でのみバイパスできる (`actor_id: 5` は Admin ロール)
 
@@ -274,7 +301,11 @@ gh api -X POST "repos/$R/rulesets" --input - <<'EOF'
       "type": "required_status_checks",
       "parameters": {
         "strict_required_status_checks_policy": false,
-        "required_status_checks": [{ "context": "ci-success" }, { "context": "pr-title" }]
+        "required_status_checks": [
+          { "context": "ci-success" },
+          { "context": "pr-title" },
+          { "context": "verify-lockfile" }
+        ]
       }
     }
   ]
