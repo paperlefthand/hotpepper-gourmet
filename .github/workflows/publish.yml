@@ -20,7 +20,7 @@ jobs:
             echo "::error::tag must be vMAJOR.MINOR.PATCH: $GITHUB_REF_NAME"
             exit 1
           fi
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
           fetch-depth: 0
@@ -36,10 +36,10 @@ jobs:
     needs: ci
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
-      - uses: astral-sh/setup-uv@v7
+      - uses: astral-sh/setup-uv@v7.6.0
       # pyproject.toml の version はダミー値 (0.0.0) なので, タグから書き込む
       - name: Set the version from the tag
         run: |
@@ -53,7 +53,7 @@ jobs:
           test -f "dist/hotpepper_gourmet-${VERSION}-py3-none-any.whl"
           test -f "dist/hotpepper_gourmet-${VERSION}.tar.gz"
       - name: Store the distribution packages
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: python-package-distributions
           path: dist/
@@ -70,12 +70,12 @@ jobs:
 
     steps:
       - name: Download all the dists
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v8.0.2
         with:
           name: python-package-distributions
           path: dist/
       - name: Publish distribution 📦 to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@v1.14.3
         with:
           verbose: true
 
@@ -91,7 +91,7 @@ jobs:
       id-token: write # IMPORTANT: mandatory for sigstore
     steps:
       - name: Download all the dists
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@v8.0.2
         with:
           name: python-package-distributions
           path: dist/

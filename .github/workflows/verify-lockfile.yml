@@ -1,0 +1,29 @@
+name: verify-lockfile
+
+# .github/workflows/actions.lock がワークフローの uses: と一致しているか,
+# ロックしたコミットが参照先のリポジトリに実在するかを検証する.
+# uses: を追加・変更したら gh actions-lock を実行し, actions.lock を一緒にコミットすること (MAINTAINING.md).
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  # ブランチ保護の必須チェックに指定する
+  verify-lockfile:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      # NOTE 拡張のバージョンを上げるときは, ローカルの拡張も同じバージョンに揃える
+      - name: Install gh-actions-lock
+        run: gh extension install github/gh-actions-lock --pin v0.4.1
+      - name: Verify actions.lock
+        run: gh actions-lock --verify

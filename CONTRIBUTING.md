@@ -82,6 +82,13 @@ uv run pytest                 # 単体テスト
 
 `Option` や `Shop` を変更した場合は, [API リファレンス](https://webservice.recruit.co.jp/doc/hotpepper/reference.html) と照合してください.
 
+`.github/workflows/` の `uses:` を追加・変更した場合は, [gh-actions-lock](https://github.com/github/gh-actions-lock) で `actions.lock` を更新し, 一緒にコミットしてください. 更新していないと `verify-lockfile` が失敗します.
+
+```bash
+gh extension install github/gh-actions-lock --pin v0.4.1   # 初回のみ
+gh actions-lock
+```
+
 ## コーディング規約とテスト方針
 
 コーディング規約 (型注釈, docstring, 後方互換性) とテスト方針は [AGENTS.md](AGENTS.md) にまとめています. AGENTS.md は人間と AI エージェントの共通ガイドです. 要点は次のとおりです.
