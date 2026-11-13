@@ -3,11 +3,17 @@ name: verify-lockfile
 # .github/workflows/actions.lock がワークフローの uses: と一致しているか,
 # ロックしたコミットが参照先のリポジトリに実在するかを検証する.
 # uses: を追加・変更したら gh actions-lock を実行し, actions.lock を一緒にコミットすること (MAINTAINING.md).
+#
+# NOTE リポジトリに変更がない期間でも, 参照先でのタグの付け替えやコミットの消失を
+# 検知できるよう, 週次でも実行する. 失敗時の対処は MAINTAINING.md を参照.
 on:
   pull_request:
     branches: [main]
   push:
     branches: [main]
+  schedule:
+    - cron: "0 0 * * 1" # 毎週月曜 09:00 JST
+  workflow_dispatch:
 
 permissions:
   contents: read

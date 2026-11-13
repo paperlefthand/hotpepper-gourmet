@@ -21,13 +21,14 @@ Issue → ブランチ → PR (タイトル = Conventional Commits)
 定期実行:
   - Dependabot: 依存関係と Actions の更新 PR (毎週)
   - integration.yml: 本番 API への統合テスト (毎週月曜 09:00 JST). 失敗すると api-change Issue を起票する
+  - verify-lockfile.yml: actions.lock の検証 (毎週月曜 09:00 JST). 失敗すると GitHub からメールで通知される
 ```
 
 | ワークフロー | 起動条件 | 役割 |
 | --- | --- | --- |
 | `ci.yml` | main 宛ての PR / main への push / publish.yml からの呼び出し | lint・format・型チェック・3.12〜3.14 のテスト |
 | `pr-title.yml` | PR の作成・編集 | PR タイトルの検査と種類ラベルの付与 |
-| `verify-lockfile.yml` | main 宛ての PR / main への push | `actions.lock` がワークフローと一致しているかの検証 |
+| `verify-lockfile.yml` | main 宛ての PR / main への push / 毎週月曜 / 手動 | `actions.lock` がワークフローと一致しているか, ロックしたコミットが参照先に実在するかの検証 |
 | `publish-dev.yml` | main への push で ci が成功した後 | TestPyPI へ開発版 (`X.Y.Z.devN`) を公開. `X.Y.Z` は最新タグの PATCH を 1 つ上げたもの, `N` はこのワークフローの実行番号 |
 | `publish.yml` | `v*` タグの push | PyPI 公開, 署名, GitHub Release, ドキュメント更新 |
 | `docs.yml` | publish.yml からの呼び出し / 手動 | pdoc で生成したドキュメントを GitHub Pages へデプロイ |
@@ -211,6 +212,12 @@ uv run pytest
 
 PR タイトルは `chore(deps): ロックファイル全体を更新する` とし, `dependencies` ラベルを付けます.
 
+あわせて, gh-actions-lock 拡張の新しいバージョンが出ていないかを確認します. 拡張は Dependabot の対象外です. 更新の手順は下記「GitHub Actions のロックファイル」の注意点にあります.
+
+```bash
+gh api repos/github/gh-actions-lock/releases/latest --jq .tag_name
+```
+
 ## GitHub Actions のロックファイル
 
 ワークフローが使うアクションは, `.github/workflows/actions.lock` でコミットに固定しています. タグが別のコミットに付け替えられても, ロックしたコミットが実行されます. アクションが内部で呼び出すアクション (推移的依存) も対象です.
@@ -229,6 +236,22 @@ git add .github/workflows/
 ```
 
 ワークフローと `actions.lock` は同じコミットに含めます. Dependabot の PR では, Dependabot が `actions.lock` も更新します. ただし新しく追加したワークフローは Dependabot がロックしないため, 追加時に上記を実行します.
+
+`uv run prek install` 済みの環境では, `.github/workflows/` を変更したコミットで prek が `gh actions-lock --verify-local` を実行し, ロックし忘れを検出します. これはオフラインの検査で, ロックしたコミットが参照先に実在するかまでは確認しません. 拡張が入っていない環境ではスキップされます.
+
+### `actions.lock` の差分の見方
+
+- `commit` の変更は, ワークフローが実行するコードの変更です. 依存のバージョン更新と同じように, 更新先のリリース内容を確認します.
+- `owner_id` / `repo_id` の変更は, 同じ名前のリポジトリが別のものに差し替わったことを意味します. めったに起きません. 理由が分かるまでマージしません.
+- 更新していないアクションの行が変わっている場合も, 理由を確認します.
+
+### 週次の検証が失敗したとき
+
+リポジトリに変更がないのに `verify-lockfile` の定期実行が失敗した場合は, 参照先のリポジトリで何かが変わっています. Actions タブのログで, どのアクションが原因かを確認します.
+
+1. 該当アクションのリポジトリで, タグやリリースの履歴を確認します. タグが付け替えられていないか, リポジトリが移管されていないかを見ます.
+2. 正当な変更 (メンテナーによるタグの付け直しなど) と確認できたら, `gh actions-lock --relock` でロックファイルを作り直し, 差分を確認して PR を出します.
+3. 理由が分からない場合は, そのアクションを使うワークフロー (特に `publish.yml`) を実行しません. タグの push によるリリースも控えます.
 
 ### 注意点
 
@@ -407,7 +430,20 @@ gh api -X PUT "repos/$R/actions/permissions/workflow" \
   -f default_workflow_permissions=read -F can_approve_pull_request_reviews=false
 ```
 
-### 9. その他 (任意)
+### 9. Require lockfile ポリシー (未設定)
+
+`actions.lock` に載っていないワークフローを, GitHub 側で起動時にブロックするポリシーです. `verify-lockfile` は PR 自身がワークフローを書き換えられますが, このポリシーはリポジトリ設定なので書き換えられません.
+
+**まだ有効にしていません.** Dependabot の Actions の更新 PR で `actions.lock` が自動で更新されることを確認してから有効にします. API では設定できないため, 画面から行います.
+
+1. Settings → Actions → Policies → New policy を開きます.
+2. Require lockfile にチェックを入れ, Enforcement status を Active, 対象を全ワークフローにします. 試行用の Evaluate は GitHub Enterprise Cloud でしか使えません.
+3. 有効にした直後に, `ci` / `verify-lockfile` / `publish-dev` / `integration` / `website` と CodeQL が実行できることを確認します. ブロックされたワークフローは `startup_failure` になり, PR のチェック一覧には出ません. Actions タブで確認します.
+4. 実行できないものがあれば, ポリシーを無効に戻して原因を調べます.
+
+なお, ワークフローにコミット SHA を直接書く必要はありません. ロックファイルがその役割を担うため, 「Require actions to be pinned to a full-length commit SHA」の設定も使っていません.
+
+### 10. その他 (任意)
 
 ```bash
 gh repo edit "$R" --add-topic hotpepper,api-client,python,pydantic,httpx
