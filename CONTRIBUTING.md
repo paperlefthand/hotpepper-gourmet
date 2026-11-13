@@ -89,6 +89,8 @@ gh extension install github/gh-actions-lock --pin v0.4.1   # 初回のみ
 gh actions-lock
 ```
 
+`uv run prek install` を済ませていれば, ワークフローを変更したコミットで更新漏れを検査します (拡張が入っていない場合はスキップされます).
+
 ## コーディング規約とテスト方針
 
 コーディング規約 (型注釈, docstring, 後方互換性) とテスト方針は [AGENTS.md](AGENTS.md) にまとめています. AGENTS.md は人間と AI エージェントの共通ガイドです. 要点は次のとおりです.

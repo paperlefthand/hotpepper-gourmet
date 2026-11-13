@@ -7,4 +7,7 @@ hooks = [
     { id = "ruff-check", name = "ruff check", language = "system", entry = "uv run ruff check --fix", types_or = ["python", "pyi"] },
     # Run the formatter (ruff 0.16 以降は Markdown 内のコードブロックも対象).
     { id = "ruff-format", name = "ruff format", language = "system", entry = "uv run ruff format", types_or = ["python", "pyi", "markdown"] },
+    # ワークフローを変更したとき, actions.lock が全ワークフローを網羅しているかをオフラインで検査する.
+    # NOTE gh-actions-lock が未インストールの環境ではスキップする. 強制は CI の verify-lockfile が担う.
+    { id = "actions-lock", name = "actions.lock coverage", language = "system", entry = "bash -c 'if gh actions-lock --help >/dev/null 2>&1; then gh actions-lock --verify-local; else echo \"gh-actions-lock is not installed; skipped (see CONTRIBUTING.md)\"; fi'", files = '^\.github/workflows/', pass_filenames = false, verbose = true },
 ]
