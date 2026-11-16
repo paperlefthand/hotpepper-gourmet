@@ -430,16 +430,24 @@ gh api -X PUT "repos/$R/actions/permissions/workflow" \
   -f default_workflow_permissions=read -F can_approve_pull_request_reviews=false
 ```
 
-### 9. Require lockfile ポリシー (未設定)
+### 9. Require lockfile ポリシー
 
-`actions.lock` に載っていないワークフローを, GitHub 側で起動時にブロックするポリシーです. `verify-lockfile` は PR 自身がワークフローを書き換えられますが, このポリシーはリポジトリ設定なので書き換えられません.
+`actions.lock` に載っていないワークフローを, GitHub 側で起動時にブロックするポリシーです. `verify-lockfile` は PR 自身がワークフローを書き換えられますが, このポリシーはリポジトリ設定なので書き換えられません. 2026-11-16 に有効にしました (ポリシー名 `require actions.lock`).
 
-**まだ有効にしていません.** Dependabot の Actions の更新 PR で `actions.lock` が自動で更新されることを確認してから有効にします. API では設定できないため, 画面から行います.
+作成は画面から行います. 試行用の Evaluate は GitHub Enterprise Cloud でしか使えないため, 最初から Active にします.
 
 1. Settings → Actions → Policies → New policy を開きます.
-2. Require lockfile にチェックを入れ, Enforcement status を Active, 対象を全ワークフローにします. 試行用の Evaluate は GitHub Enterprise Cloud でしか使えません.
-3. 有効にした直後に, `ci` / `verify-lockfile` / `publish-dev` / `integration` / `website` と CodeQL が実行できることを確認します. ブロックされたワークフローは `startup_failure` になり, PR のチェック一覧には出ません. Actions タブで確認します.
+2. Require lockfile にチェックを入れ, Enforcement status を Active, 対象を全ワークフローにします.
+3. 有効にした直後に, `ci` / `pr-title` / `verify-lockfile` / `publish-dev` / `integration` / `website` と CodeQL が実行できることを確認します. ブロックされたワークフローは `startup_failure` になり, PR のチェック一覧には出ません. Actions タブで確認します.
 4. 実行できないものがあれば, ポリシーを無効に戻して原因を調べます.
+
+設定内容は API で確認できます.
+
+```bash
+gh api "repos/$R/actions/policies" --jq '.policies[] | {name, enforcement}'
+```
+
+このポリシーが有効なため, **新しいワークフローを追加するときは, 必ず `gh actions-lock` でロックしてからマージします.** ロックしていないワークフローは, `uses:` が 1 つもなくても起動できません.
 
 なお, ワークフローにコミット SHA を直接書く必要はありません. ロックファイルがその役割を担うため, 「Require actions to be pinned to a full-length commit SHA」の設定も使っていません.
 
