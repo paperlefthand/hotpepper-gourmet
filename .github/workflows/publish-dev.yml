@@ -24,7 +24,7 @@ jobs:
           ref: ${{ github.event.workflow_run.head_sha }}
           persist-credentials: false
           fetch-depth: 0 # 最新のリリースタグを取得するため
-      - uses: astral-sh/setup-uv@v7.6.0
+      - uses: astral-sh/setup-uv@v10.3.3
       # 最新のリリースタグの PATCH を 1 つ上げ, 実行番号を開発版の番号にする (例: v0.0.6 → 0.0.7.dev152)
       - name: Set the development version
         run: |

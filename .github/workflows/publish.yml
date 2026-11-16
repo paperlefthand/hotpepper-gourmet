@@ -39,7 +39,7 @@ jobs:
       - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
-      - uses: astral-sh/setup-uv@v7.6.0
+      - uses: astral-sh/setup-uv@v10.3.3
       # pyproject.toml の version はダミー値 (0.0.0) なので, タグから書き込む
       - name: Set the version from the tag
         run: |
