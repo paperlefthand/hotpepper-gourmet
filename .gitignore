@@ -224,5 +224,6 @@ __marimo__/
 .sandbox*.py
 
 # AI エージェントの個人設定 (コミットしない)
-CLAUDE.local.md
+# NOTE CLAUDE.local.md はあえて無視しない. 置くと Claude Code が AGENTS.md を読まなくなるため,
+# git status に表示させて気づけるようにする (コミットは prek と CI で拒否する)
 .claude/settings.local.json

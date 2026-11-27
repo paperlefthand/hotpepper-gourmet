@@ -2,10 +2,12 @@
 
 [ホットペッパーグルメ API](https://webservice.recruit.co.jp/doc/hotpepper/reference.html) の Python クライアントライブラリです.
 
-このファイルは, 人間と AI エージェント (Claude Code, Codex, Copilot など) に共通する開発規約です. 特定のツールに依存する設定や手順はここに書きません. 層ごとの詳細な規約は次のファイルにあり, 各ディレクトリで作業するときに読み込まれます.
+このファイルは, 人間と AI エージェント (Claude Code, Codex, Copilot など) に共通する開発規約です. 特定のツールに依存する設定や手順はここに書きません.
 
-- `src/AGENTS.md`: ライブラリコードの実装規約
-- `tests/AGENTS.md`: テストの作成規約
+層ごとの詳細な規約は次のファイルにあります. 自動で読み込まれるかはツールによって異なるため, 該当するディレクトリのファイルを変更する前に必ず読んでください.
+
+- `src/AGENTS.md`: ライブラリコード (`src/pygourmet/`) の実装規約
+- `tests/AGENTS.md`: テスト (`tests/`) の作成規約
 
 ## プロダクト方針
 
@@ -61,5 +63,6 @@
 - `pyproject.toml` の `version` (ダミー値 `0.0.0`) を変更しない.
 - `.github/workflows/actions.lock` を手で編集しない. ワークフローの `uses:` を変更する場合は `gh actions-lock` で再生成します.
 - 依存関係のクールダウン日数 (`exclude-newer` など) を変更しない.
+- `CLAUDE.md` や `CLAUDE.local.md` を作らない (どの階層にも). 規約は AGENTS.md に書きます. Claude Code はこれらがあると AGENTS.md を読まなくなるため, CI でも拒否します.
 
 CI/CD・リリース・依存関係更新の仕組みはメンテナー向けの `MAINTAINING.md` にあります.

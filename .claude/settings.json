@@ -33,6 +33,9 @@
       "Bash(git status:*)",
       "Bash(git log:*)"
     ],
+    "ask": [
+      "Bash(*--run-integration*)"
+    ],
     "deny": [
       "Read(./.env)",
       "Read(./.env.*)"

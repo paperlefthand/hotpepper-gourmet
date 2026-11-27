@@ -115,11 +115,14 @@ GitHub Copilot や Claude Code などの AI ツールを使った貢献も歓迎
 
 Claude Code を使う場合は次の点に注意してください.
 
-- AGENTS.md を直接読むには **v2.1.277 以降**が必要です. セッション開始時に `/context` を実行し, Memory files に `AGENTS.md` が表示されることを確認してください.
-- **`CLAUDE.md` や `CLAUDE.local.md` をリポジトリ内に置かないでください.** どちらかがあると, 既定の設定では AGENTS.md が読まれなくなります. 個人の指示は `~/.claude/CLAUDE.md` や `~/.claude/rules/` に置くか, ユーザー設定 (`~/.claude/settings.json`) で AGENTS.md と CLAUDE.md の両方を読む設定 (`claude-md-and-agents-md`) にしてください.
+- AGENTS.md を直接読むには **v2.1.277 以降**が必要です (Amazon Bedrock 経由やテレメトリを無効にしている場合は v2.1.281 以降). セッション開始時に `/context` を実行し, Memory files に `AGENTS.md` が表示されることを確認してください.
+- **`CLAUDE.md` や `CLAUDE.local.md` をリポジトリ内に置かないでください.** どちらかがあると, 既定の設定では AGENTS.md が読まれなくなります. コミットは prek のフックと CI で拒否します. `CLAUDE.local.md` は気づけるようにあえて `.gitignore` に入れていないので, `git status` に表示されたら削除してください.
+- 個人の指示は `~/.claude/CLAUDE.md` や `~/.claude/rules/` に置きます. リポジトリ内の CLAUDE.md も使いたい場合は, `/config` の **Project instructions** を AGENTS.md と CLAUDE.md の両方を読む設定 (`claude-md-and-agents-md`) にしてください (ユーザー設定 `~/.claude/settings.json` に保存されます).
+- サブディレクトリの AGENTS.md (`src/AGENTS.md`, `tests/AGENTS.md`) は, そのディレクトリのファイルを Read したときに読み込まれます. 新しいファイルを作るだけのときは読まれないことがあるので, ルートの AGENTS.md で「変更前に読む」よう指示しています.
 - `.claude/settings.json` に, 次の Hook を登録しています. 実行には `jq` が必要です.
   - Python ファイルの編集時: `ruff format` と `ruff check --fix` を実行します.
   - ターン終了時: `src/` か `tests/` に未コミットの変更があれば, CI と同じ `ruff check`, `ruff format --check`, `ty check`, `pytest` を実行し, 失敗したら修正を促します.
+- 統合テスト (`--run-integration`) の実行は, 許可済みのコマンドでも毎回確認を求める設定にしています (`.env` の API キーで本番 API に接続するため).
 - 個人の権限設定は `.claude/settings.local.json` に置きます (`.gitignore` 済み).
 
 ## リリース
