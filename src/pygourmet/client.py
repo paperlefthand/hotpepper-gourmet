@@ -4,7 +4,6 @@
 同期および非同期の両方の検索メソッドをサポートしています。
 """
 
-import json
 from typing import TypedDict, cast
 
 import httpx
@@ -121,10 +120,57 @@ class Api:
                         )
                     elif code == 3000:
                         messages.append(f"パラメータ不正エラー: {err.get('message')}")
+                    else:
+                        messages.append(f"エラー (code={code}): {err.get('message')}")
                 raise SearchError(",".join(messages))
             return [Shop.model_validate(data) for data in results.get("shop", [])]
         except (KeyError, TypeError, ValidationError) as e:
             raise SearchError(str(e)) from e
+
+    def __mask_key(self, message: str) -> str:
+        """メッセージに含まれるAPIキーを伏せ字にします。
+
+        Args:
+            message (str): 元のメッセージ。
+
+        Returns:
+            str: APIキーを `***` に置き換えたメッセージ。
+        """
+        return message.replace(self.keyid, "***") if self.keyid else message
+
+    def __request_error(self, e: httpx.RequestError) -> SearchError:
+        """通信エラーをSearchErrorに変換します。
+
+        Args:
+            e (httpx.RequestError): httpx が送出した通信エラー。
+
+        Returns:
+            SearchError: 利用者に見せる例外。
+        """
+        return SearchError(self.__mask_key(f"通信エラー: {type(e).__name__}: {e}"))
+
+    def __parse_response(self, resp: httpx.Response) -> list[Shop]:
+        """HTTPレスポンスを検証し、Shopオブジェクトのリストを作成します。
+
+        Args:
+            resp (httpx.Response): APIからのHTTPレスポンス。
+
+        Returns:
+            list[Shop]: 店舗データのリスト。
+
+        Raises:
+            SearchError: ステータスコードが200以外の場合、本文がJSONでない場合、
+                APIがエラーを返した場合、またはパースに失敗した場合。
+        """
+        # NOTE API はエラーでも 200 を返すため, 200 以外はプロキシやメンテナンスによるもの.
+        # httpx の raise_for_status() はメッセージに URL (API キーを含む) を入れるため使わない
+        if resp.status_code != httpx.codes.OK:
+            raise SearchError(f"HTTPエラー: ステータスコード {resp.status_code}")
+        try:
+            resp_dict = cast(_SearchResponse, resp.json())
+        except ValueError as e:
+            raise SearchError(f"レスポンスがJSONではありません: {e}") from e
+        return self.__create_shop_list(resp=resp_dict)
 
     def search(self, option: Option) -> list[Shop]:
         """レストランを同期的に検索します。
@@ -140,12 +186,14 @@ class Api:
         """
 
         params = self.__create_query_params(option=option)
-        resp = httpx.get(
-            url=self.__base_url,
-            params=params,
-        )
-        resp_dict = cast(_SearchResponse, json.loads(resp.text))
-        return self.__create_shop_list(resp=resp_dict)
+        try:
+            resp = httpx.get(
+                url=self.__base_url,
+                params=params,
+            )
+        except httpx.RequestError as e:
+            raise self.__request_error(e) from e
+        return self.__parse_response(resp=resp)
 
     async def search_async(self, option: Option) -> list[Shop]:
         """レストランを非同期的に検索します。
@@ -161,10 +209,12 @@ class Api:
         """
 
         params = self.__create_query_params(option=option)
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(
-                url=self.__base_url,
-                params=params,
-            )
-        resp_dict = cast(_SearchResponse, json.loads(resp.text))
-        return self.__create_shop_list(resp=resp_dict)
+        try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.get(
+                    url=self.__base_url,
+                    params=params,
+                )
+        except httpx.RequestError as e:
+            raise self.__request_error(e) from e
+        return self.__parse_response(resp=resp)
