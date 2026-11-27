@@ -1,10 +1,11 @@
 import json
 import os
 
+import httpx
 import pytest
 from pydantic import ValidationError
 
-from pygourmet.client import SearchError
+from pygourmet.client import Api, SearchError
 from pygourmet.option import Option
 
 DATAFILE_PATH = os.path.join(os.path.dirname(__file__), "data")
@@ -151,3 +152,100 @@ def test_search_dummy_特集とクレジットカードなし(client_dummy, http
 
     # type 未指定のレスポンスには含まれない
     assert all(shop.special is None and shop.credit_card is None for shop in shops)
+
+
+SECRET_KEY = "SECRET_DUMMY_KEY"
+
+
+@pytest.mark.parametrize(
+    "exc",
+    [
+        httpx.ConnectError("[Errno 111] Connection refused"),
+        httpx.ReadTimeout("timed out"),
+    ],
+)
+def test_search_dummy_通信エラー(client_dummy, httpx_mock, exc):
+    httpx_mock.add_exception(exc)
+
+    with pytest.raises(SearchError) as e:
+        _ = client_dummy.search(Option(keyword="ラーメン"))
+
+    assert str(e.value).startswith(f"通信エラー: {type(exc).__name__}: ")
+    assert e.value.__cause__ is exc
+
+
+@pytest.mark.asyncio
+async def test_search_async_dummy_通信エラー(client_dummy, httpx_mock):
+    exc = httpx.ConnectError("[Errno 111] Connection refused")
+    httpx_mock.add_exception(exc)
+
+    with pytest.raises(SearchError) as e:
+        _ = await client_dummy.search_async(Option(keyword="ラーメン"))
+
+    assert str(e.value).startswith("通信エラー: ConnectError: ")
+    assert e.value.__cause__ is exc
+
+
+def test_search_dummy_通信エラーのメッセージからAPIキーを伏せる(httpx_mock):
+    httpx_mock.add_exception(
+        httpx.ConnectError(f"failed: https://example.com/?key={SECRET_KEY}")
+    )
+
+    with pytest.raises(SearchError) as e:
+        _ = Api(SECRET_KEY).search(Option(keyword="ラーメン"))
+
+    assert SECRET_KEY not in str(e.value)
+    assert "key=***" in str(e.value)
+
+
+def test_search_dummy_ステータス200以外(httpx_mock):
+    httpx_mock.add_response(status_code=503, text="<html>Service Unavailable</html>")
+
+    with pytest.raises(SearchError) as e:
+        _ = Api(SECRET_KEY).search(Option(keyword="ラーメン"))
+
+    assert str(e.value) == "HTTPエラー: ステータスコード 503"
+    # URL (API キーを含む) を持つ httpx の例外を連鎖させない
+    assert e.value.__cause__ is None
+    assert SECRET_KEY not in str(e.value)
+
+
+@pytest.mark.asyncio
+async def test_search_async_dummy_ステータス200以外(client_dummy, httpx_mock):
+    httpx_mock.add_response(status_code=503, text="<html>Service Unavailable</html>")
+
+    with pytest.raises(SearchError) as e:
+        _ = await client_dummy.search_async(Option(keyword="ラーメン"))
+
+    assert str(e.value) == "HTTPエラー: ステータスコード 503"
+
+
+def test_search_dummy_JSONでないレスポンス(client_dummy, httpx_mock):
+    httpx_mock.add_response(text="not json")
+
+    with pytest.raises(SearchError) as e:
+        _ = client_dummy.search(Option(keyword="ラーメン"))
+
+    assert str(e.value).startswith("レスポンスがJSONではありません: ")
+    assert isinstance(e.value.__cause__, json.JSONDecodeError)
+
+
+@pytest.mark.asyncio
+async def test_search_async_dummy_JSONでないレスポンス(client_dummy, httpx_mock):
+    httpx_mock.add_response(text="not json")
+
+    with pytest.raises(SearchError) as e:
+        _ = await client_dummy.search_async(Option(keyword="ラーメン"))
+
+    assert isinstance(e.value.__cause__, json.JSONDecodeError)
+
+
+def test_search_dummy_未知のエラーコード(client_dummy, httpx_mock):
+    httpx_mock.add_response(
+        json={"results": {"error": [{"code": 9999, "message": "unknown"}]}}
+    )
+
+    with pytest.raises(SearchError) as e:
+        _ = client_dummy.search(Option(keyword="ラーメン"))
+
+    assert str(e.value) == "エラー (code=9999): unknown"
