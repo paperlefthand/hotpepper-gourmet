@@ -93,3 +93,61 @@ async def test_search_async_dummy_shopパース失敗(client_dummy, httpx_mock):
         _ = await client_dummy.search_async(Option(keyword="ラーメン"))
 
     assert isinstance(e.value.__cause__, ValidationError)
+
+
+def _load_resp(filename):
+    with open(os.path.join(DATAFILE_PATH, filename), "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _assert_特集とクレジットカード(shops, mock_response):
+    expected = mock_response["results"]["shop"][0]
+    shop = shops[0]
+    assert shop.special is not None
+    assert len(shop.special) == len(expected["special"])
+    assert shop.special[0].code == expected["special"][0]["code"]
+    assert shop.special[0].title == expected["special"][0]["title"]
+    assert shop.special[0].special_category is not None
+    assert (
+        shop.special[0].special_category.code
+        == expected["special"][0]["special_category"]["code"]
+    )
+    assert shop.credit_card is not None
+    assert [c.code for c in shop.credit_card] == [
+        c["code"] for c in expected["credit_card"]
+    ]
+
+
+def test_search_dummy_特集とクレジットカード(client_dummy, httpx_mock):
+    mock_response = _load_resp("restaurant_resp_3.json")
+    httpx_mock.add_response(json=mock_response)
+
+    shops = client_dummy.search(Option(large_area="Z011", type="credit_card+special"))
+
+    assert httpx_mock.get_request().url.params["type"] == "credit_card+special"
+    _assert_特集とクレジットカード(shops, mock_response)
+
+
+@pytest.mark.asyncio
+async def test_search_async_dummy_特集とクレジットカード(client_dummy, httpx_mock):
+    mock_response = _load_resp("restaurant_resp_3.json")
+    httpx_mock.add_response(json=mock_response)
+
+    shops = await client_dummy.search_async(
+        Option(large_area="Z011", type="credit_card+special")
+    )
+
+    _assert_特集とクレジットカード(shops, mock_response)
+
+
+def test_search_dummy_特集とクレジットカードなし(client_dummy, httpx_mock):
+    with open(
+        os.path.join(DATAFILE_PATH, "restaurant_resp_0.json"), "r", encoding="utf-8"
+    ) as f:
+        mock_response = json.load(f)
+    httpx_mock.add_response(json=mock_response)
+
+    shops = client_dummy.search(Option(keyword="ラーメン"))
+
+    # type 未指定のレスポンスには含まれない
+    assert all(shop.special is None and shop.credit_card is None for shop in shops)

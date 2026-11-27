@@ -4,7 +4,17 @@
 詳細な仕様については、[ホットペッパーWebサービス APIリファレンス](https://webservice.recruit.co.jp/doc/hotpepper/reference.html)を参照してください。
 """
 
+from typing import Annotated
+
 from pydantic import BaseModel, Field, field_serializer
+
+# NOTE 複数指定できるパラメータ. API は上限を超えた分を黙って無視するため, list で渡されたときは
+# 上限を検証して早めにエラーにする. カンマ区切りの文字列はそのまま送り, 検証しない.
+_Codes = str | list[str] | None
+_Codes2 = str | Annotated[list[str], Field(max_length=2)] | None
+_Codes3 = str | Annotated[list[str], Field(max_length=3)] | None
+_Codes5 = str | Annotated[list[str], Field(max_length=5)] | None
+_Codes20 = str | Annotated[list[str], Field(max_length=20)] | None
 
 
 class Option(BaseModel, frozen=True):
@@ -13,29 +23,32 @@ class Option(BaseModel, frozen=True):
     APIキー(`key`)およびレスポンス形式(`format`)はクライアント内部で自動的に設定されるため、
     このクラスで明示的に指定することはできません。
 
+    複数指定できるパラメータには, カンマ区切りの文字列かリストを渡せます。リストで渡した場合は,
+    API の上限を超えると `ValidationError` になります（文字列の場合は検証せず, 超えた分は API が無視します）。
+
     Attributes:
-        id (str | None): お店ID。カンマ区切りで20個まで指定可能。
+        id (str | list[str] | None): お店ID。20個まで指定可能。
         name (str | None): 掲載店名（部分一致）。
         name_kana (str | None): 掲載店名かな（部分一致）。
         name_any (str | None): 掲載店名または掲載店名かなのOR検索（部分一致）。
         tel (str | None): 電話番号。
         address (str | None): 住所。
-        special (str | None): 特集コード（AND検索）。カンマ区切りで複数指定可能。
-        special_or (str | None): 特集コード（OR検索）。カンマ区切りで複数指定可能。
-        special_category (str | None): 特集カテゴリコード（AND検索）。カンマ区切りで複数指定可能。
-        special_category_or (str | None): 特集カテゴリコード（OR検索）。カンマ区切りで複数指定可能。
+        special (str | list[str] | None): 特集コード（AND検索）。複数指定可能。
+        special_or (str | list[str] | None): 特集コード（OR検索）。複数指定可能。
+        special_category (str | list[str] | None): 特集カテゴリコード（AND検索）。複数指定可能。
+        special_category_or (str | list[str] | None): 特集カテゴリコード（OR検索）。複数指定可能。
         large_service_area (str | None): 大サービスエリアコード。
-        service_area (str | None): サービスエリアコード。カンマ区切りで3個まで指定可能。
-        large_area (str | None): 大エリアコード。カンマ区切りで3個まで指定可能。
-        middle_area (str | None): 中エリアコード。カンマ区切りで5個まで指定可能。
-        small_area (str | None): 小エリアコード。カンマ区切りで5個まで指定可能。
+        service_area (str | list[str] | None): サービスエリアコード。3個まで指定可能。
+        large_area (str | list[str] | None): 大エリアコード。3個まで指定可能。
+        middle_area (str | list[str] | None): 中エリアコード。5個まで指定可能。
+        small_area (str | list[str] | None): 小エリアコード。5個まで指定可能。
         keyword (str | None): キーワード。半角スペース区切りでAND検索。
         lat (float | None): 緯度。測地系は `datum` で指定したもの。
         lng (float | None): 経度。測地系は `datum` で指定したもの。
         range (int): 検索範囲（1: 300m, 2: 500m, 3: 1000m, 4: 2000m, 5: 3000m）。デフォルトは3(1000m)。
         datum (str | None): 測地系（world: 世界測地系, tokyo: 旧日本測地系）。未指定時はworld。
         ktai_coupon (int | None): 携帯クーポン掲載（0: 携帯クーポンあり, 1: 携帯クーポンなし）。未指定時は絞り込まない。
-        genre (str | None): お店ジャンルコード（サブジャンルを含む）。
+        genre (str | list[str] | None): お店ジャンルコード（サブジャンルを含む）。複数指定可能。
         budget (str | list[str] | None): 検索用ディナー予算コード。2つまで指定可能。
         party_capacity (int | None): 宴会収容人数。指定した数より大きな収容人数のお店を検索する。
         wifi (bool | None): WiFi有無。
@@ -73,36 +86,36 @@ class Option(BaseModel, frozen=True):
         credit_card (str | list[str] | None): クレジットカード種別コード。複数指定可能。
         type (str | None): 出力タイプ（lite: 主要項目のみ, credit_card: クレジットカードを付加,
             special: 特集を付加）。`+` でつないで複数指定可能。未指定時はクレジットカードと特集以外をすべて出力する。
-            なお `Shop` はクレジットカードと特集のフィールドを持たないため、付加された項目は無視される。
-        order (int): ソート順（1: 店名かな順, 2: ジャンルコード順, 3: 小エリアコード順, 4: おススメ順）。デフォルトは4。
-            位置検索では4以外を指定すると距離順になる。
-        start (int | None): 検索の開始位置。未指定時は1。
+            付加された項目は `Shop.credit_card` / `Shop.special` に入る。
+        order (int | None): ソート順（1: 店名かな順, 2: ジャンルコード順, 3: 小エリアコード順, 4: おススメ順）。
+            未指定時はおススメ順, 位置検索では距離順。位置検索では4以外を指定しても距離順になる。
+        start (int | None): 検索の開始位置（1以上）。未指定時は1。
         count (int | None): 1ページあたりの取得数（1〜100）。未指定時は10。
     """
 
-    id: str | None = Field(default=None)
+    id: _Codes20 = Field(default=None)
     name: str | None = Field(default=None)
     name_kana: str | None = Field(default=None)
     name_any: str | None = Field(default=None)
     tel: str | None = Field(default=None)
     address: str | None = Field(default=None)
-    special: str | None = Field(default=None)
-    special_or: str | None = Field(default=None)
-    special_category: str | None = Field(default=None)
-    special_category_or: str | None = Field(default=None)
+    special: _Codes = Field(default=None)
+    special_or: _Codes = Field(default=None)
+    special_category: _Codes = Field(default=None)
+    special_category_or: _Codes = Field(default=None)
     large_service_area: str | None = Field(default=None)
-    service_area: str | None = Field(default=None)
-    large_area: str | None = Field(default=None)
-    middle_area: str | None = Field(default=None)
-    small_area: str | None = Field(default=None)
+    service_area: _Codes3 = Field(default=None)
+    large_area: _Codes3 = Field(default=None)
+    middle_area: _Codes5 = Field(default=None)
+    small_area: _Codes5 = Field(default=None)
     keyword: str | None = Field(default=None)
     lat: float | None = Field(default=None)
     lng: float | None = Field(default=None)
     range: int = Field(default=3, ge=1, le=5, description="対象範囲(初期値1000m)")
     datum: str | None = Field(default=None)
     ktai_coupon: int | None = Field(default=None)
-    genre: str | None = Field(default=None)
-    budget: str | list[str] | None = Field(default=None, description="2つまで指定可能")
+    genre: _Codes = Field(default=None)
+    budget: _Codes2 = Field(default=None, description="2つまで指定可能")
     party_capacity: int | None = Field(default=None, description="最大宴会収容人数以上")
     wifi: bool | None = Field(default=None)
     wedding: bool | None = Field(default=None)
@@ -136,13 +149,11 @@ class Option(BaseModel, frozen=True):
     english: bool | None = Field(default=None)
     pet: bool | None = Field(default=None)
     child: bool | None = Field(default=None)
-    credit_card: str | list[str] | None = Field(
-        default=None, description="複数指定可能"
-    )
+    credit_card: _Codes = Field(default=None, description="複数指定可能")
     type: str | None = Field(default=None)
-    order: int = Field(default=4)
-    start: int | None = Field(default=None)
-    count: int | None = Field(default=None)
+    order: int | None = Field(default=None, ge=1, le=4)
+    start: int | None = Field(default=None, ge=1)
+    count: int | None = Field(default=None, ge=1, le=100)
 
     @field_serializer(
         "wifi",
@@ -191,7 +202,20 @@ class Option(BaseModel, frozen=True):
             return None
         return 1 if v else 0
 
-    @field_serializer("budget", "credit_card")
+    @field_serializer(
+        "id",
+        "special",
+        "special_or",
+        "special_category",
+        "special_category_or",
+        "service_area",
+        "large_area",
+        "middle_area",
+        "small_area",
+        "genre",
+        "budget",
+        "credit_card",
+    )
     def serialize_list(self, v: str | list[str] | None) -> str | None:
         """リストをAPI形式（カンマ区切り文字列）に変換します。
 

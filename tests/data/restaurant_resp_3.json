@@ -1,0 +1,205 @@
+{
+    "results": {
+        "api_version": "1.30",
+        "results_available": 1,
+        "results_returned": "1",
+        "results_start": 1,
+        "shop": [
+            {
+                "id": "J004005518",
+                "name": "肉ごころ NIKU GOKORO",
+                "logo_image": "https://imgfp.hotp.jp/IMGH/57/41/P048735741/P048735741_69.jpg",
+                "name_kana": "すみびにくさかば　にくごころ",
+                "address": "東京都大田区西蒲田７-65-1　ナカダビル　4階",
+                "station_name": "蒲田",
+                "ktai_coupon": 0,
+                "large_service_area": {
+                    "code": "SS10",
+                    "name": "関東"
+                },
+                "service_area": {
+                    "code": "SA11",
+                    "name": "東京"
+                },
+                "large_area": {
+                    "code": "Z011",
+                    "name": "東京"
+                },
+                "middle_area": {
+                    "code": "Y026",
+                    "name": "蒲田・大森・大田区"
+                },
+                "small_area": {
+                    "code": "X281",
+                    "name": "蒲田"
+                },
+                "lat": 35.5621987559,
+                "lng": 139.7131930139,
+                "genre": {
+                    "name": "居酒屋",
+                    "catch": "炭火料理食べ飲み放題！炭火肉料理を堪能！",
+                    "code": "G001"
+                },
+                "sub_genre": {
+                    "name": "焼肉・ホルモン",
+                    "code": "G008"
+                },
+                "budget": {
+                    "code": "B003",
+                    "name": "3001～4000円",
+                    "average": "炭火焼食べ放題 蒲田　忘新年会　宴会　100席"
+                },
+                "catch": "炭火肉が食べ飲み放題 国産和牛を使った肉料理",
+                "capacity": 51,
+                "access": "東急，ＪＲ京浜東北・根岸線蒲田駅南口より徒歩約2分",
+                "mobile_access": "東急,JR京浜東北･根岸線蒲田駅南口より徒歩約2分",
+                "urls": {
+                    "pc": "https://www.hotpepper.jp/strJ004005518/?vos=nhppalsa000016"
+                },
+                "photo": {
+                    "pc": {
+                        "l": "https://imgfp.hotp.jp/IMGH/57/42/P048735742/P048735742_238.jpg",
+                        "m": "https://imgfp.hotp.jp/IMGH/57/42/P048735742/P048735742_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/57/42/P048735742/P048735742_58_s.jpg"
+                    },
+                    "mobile": {
+                        "l": "https://imgfp.hotp.jp/IMGH/57/42/P048735742/P048735742_168.jpg",
+                        "s": "https://imgfp.hotp.jp/IMGH/57/42/P048735742/P048735742_100.jpg"
+                    }
+                },
+                "open": "月～日: 11:00～翌0:00 （料理L.O. 23:30 ドリンクL.O. 23:30）",
+                "close": "不定休（予約カレンダーをご参照ください）",
+                "party_capacity": 65,
+                "other_memo": "",
+                "shop_detail_memo": "",
+                "budget_memo": "",
+                "wedding": "",
+                "course": "あり",
+                "free_drink": "あり ：炭火焼き食べ放題＆3時間飲み放題付き　3500円～",
+                "free_food": "あり ：炭火焼き食べ放題＆3時間飲み放題付き　3500円～",
+                "private_room": "あり",
+                "horigotatsu": "なし",
+                "tatami": "なし",
+                "card": "利用可",
+                "non_smoking": "全面禁煙",
+                "charter": "貸切可 ：最大100名様まで貸切可能！",
+                "parking": "なし ：お車でお越しの際はお近くのパーキングをご利用ください。",
+                "barrier_free": "なし ：お困りごとの際は、スタッフまでお気軽にお問い合わせください。",
+                "show": "なし",
+                "karaoke": "なし",
+                "band": "不可",
+                "tv": "あり",
+                "lunch": "あり",
+                "midnight": "営業している",
+                "english": "あり",
+                "pet": "不可",
+                "child": "お子様連れOK",
+                "wifi": "あり",
+                "coupon_urls": {
+                    "pc": "https://www.hotpepper.jp/strJ004005518/map/?vos=nhppalsa000016",
+                    "sp": "https://www.hotpepper.jp/strJ004005518/scoupon/?vos=nhppalsa000016"
+                },
+                "credit_card": [
+                    {
+                        "name": "VISA",
+                        "code": "c01"
+                    },
+                    {
+                        "name": "マスター",
+                        "code": "c02"
+                    },
+                    {
+                        "name": "アメックス",
+                        "code": "c04"
+                    },
+                    {
+                        "name": "DINERS",
+                        "code": "c06"
+                    },
+                    {
+                        "name": "JCB",
+                        "code": "c07"
+                    },
+                    {
+                        "name": "Discover",
+                        "code": "c12"
+                    }
+                ],
+                "special": [
+                    {
+                        "code": "LZ0004",
+                        "name": "学生さん大歓迎のお店",
+                        "special_category": {
+                            "code": "SPG5",
+                            "name": "特別シーンなら"
+                        },
+                        "title": "備長炭で焼いた牛・豚・鶏が食べ放題！お得な3時間飲み放題付♪"
+                    },
+                    {
+                        "code": "LT0089",
+                        "name": "食べ放題プランのあるお店",
+                        "special_category": {
+                            "code": "SPG6",
+                            "name": "定番おすすめ"
+                        },
+                        "title": "備長炭で焼いた牛・豚・鶏が食べ放題！お得な3時間飲み放題付♪"
+                    },
+                    {
+                        "code": "LT0091",
+                        "name": "3時間以上のゆっくり宴会ができるお店",
+                        "special_category": {
+                            "code": "SPF8",
+                            "name": "おすすめコース"
+                        },
+                        "title": "備長炭で焼いた牛・豚・鶏が食べ放題！お得な3時間飲み放題付♪"
+                    },
+                    {
+                        "code": "LU0055",
+                        "name": "地鶏・焼き鳥・焼きとんを食べたい！",
+                        "special_category": {
+                            "code": "SPG6",
+                            "name": "定番おすすめ"
+                        },
+                        "title": "お肉を満足するまでお楽しみいただけます♪"
+                    },
+                    {
+                        "code": "LU0065",
+                        "name": "NEWOPEN・リニューアルOPEN・新登場のお店",
+                        "special_category": {
+                            "code": "SPG5",
+                            "name": "特別シーンなら"
+                        },
+                        "title": "2025年リニューアルオープン！牛・豚・鶏が食べ放題！"
+                    },
+                    {
+                        "code": "LU0003",
+                        "name": "20人以上の宴会が可能なお店",
+                        "special_category": {
+                            "code": "SPG4",
+                            "name": "個室・貸切・設備で探す"
+                        },
+                        "title": "店内は解放感たっぷり！広々100名様まで対応可能です♪"
+                    },
+                    {
+                        "code": "LZ0047",
+                        "name": "昼飲みできるお店",
+                        "special_category": {
+                            "code": "SPD8",
+                            "name": "ランチを楽しむ"
+                        },
+                        "title": "蒲田駅徒歩2分！3時間飲み放題なのでゆったりご宴会♪"
+                    },
+                    {
+                        "code": "LT0090",
+                        "name": "コースじゃなくても飲み放題OKなお店",
+                        "special_category": {
+                            "code": "SPG6",
+                            "name": "定番おすすめ"
+                        },
+                        "title": "蒲田駅徒歩2分！3時間飲み放題なのでゆったりご宴会♪"
+                    }
+                ]
+            }
+        ]
+    }
+}
