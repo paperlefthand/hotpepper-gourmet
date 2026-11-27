@@ -25,13 +25,20 @@
   },
   "permissions": {
     "allow": [
-      "Bash(uv run:*)",
+      "Bash(uv run pytest:*)",
+      "Bash(uv run ruff:*)",
+      "Bash(uv run ty:*)",
+      "Bash(uv run prek:*)",
       "Bash(git diff:*)",
       "Bash(git status:*)",
       "Bash(git log:*)"
     ],
+    "ask": [
+      "Bash(*--run-integration*)"
+    ],
     "deny": [
-      "Read(./.env)"
+      "Read(./.env)",
+      "Read(./.env.*)"
     ]
   }
 }

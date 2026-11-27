@@ -93,7 +93,7 @@ gh actions-lock
 
 ## コーディング規約とテスト方針
 
-コーディング規約 (型注釈, docstring, 後方互換性) とテスト方針は [AGENTS.md](AGENTS.md) にまとめています. AGENTS.md は人間と AI エージェントの共通ガイドです. 要点は次のとおりです.
+コーディング規約 (型注釈, docstring, 後方互換性) とテスト方針は [AGENTS.md](AGENTS.md) にまとめています. AGENTS.md は人間と AI エージェントの共通ガイドで, 層ごとの詳細は [src/AGENTS.md](src/AGENTS.md) と [tests/AGENTS.md](tests/AGENTS.md) にあります. 要点は次のとおりです.
 
 - Ruff の設定に従います. `Any` を使わない厳格な型注釈を書き, 公開 API には日本語の Google Style docstring を書きます.
 - 同期 (`search`) と非同期 (`search_async`) の両 API を常に同等の機能で提供します.
@@ -105,9 +105,25 @@ gh actions-lock
 GitHub Copilot や Claude Code などの AI ツールを使った貢献も歓迎します. ただし, 次の点を守ってください.
 
 - **提出者が内容に責任を持ちます.** 生成されたコードやドキュメントをすべて読んで理解し, 手元でテストを実行して動作を確認してから提出してください. レビューでの質問に自分の言葉で答えられない変更は受け付けられません.
-- AI エージェントにはこのリポジトリの [AGENTS.md](AGENTS.md) を読ませてください. Claude Code は `CLAUDE.md` 経由で自動的に読み込みます.
+- AI エージェントにはこのリポジトリの [AGENTS.md](AGENTS.md) を読ませてください. AGENTS.md に対応したツールは自動で読み込みます.
 - 大量の機械的な変更や, 実際の問題に基づかない「改善」の PR は控えてください.
 - API キーなどの機密情報を AI ツールに渡さないでください.
+
+### エージェントの設定について
+
+規約は特定のツールに依存しないよう AGENTS.md に書き, ツール固有の設定は CI と同じ検査を手元で早く回すためのものに限っています. AGENTS.md や CI にないルールを, ツール固有の設定だけに追加しないでください.
+
+Claude Code を使う場合は次の点に注意してください.
+
+- AGENTS.md を直接読むには **v2.1.277 以降**が必要です (Amazon Bedrock 経由やテレメトリを無効にしている場合は v2.1.281 以降). セッション開始時に `/context` を実行し, Memory files に `AGENTS.md` が表示されることを確認してください.
+- **`CLAUDE.md` や `CLAUDE.local.md` をリポジトリ内に置かないでください.** どちらかがあると, 既定の設定では AGENTS.md が読まれなくなります. コミットは prek のフックと CI で拒否します. `CLAUDE.local.md` は気づけるようにあえて `.gitignore` に入れていないので, `git status` に表示されたら削除してください.
+- 個人の指示は `~/.claude/CLAUDE.md` や `~/.claude/rules/` に置きます. リポジトリ内の CLAUDE.md も使いたい場合は, `/config` の **Project instructions** を AGENTS.md と CLAUDE.md の両方を読む設定 (`claude-md-and-agents-md`) にしてください (ユーザー設定 `~/.claude/settings.json` に保存されます).
+- サブディレクトリの AGENTS.md (`src/AGENTS.md`, `tests/AGENTS.md`) は, そのディレクトリのファイルを Read したときに読み込まれます. 新しいファイルを作るだけのときは読まれないことがあるので, ルートの AGENTS.md で「変更前に読む」よう指示しています.
+- `.claude/settings.json` に, 次の Hook を登録しています. 実行には `jq` が必要です.
+  - Python ファイルの編集時: `ruff format` と `ruff check --fix` を実行します.
+  - ターン終了時: `src/` か `tests/` に未コミットの変更があれば, CI と同じ `ruff check`, `ruff format --check`, `ty check`, `pytest` を実行し, 失敗したら修正を促します.
+- 統合テスト (`--run-integration`) の実行は, 許可済みのコマンドでも毎回確認を求める設定にしています (`.env` の API キーで本番 API に接続するため).
+- 個人の権限設定は `.claude/settings.local.json` に置きます (`.gitignore` 済み).
 
 ## リリース
 
