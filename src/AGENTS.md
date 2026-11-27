@@ -15,7 +15,7 @@
 | --- | --- | --- |
 | 0: 絞り込まない / 1: 絞り込む のフラグ | `bool \| None` (0/1 に変換して送る) | API が返す文字列のまま `str \| None` |
 | 上記以外の意味を持つ 0/1 | `int \| None` とし, docstring に各値の意味を書く | — |
-| 複数指定可 | `str \| list[str] \| None` (カンマ区切りに変換して送る) | — |
+| 複数指定可 | `str \| list[str] \| None` (カンマ区切りに変換して送る). 個数の上限があれば `option.py` の `_Codes3` などを使い, リストの個数を検証する | — |
 | コード値・自由文字列 | `str \| None` | `str \| None` |
 | 数値 | `int \| None` / `float \| None` | `int \| None` / `float \| None` |
 | 入れ子オブジェクト | — | `frozen=True` の BaseModel を新設 |

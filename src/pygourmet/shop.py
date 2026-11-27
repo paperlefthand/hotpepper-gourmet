@@ -175,6 +175,46 @@ class CouponUrls(BaseModel, frozen=True):
     sp: HttpUrl | None = Field(default=None)
 
 
+class SpecialCategory(BaseModel, frozen=True):
+    """特集カテゴリ情報を保持するクラス。
+
+    Attributes:
+        code (str | None): 特集カテゴリコード。
+        name (str | None): 特集カテゴリ名。
+    """
+
+    code: str | None = Field(default=None)
+    name: str | None = Field(default=None)
+
+
+class Special(BaseModel, frozen=True):
+    """特集情報を保持するクラス。
+
+    Attributes:
+        code (str | None): 特集コード。
+        name (str | None): 特集名。
+        special_category (SpecialCategory | None): 特集カテゴリ。
+        title (str | None): お店ごとの特集に関連したキャッチコピー。
+    """
+
+    code: str | None = Field(default=None)
+    name: str | None = Field(default=None)
+    special_category: SpecialCategory | None = Field(default=None)
+    title: str | None = Field(default=None)
+
+
+class CreditCard(BaseModel, frozen=True):
+    """クレジットカード情報を保持するクラス。
+
+    Attributes:
+        code (str | None): クレジットカードコード。
+        name (str | None): クレジットカード名。
+    """
+
+    code: str | None = Field(default=None)
+    name: str | None = Field(default=None)
+
+
 class Shop(BaseModel, frozen=True):
     """お店データを保持するクラス。
 
@@ -236,6 +276,9 @@ class Shop(BaseModel, frozen=True):
         midnight_meal (str | None): 23時以降食事OK（API リファレンスのレスポンスには記載なし）。
         shop_detail_memo (str | None): 備考。
         coupon_urls (CouponUrls | None): クーポンURL。
+        special (list[Special] | None): 特集。検索時に `Option.type` に special を含めた場合のみ返る。
+        credit_card (list[CreditCard] | None): クレジットカード。
+            検索時に `Option.type` に credit_card を含めた場合のみ返る。
     """
 
     id: str | None = Field(default=None)
@@ -295,6 +338,8 @@ class Shop(BaseModel, frozen=True):
     midnight_meal: str | None = Field(default=None)
     shop_detail_memo: str | None = Field(default=None)
     coupon_urls: CouponUrls | None = Field(default=None)
+    special: list[Special] | None = Field(default=None)
+    credit_card: list[CreditCard] | None = Field(default=None)
 
     @model_validator(mode="before")
     @classmethod
