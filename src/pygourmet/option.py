@@ -14,32 +14,32 @@ class Option(BaseModel, frozen=True):
     このクラスで明示的に指定することはできません。
 
     Attributes:
-        id (str | None): お店ID。
-        name (str | None): お店名。
-        name_kana (str | None): お店名かな。
-        name_any (str | None): お店名名称検索。
+        id (str | None): お店ID。カンマ区切りで20個まで指定可能。
+        name (str | None): 掲載店名（部分一致）。
+        name_kana (str | None): 掲載店名かな（部分一致）。
+        name_any (str | None): 掲載店名または掲載店名かなのOR検索（部分一致）。
         tel (str | None): 電話番号。
         address (str | None): 住所。
-        special (str | None): 特集コード。
-        special_or (str | None): 特集コード（OR検索）。
-        special_category (str | None): 特集カテゴリコード。
-        special_category_or (str | None): 特集カテゴリコード（OR検索）。
+        special (str | None): 特集コード（AND検索）。カンマ区切りで複数指定可能。
+        special_or (str | None): 特集コード（OR検索）。カンマ区切りで複数指定可能。
+        special_category (str | None): 特集カテゴリコード（AND検索）。カンマ区切りで複数指定可能。
+        special_category_or (str | None): 特集カテゴリコード（OR検索）。カンマ区切りで複数指定可能。
         large_service_area (str | None): 大サービスエリアコード。
-        service_area (str | None): サービスエリアコード。
-        large_area (str | None): 大エリアコード。
-        middle_area (str | None): 中エリアコード。
-        small_area (str | None): 小エリアコード。
-        keyword (str | None): キーワード。
-        lat (float | None): 緯度（世界測地系）。
-        lng (float | None): 経度（世界測地系）。
+        service_area (str | None): サービスエリアコード。カンマ区切りで3個まで指定可能。
+        large_area (str | None): 大エリアコード。カンマ区切りで3個まで指定可能。
+        middle_area (str | None): 中エリアコード。カンマ区切りで5個まで指定可能。
+        small_area (str | None): 小エリアコード。カンマ区切りで5個まで指定可能。
+        keyword (str | None): キーワード。半角スペース区切りでAND検索。
+        lat (float | None): 緯度。測地系は `datum` で指定したもの。
+        lng (float | None): 経度。測地系は `datum` で指定したもの。
         range (int): 検索範囲（1: 300m, 2: 500m, 3: 1000m, 4: 2000m, 5: 3000m）。デフォルトは3(1000m)。
-        datum (str | None): 測地系（world: 世界測地系, tokyo: 日本測地系）。デフォルトはworld。
-        ktai_coupon (int | None): 携帯クーポン有無（1: あり, 0: なし）。
-        genre (str | None): ジャンルコード。
-        budget (str | list[str] | None): 予算コード。2つまで指定可能。
-        party_capacity (int | None): 最大宴会収容人数以上で絞り込む整数値。
-        wifi (bool | None): Wi-Fi有無。
-        wedding (bool | None): ウェディング・二次会。
+        datum (str | None): 測地系（world: 世界測地系, tokyo: 旧日本測地系）。未指定時はworld。
+        ktai_coupon (int | None): 携帯クーポン掲載（0: 携帯クーポンあり, 1: 携帯クーポンなし）。未指定時は絞り込まない。
+        genre (str | None): お店ジャンルコード（サブジャンルを含む）。
+        budget (str | list[str] | None): 検索用ディナー予算コード。2つまで指定可能。
+        party_capacity (int | None): 宴会収容人数。指定した数より大きな収容人数のお店を検索する。
+        wifi (bool | None): WiFi有無。
+        wedding (bool | None): ウェディング・二次会等。
         course (bool | None): コースあり。
         free_drink (bool | None): 飲み放題あり。
         free_food (bool | None): 食べ放題あり。
@@ -50,14 +50,14 @@ class Option(BaseModel, frozen=True):
         shochu (bool | None): 焼酎充実。
         sake (bool | None): 日本酒充実。
         wine (bool | None): ワイン充実。
-        card (bool | None): カード決済OK。
+        card (bool | None): カード可。
         non_smoking (bool | None): 禁煙席あり。
         charter (bool | None): 貸切可。
         ktai (bool | None): 携帯電話OK。
         parking (bool | None): 駐車場あり。
         barrier_free (bool | None): バリアフリー。
         sommelier (bool | None): ソムリエがいる。
-        night_view (bool | None): 夜景が見える。
+        night_view (bool | None): 夜景がキレイ。
         open_air (bool | None): オープンエア。
         show (bool | None): ライブ・ショーあり。
         equipment (bool | None): エンタメ設備。
@@ -70,11 +70,14 @@ class Option(BaseModel, frozen=True):
         english (bool | None): 英語メニューあり。
         pet (bool | None): ペット可。
         child (bool | None): お子様連れOK。
-        credit_card (str | list[str] | None): クレジットカード。2つまで指定可能。
-        type (str | None): 検索タイプ（lite: 軽量版）。
-        order (int): ソート順。デフォルトは4。
-        start (int | None): 検索開始位置。
-        count (int | None): 検索件数。
+        credit_card (str | list[str] | None): クレジットカード種別コード。複数指定可能。
+        type (str | None): 出力タイプ（lite: 主要項目のみ, credit_card: クレジットカードを付加,
+            special: 特集を付加）。`+` でつないで複数指定可能。未指定時はクレジットカードと特集以外をすべて出力する。
+            なお `Shop` はクレジットカードと特集のフィールドを持たないため、付加された項目は無視される。
+        order (int): ソート順（1: 店名かな順, 2: ジャンルコード順, 3: 小エリアコード順, 4: おススメ順）。デフォルトは4。
+            位置検索では4以外を指定すると距離順になる。
+        start (int | None): 検索の開始位置。未指定時は1。
+        count (int | None): 1ページあたりの取得数（1〜100）。未指定時は10。
     """
 
     id: str | None = Field(default=None)
@@ -134,7 +137,7 @@ class Option(BaseModel, frozen=True):
     pet: bool | None = Field(default=None)
     child: bool | None = Field(default=None)
     credit_card: str | list[str] | None = Field(
-        default=None, description="2つまで指定可能"
+        default=None, description="複数指定可能"
     )
     type: str | None = Field(default=None)
     order: int = Field(default=4)

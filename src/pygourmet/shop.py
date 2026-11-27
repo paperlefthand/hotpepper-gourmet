@@ -73,9 +73,9 @@ class Genre(BaseModel, frozen=True):
     """ジャンル情報を保持するクラス。
 
     Attributes:
-        code (str | None): ジャンルコード。
-        name (str | None): ジャンル名。
-        catch (str | None): ジャンルキャッチ。
+        code (str | None): お店ジャンルコード。
+        name (str | None): お店ジャンル名。
+        catch (str | None): お店ジャンルキャッチ。
     """
 
     code: str | None = Field(default=None)
@@ -87,9 +87,9 @@ class SubGenre(BaseModel, frozen=True):
     """サブジャンル情報を保持するクラス。
 
     Attributes:
-        code (str | None): サブジャンルコード。
-        name (str | None): サブジャンル名。
-        catch (str | None): サブジャンルキャッチ。
+        code (str | None): お店サブジャンルコード。
+        name (str | None): お店サブジャンル名。
+        catch (str | None): サブジャンルキャッチ（API リファレンスには記載なし）。
     """
 
     code: str | None = Field(default=None)
@@ -98,12 +98,12 @@ class SubGenre(BaseModel, frozen=True):
 
 
 class Budget(BaseModel, frozen=True):
-    """予算情報を保持するクラス。
+    """ディナー予算情報を保持するクラス。
 
     Attributes:
-        average (str | None): 予算備考。
-        code (str | None): 予算コード。
-        name (str | None): 予算名。
+        average (str | None): 平均ディナー予算（例: 「900円」「フリー2500円 宴会3500円」）。
+        code (str | None): 検索用ディナー予算コード。
+        name (str | None): 検索用ディナー予算。
     """
 
     average: str | None = Field(default=None)
@@ -116,8 +116,8 @@ class Urls(BaseModel, frozen=True):
 
     Attributes:
         pc (HttpUrl | None): PC向けURL。
-        qr (HttpUrl | None): QRコードURL。
-        mobile (HttpUrl | None): 携帯向けURL。
+        qr (HttpUrl | None): QRコードURL（API リファレンスには記載なし）。
+        mobile (HttpUrl | None): 携帯向けURL（API リファレンスには記載なし）。
     """
 
     pc: HttpUrl | None = Field(default=None)
@@ -129,9 +129,9 @@ class PhotoPc(BaseModel, frozen=True):
     """PC向け写真URL情報を保持するクラス。
 
     Attributes:
-        l (HttpUrl | None): 写真Lサイズ。
-        m (HttpUrl | None): 写真Mサイズ。
-        s (HttpUrl | None): 写真Sサイズ。
+        l (HttpUrl | None): 店舗トップ写真（大）の画像URL。
+        m (HttpUrl | None): 店舗トップ写真（中）の画像URL。
+        s (HttpUrl | None): 店舗トップ写真（小）の画像URL。
     """
 
     l: HttpUrl | None = Field(default=None)
@@ -143,8 +143,8 @@ class PhotoMobile(BaseModel, frozen=True):
     """携帯向け写真URL情報を保持するクラス。
 
     Attributes:
-        l (HttpUrl | None): 写真Lサイズ。
-        s (HttpUrl | None): 写真Sサイズ。
+        l (HttpUrl | None): 店舗トップ写真（大）の画像URL。
+        s (HttpUrl | None): 店舗トップ写真（小）の画像URL。
     """
 
     l: HttpUrl | None = Field(default=None)
@@ -180,33 +180,33 @@ class Shop(BaseModel, frozen=True):
 
     Attributes:
         id (str | None): お店ID。
-        name (str | None): お店名。
+        name (str | None): 掲載店名。
         logo_image (HttpUrl | None): ロゴ画像URL。
-        name_kana (str | None): お店名かな。
+        name_kana (str | None): 掲載店名かな。
         address (str | None): 住所。
         station_name (str | None): 最寄駅名。
-        ktai_coupon (int | None): 携帯クーポン有無。
+        ktai_coupon (int | None): 携帯用クーポン掲載（0: あり, 1: なし）。
         large_service_area (LargeServiceArea | None): 大サービスエリア。
         service_area (ServiceArea | None): サービスエリア。
         large_area (LargeArea | None): 大エリア。
         middle_area (MiddleArea | None): 中エリア。
         small_area (SmallArea | None): 小エリア。
-        lat (float | None): 緯度。
-        lng (float | None): 経度。
-        genre (Genre | None): ジャンル。
-        sub_genre (SubGenre | None): サブジャンル。
-        budget (Budget | None): 予算。
-        budget_memo (str | None): 予算備考。
-        catch (str | None): キャッチコピー。
+        lat (float | None): 緯度（測地系は検索時に指定したもの）。
+        lng (float | None): 経度（測地系は検索時に指定したもの）。
+        genre (Genre | None): お店ジャンル。
+        sub_genre (SubGenre | None): お店サブジャンル。
+        budget (Budget | None): ディナー予算。
+        budget_memo (str | None): 料金備考。
+        catch (str | None): お店キャッチ。
         capacity (int | None): 総席数。
         access (str | None): 交通アクセス。
         mobile_access (str | None): 携帯用交通アクセス。
-        urls (Urls | None): お店URL。
+        urls (Urls | None): 店舗URL。
         photo (Photo | None): 写真URL。
         open (str | None): 営業時間。
         close (str | None): 定休日。
         party_capacity (int | None): 最大宴会収容人数。
-        wifi (str | None): Wi-Fi。
+        wifi (str | None): WiFi有無（あり, なし, 未確認 のいずれか）。
         wedding (str | None): ウェディング・二次会。
         course (str | None): コース。
         free_drink (str | None): 飲み放題。
@@ -214,7 +214,7 @@ class Shop(BaseModel, frozen=True):
         private_room (str | None): 個室。
         horigotatsu (str | None): 掘りごたつ。
         tatami (str | None): 座敷。
-        card (str | None): カード決済OK。
+        card (str | None): カード可。
         non_smoking (str | None): 禁煙席。
         charter (str | None): 貸切可。
         ktai (str | None): 携帯電話OK。
@@ -229,12 +229,12 @@ class Shop(BaseModel, frozen=True):
         band (str | None): バンド演奏可。
         tv (str | None): TV・プロジェクター。
         english (str | None): 英語メニュー。
-        pet (str | None): ペット。
+        pet (str | None): ペット可。
         child (int | str | None): お子様連れ。
         lunch (str | None): ランチ。
         midnight (str | None): 23時以降も営業。
-        midnight_meal (str | None): 23時以降食事OK。
-        shop_detail_memo (str | None): お店詳細備考。
+        midnight_meal (str | None): 23時以降食事OK（API リファレンスのレスポンスには記載なし）。
+        shop_detail_memo (str | None): 備考。
         coupon_urls (CouponUrls | None): クーポンURL。
     """
 
