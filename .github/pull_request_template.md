@@ -50,7 +50,7 @@ Squash マージされ, タイトルがそのまま main のコミットメッ�
 - [ ] `src/pygourmet` 以下の docstring を更新した
 - [ ] `README.md` を更新した
 - [ ] `CONTRIBUTING.md` / `MAINTAINING.md` を更新した
-- [ ] `AGENTS.md` / `CLAUDE.md` / `.claude/` を更新した
+- [ ] `AGENTS.md` (ルート / `src/` / `tests/`) / `.claude/` を更新した
 - [ ] ドキュメントの更新は不要
 
 ## チェックリスト

@@ -29,8 +29,8 @@ run() {
 }
 
 # CI (tox.ini) と同じ対象に揃える.
-run "ruff check" uv run ruff check src/ tests/
-run "ruff format" uv run ruff format --check src/ tests/
+run "ruff check" uv run ruff check .
+run "ruff format" uv run ruff format --check .
 run "ty check" uv run ty check src/pygourmet
 run "pytest" uv run pytest
 

@@ -222,3 +222,7 @@ __marimo__/
 ################################
 
 .sandbox*.py
+
+# AI エージェントの個人設定 (コミットしない)
+CLAUDE.local.md
+.claude/settings.local.json

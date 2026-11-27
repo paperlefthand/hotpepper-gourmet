@@ -1,13 +1,10 @@
----
-name: tests
-description: tests/ 配下のテストを作成・変更するときに適用する規約。pytest-httpx によるモックテスト、integration マーカー付き本番 API テスト、非同期テスト、サンプル JSON の置き場所とテスト関数の命名を定義する。tests/**/*.py を編集・作成するときに従う。
-paths: "tests/**/*.py"
-user-invocable: false
----
+# テストの作成規約
 
-# テスト作成ルール
+ルートの `AGENTS.md` に加え、`tests/` を変更するときは以下に従う。
 
-`AGENTS.md` のテスト方針に加え、`tests/` を変更するときは以下に従う。
+- 単体テストは `pytest-httpx` で API レスポンスをモックし、実ネットワークに接続しない。
+- 新しいコードのカバレッジは 80% 以上を目安とする (`uv run pytest --cov=pygourmet`)。
+- API のエラーは HTTP 200 で返るため、エラー系のモックは `status_code` ではなくレスポンス本文の `error` で作る。
 
 ## ファイルの使い分け
 
@@ -47,7 +44,8 @@ def test_search_dummy_optionあり(client_dummy, httpx_mock):
 ## 統合テスト（本番 API）
 
 - `@pytest.mark.integration` と、`HOTPEPPER_KEYID` 未設定時の `skipif` を必ず両方付ける。
-- `--run-integration` なしではスキップされることを前提とし、CI では実行されない。
+- `--run-integration` なしではスキップされる。PR の CI では実行されず、`integration.yml` が毎週本番 API に対して実行する (失敗すると `api-change` Issue が起票される)。
+- エージェントは統合テストを自分の判断で実行しない。実行は人間の指示があるときのみ。
 - API キーはテストコードに書かず、`load_dotenv()` 経由で `.env` から読む。
 
 ```python
