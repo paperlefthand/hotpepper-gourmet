@@ -4,7 +4,7 @@
 
 - 単体テストは `pytest-httpx` で API レスポンスをモックし, 実ネットワークに接続しない.
 - 新しいコードのカバレッジは 80% 以上を目安とする (`uv run pytest --cov=pygourmet`).
-- API のエラーは HTTP 200 で返るため, エラー系のモックは `status_code` ではなくレスポンス本文の `error` で作る.
+- API のエラー (`error.code`) は HTTP 200 で返るため, そのモックは `status_code` ではなくレスポンス本文の `error` で作る. `status_code` を変えるのは, 200 以外の HTTP 応答 (障害時の 503 など) を扱うテストに限る.
 
 ## ファイルの使い分け
 

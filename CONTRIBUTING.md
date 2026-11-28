@@ -31,7 +31,7 @@ cd hotpepper-gourmet
 # 2. 依存関係をインストールする
 uv sync
 
-# 3. (任意) コミット時に ruff を自動実行する Git フックを入れる
+# 3. (任意) コミット時に ruff / rumdl / tombi を自動実行する Git フックを入れる
 uv run prek install
 ```
 
@@ -75,7 +75,7 @@ Squash マージでは **PR タイトルがそのまま `main` のコミット�
 ### PR を出す前の確認
 
 ```bash
-uv run prek run --all-files   # ruff check / format
+uv run prek run --all-files   # ruff check / format, rumdl, tombi
 uv run ty check               # 型チェック
 uv run pytest                 # 単体テスト
 ```
@@ -111,7 +111,7 @@ GitHub Copilot や Claude Code などの AI ツールを使った貢献も歓迎
 
 ### エージェントの設定について
 
-規約は特定のツールに依存しないよう AGENTS.md に書き, ツール固有の設定は CI と同じ検査を手元で早く回すためのものに限っています. AGENTS.md や CI にないルールを, ツール固有の設定だけに追加しないでください.
+規約は特定のツールに依存しないよう AGENTS.md に書き, ツール固有の設定は AGENTS.md や CI にある検査を手元で早く回すためのものに限っています. AGENTS.md や CI にないルールを, ツール固有の設定だけに追加しないでください.
 
 Claude Code を使う場合は次の点に注意してください.
 
@@ -121,6 +121,7 @@ Claude Code を使う場合は次の点に注意してください.
 - サブディレクトリの AGENTS.md (`src/AGENTS.md`, `tests/AGENTS.md`) は, そのディレクトリのファイルを Read したときに読み込まれます. 新しいファイルを作るだけのときは読まれないことがあるので, ルートの AGENTS.md で「変更前に読む」よう指示しています.
 - `.claude/settings.json` に, 次の Hook を登録しています. 実行には `jq` が必要です.
   - Python ファイルの編集時: `ruff format` と `ruff check --fix` を実行します.
+  - Markdown / TOML ファイルの編集時: `rumdl` / `tombi` で整形し, 自動修正できない問題が残れば修正を促します.
   - ターン終了時: `src/` か `tests/` に未コミットの変更があれば, CI と同じ `ruff check`, `ruff format --check`, `ty check`, `pytest` を実行し, 失敗したら修正を促します.
 - 統合テスト (`--run-integration`) の実行は, 許可済みのコマンドでも毎回確認を求める設定にしています (`.env` の API キーで本番 API に接続するため).
 - 個人の権限設定は `.claude/settings.local.json` に置きます (`.gitignore` 済み).

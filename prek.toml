@@ -3,14 +3,20 @@
 [[repos]]
 repo = "local"
 hooks = [
-    # Run the linter.
-    { id = "ruff-check", name = "ruff check", language = "system", entry = "uv run ruff check --fix", types_or = ["python", "pyi"] },
-    # Run the formatter (ruff 0.16 以降は Markdown 内のコードブロックも対象).
-    { id = "ruff-format", name = "ruff format", language = "system", entry = "uv run ruff format", types_or = ["python", "pyi", "markdown"] },
-    # ワークフローを変更したとき, actions.lock が全ワークフローを網羅しているかをオフラインで検査する.
-    # NOTE gh-actions-lock が未インストールの環境ではスキップする. 強制は CI の verify-lockfile が担う.
-    { id = "actions-lock", name = "actions.lock coverage", language = "system", entry = "bash -c 'if gh actions-lock --help >/dev/null 2>&1; then gh actions-lock --verify-local; else echo \"gh-actions-lock is not installed; skipped (see CONTRIBUTING.md)\"; fi'", files = '^\.github/workflows/', pass_filenames = false, verbose = true },
-    # CLAUDE.md / CLAUDE.local.md があると Claude Code が AGENTS.md を読まなくなるため, コミットを拒否する.
-    # NOTE 強制は CI (ci.yml の checks) が担う. ここは手元で早く気づくためのもの.
-    { id = "forbid-claude-md", name = "forbid CLAUDE.md", language = "fail", entry = "CLAUDE.md / CLAUDE.local.md はコミットできません. 規約は AGENTS.md に書きます (CONTRIBUTING.md 参照)", files = '(^|/)CLAUDE(\.local)?\.md$' },
+  # Run the linter.
+  { id = "ruff-check", name = "ruff check", language = "system", entry = "uv run ruff check --fix", types_or = ["python", "pyi"] },
+  # Run the formatter (ruff 0.16 以降は Markdown 内のコードブロックも対象).
+  { id = "ruff-format", name = "ruff format", language = "system", entry = "uv run ruff format", types_or = ["python", "pyi", "markdown"] },
+  # Markdown の lint (自動修正できるものは修正する). 設定は pyproject.toml の [tool.rumdl].
+  { id = "rumdl", name = "rumdl check", language = "system", entry = "uv run rumdl check --fix", types = ["markdown"] },
+  # TOML の整形と lint.
+  # NOTE uv.lock も TOML と判定されるが, uv が生成するファイルなので対象外にする (整形すると uv の出力と食い違う).
+  { id = "tombi-format", name = "tombi format", language = "system", entry = "uv run tombi format", types = ["toml"], exclude = '^uv\.lock$' },
+  { id = "tombi-lint", name = "tombi lint", language = "system", entry = "uv run tombi lint", types = ["toml"], exclude = '^uv\.lock$' },
+  # ワークフローを変更したとき, actions.lock が全ワークフローを網羅しているかをオフラインで検査する.
+  # NOTE gh-actions-lock が未インストールの環境ではスキップする. 強制は CI の verify-lockfile が担う.
+  { id = "actions-lock", name = "actions.lock coverage", language = "system", entry = "bash -c 'if gh actions-lock --help >/dev/null 2>&1; then gh actions-lock --verify-local; else echo \"gh-actions-lock is not installed; skipped (see CONTRIBUTING.md)\"; fi'", files = '^\.github/workflows/', pass_filenames = false, verbose = true },
+  # CLAUDE.md / CLAUDE.local.md があると Claude Code が AGENTS.md を読まなくなるため, コミットを拒否する.
+  # NOTE 強制は CI (ci.yml の checks) が担う. ここは手元で早く気づくためのもの.
+  { id = "forbid-claude-md", name = "forbid CLAUDE.md", language = "fail", entry = "CLAUDE.md / CLAUDE.local.md はコミットできません. 規約は AGENTS.md に書きます (CONTRIBUTING.md 参照)", files = '(^|/)CLAUDE(\.local)?\.md$' },
 ]

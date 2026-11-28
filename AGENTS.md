@@ -34,6 +34,8 @@
 | 型チェック | `uv run ty check` |
 | Lint | `uv run ruff check .` |
 | フォーマット | `uv run ruff format .` |
+| Markdown の lint・整形 | `uv run rumdl check --fix .` |
+| TOML の整形・lint | `uv run tombi format && uv run tombi lint` |
 | コミット前チェック | `uv run prek run --all-files` |
 | API ドキュメント生成 | `uv run pdoc src/pygourmet` |
 | CI 相当の検証 | `uvx --with tox-uv tox -e lint,format,type,py3.14` |
@@ -46,6 +48,7 @@
 ## コーディング規約
 
 - **スタイル**: Ruff の設定が唯一の基準です. 関数・変数はスネークケース, クラスは PascalCase.
+- **Markdown / TOML**: Markdown は rumdl (設定は `pyproject.toml` の `[tool.rumdl]`), TOML は tombi の整形・lint に従います.
 - **型**: Pydantic v2 を活用し, `Any` を使わない厳格な型注釈を行います. 戻り値の型も必ず明示します.
 - **Docstring**: 公開クラス・メソッドには日本語の Google Style docstring を書きます.
 - **後方互換性**: 公開 API (`Api`, `Option`, `Shop`, `SearchError`) の削除・リネーム・必須引数の追加は破壊的変更です. 意図的な場合のみ行い, 実施前に確認を取ります.
