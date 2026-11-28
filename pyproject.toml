@@ -3,62 +3,90 @@ name = "hotpepper-gourmet"
 # NOTE ダミー値. リリース時は CI がタグからバージョンを書き込んでからビルドする (publish.yml / publish-dev.yml)
 version = "0.0.0"
 description = "A simple Python client of Hotpepper API"
-authors = [{ name = "Miura Kosuke" }]
-maintainers = [{ name = "Miura Kosuke" }]
-keywords = ["hotpepper", "api", "client"]
-classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Framework :: Pydantic :: 2",
-    "Intended Audience :: Developers",
-    "Natural Language :: Japanese",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
-    "Topic :: Internet :: WWW/HTTP",
-    "Typing :: Typed",
-]
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE.txt"]
+authors = [{ name = "Miura Kosuke" }]
+maintainers = [{ name = "Miura Kosuke" }]
+keywords = ["api", "client", "hotpepper"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Framework :: Pydantic :: 2",
+  "Intended Audience :: Developers",
+  "Natural Language :: Japanese",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Internet :: WWW/HTTP",
+  "Typing :: Typed",
+]
 
 requires-python = ">=3.12"
 
 dependencies = ["httpx>=0.28.1", "pydantic>=2.12.5"]
 
-[dependency-groups]
-dev = [
-    "pydantic>=2.12.5",
-    "pytest>=9.0.2",
-    "pytest-asyncio>=0.24.0",
-    "pytest-cov>=5.0.0",
-    "pytest-html>=4.1.1",
-    "pytest-httpx>=0.32.0",
-    "pytest-xdist>=3.8.0",
-    "python-dotenv>=1.0.1",
-    "ty>=0.0.17",
-    # NOTE tox はロックファイルを使わないため, ローカルと CI で結果を一致させるよう完全固定する
-    "ruff==0.17.5",
-    "prek>=0.3.2",
-    "pdoc>=16.0.0",
-]
-test = [
-    "pytest>=9.0.2",
-    "pytest-asyncio>=0.24.0",
-    "pytest-cov>=5.0.0",
-    "pytest-html>=4.1.1",
-    "pytest-httpx>=0.32.0",
-    "pytest-xdist>=3.8.0",
-]
-doc = ["pdoc>=16.0.0"]
-
-
 [project.urls]
-Repository = "https://github.com/paperlefthand/hotpepper-gourmet"
+Changelog = "https://github.com/paperlefthand/hotpepper-gourmet/releases"
 Documentation = "https://paperlefthand.github.io/hotpepper-gourmet/"
 Issues = "https://github.com/paperlefthand/hotpepper-gourmet/issues"
-Changelog = "https://github.com/paperlefthand/hotpepper-gourmet/releases"
+Repository = "https://github.com/paperlefthand/hotpepper-gourmet"
+
+[dependency-groups]
+dev = [
+  "pdoc>=16.0.0",
+  "prek>=0.3.2",
+  "pydantic>=2.12.5",
+  "pytest>=9.0.2",
+  "pytest-asyncio>=0.24.0",
+  "pytest-cov>=5.0.0",
+  "pytest-html>=4.1.1",
+  "pytest-httpx>=0.32.0",
+  "pytest-xdist>=3.8.0",
+  "python-dotenv>=1.0.1",
+  # NOTE tox はロックファイルを使わないため, ローカルと CI で結果を一致させるよう完全固定する
+  "ruff==0.17.5",
+  "rumdl>=0.3.6",
+  "tombi>=1.11.3",
+  "ty>=0.0.17",
+]
+doc = ["pdoc>=16.0.0"]
+test = [
+  "pytest>=9.0.2",
+  "pytest-asyncio>=0.24.0",
+  "pytest-cov>=5.0.0",
+  "pytest-html>=4.1.1",
+  "pytest-httpx>=0.32.0",
+  "pytest-xdist>=3.8.0",
+]
+
+[build-system]
+# NOTE uv 公式の推奨に従い上限を付ける. 新しいマイナー版が出たら上限を引き上げる (MAINTAINING.md)
+requires = ["uv_build>=0.13.6,<0.14"]
+build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+addopts = "--maxfail=1 -n auto -q --tb=short --no-header"
+markers = [
+  "integration: tests that require a real API key and network connection",
+]
+testpaths = ["tests"]
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+ignore = ["E741"]  # 1文字変数を許容
+
+[tool.rumdl]
+# NOTE 日本語の文書は 1 文が長く, 固定幅で折り返す運用もしないため, 行の長さ (MD013) は検査しない
+disable = ["MD013"]
+
+[tool.rumdl.per-file-ignores]
+# PR テンプレートは記入者向けの HTML コメントから始まるため, 先頭の見出しを求めない
+".github/pull_request_template.md" = ["MD041"]
 
 [tool.uv]
 # NOTE 公開から 3 日未満のバージョンを取り込まない (サプライチェーン攻撃への備え).
@@ -70,22 +98,3 @@ required-version = ">=0.11"
 [tool.uv.build-backend]
 # 配布名 (hotpepper-gourmet) とモジュール名が異なるため明示する
 module-name = "pygourmet"
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-addopts = "--maxfail=1 -n auto -q --tb=short --no-header"
-asyncio_default_fixture_loop_scope = "function"
-markers = [
-    "integration: tests that require a real API key and network connection",
-]
-
-[tool.ruff]
-target-version = "py312"
-
-[tool.ruff.lint]
-ignore = ["E741"] # 1文字変数を許容
-
-[build-system]
-# NOTE uv 公式の推奨に従い上限を付ける. 新しいマイナー版が出たら上限を引き上げる (MAINTAINING.md)
-requires = ["uv_build>=0.13.6,<0.14"]
-build-backend = "uv_build"

@@ -156,6 +156,7 @@ rm "$notes"
   ```
 
 - **PyPI 公開後に失敗した場合** (署名, Release, ドキュメント): PyPI には同じバージョンを再アップロードできません. 該当ジョブを `gh run rerun <run-id> --failed` で再実行します. ドキュメントだけなら `gh workflow run docs.yml` でも再デプロイできます.
+
 - **公開したバージョンに重大な問題があった場合**: PyPI の管理画面 (Manage → Releases → Options → Yank) で yank し, 修正版を PATCH として出します. yank すると, バージョンを固定していない利用者にはインストールされなくなります.
 
 ## 週次統合テストが失敗したとき
@@ -473,9 +474,13 @@ gh repo edit "$R" --add-topic hotpepper,api-client,python,pydantic,httpx
 以前は `dev` ブランチを経由していました. 移行は次の順で行いました.
 
 1. 移行用ブランチ (`dev` と `main` の履歴を統合済み) から `main` 宛ての PR を作成し, CI が通ることを確認します.
+
 2. `dev` 由来のコミット履歴を残すため, この PR だけは **Create a merge commit** でマージします. 「リポジトリの初期設定」の 1, 2 はこのマージの後で適用します.
+
 3. 「リポジトリの初期設定」の 1〜6 を適用し, Secret を登録します.
+
 4. `gh workflow run integration.yml` と `gh workflow run docs.yml` を実行し, 成功することを確認します.
+
 5. `dev` ブランチを削除します.
 
    ```bash

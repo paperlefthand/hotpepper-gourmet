@@ -9,6 +9,14 @@
       "source.organizeImports": "explicit"
     }
   },
+  "[markdown]": {
+    "editor.defaultFormatter": "rvben.rumdl",
+    "editor.formatOnSave": true
+  },
+  "[toml]": {
+    "editor.defaultFormatter": "tombi-toml.tombi",
+    "editor.formatOnSave": true
+  },
   "python.analysis.typeCheckingMode": "basic",
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
